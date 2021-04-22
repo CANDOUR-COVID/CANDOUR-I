@@ -1,0 +1,182 @@
+#### 0. Dependencies ####
+
+library(tidyverse)
+library(haven)
+set.seed(89)
+
+rm(list = ls())
+
+source("functions/conjoint_functions.R")
+eval(parse("functions/wtp_functions.R", encoding="UTF-8"))
+eval(parse("functions/IPUMS_functions.R", encoding="UTF-8"))
+eval(parse("functions/labels_functions.R", encoding="UTF-8"))
+
+
+#### 1. Cleaning and Combining ####
+
+country_data <- list()
+country_codes <- c("AUS", "BR", "CAN", "CHL", "CHN", "COL", "FR", "IT", "SP", "UK", "US", "UGA", "IND")
+
+for (country in country_codes) {
+  country_data[[country]] <- read_csv(paste0("data/raw/data_", country, ".csv"))
+}
+
+# Merging weights
+
+country_weights <- list()
+
+for (country in c("AUS", "BR", "CHL", "CHN", "COL", "FR", "IT", "UK", "US")) {
+  country_weights[[country]] <- read_csv(paste0("weights/", country, "_w.csv"))[,-1]
+  country_data[[country]] <- left_join(country_data[[country]], country_weights[[country]], by = "id")
+}
+
+for (country in c("AUS", "BR", "CHL", "CHN", "COL", "FR", "IT", "UK", "US")) {
+  aux <- country
+  country_data[[country]] <- country_data[[aux]] %>%
+    mutate(weights_n = weights*nrow(country_data[[aux]])/100,
+           weights = weights/100) %>%
+    rename(weights_perc = weights,
+           weights = weights_n)
+}
+
+for (country in c("CAN", "SP", "UGA", "IND")) {
+  aux <- country
+  country_data[[country]] <- country_data[[aux]] %>%
+    mutate(weights_n = 1,
+           weights = 1/nrow(country_data[[aux]])) %>%
+    rename(weights_perc = weights,
+           weights = weights_n)
+}
+
+# Recode for reasons to get or not get the vaccine
+for (country in c("BR", "FR")) {
+  country_data[[country]]$Q14.2 <- gsub(", \t", ",", country_data[[country]]$Q14.2)
+}
+
+for (country in country_codes) {
+  country_data[[country]]$Q14.2 <- gsub(", ", "|", country_data[[country]]$Q14.2)
+  country_data[[country]] <- country_data[[country]] %>% 
+    separate(Q14.2, into = c(paste0("int_reason_notget_", seq(1:7))), "\\,")
+  for (i in 1:7) {
+    country_data[[country]][[paste0("int_reason_notget_", i)]] <- gsub("\\|", ", ", country_data[[country]][[paste0("int_reason_notget_", i)]])
+    country_data[[country]][[paste0("int_reason_notget_", i)]] <- gsub(" $", "", country_data[[country]][[paste0("int_reason_notget_", i)]])
+  }
+}
+  
+for (country in country_codes) {
+  country_data[[country]]$Q14.3 <- gsub(", ", "|", country_data[[country]]$Q14.3)
+  country_data[[country]] <- country_data[[country]] %>% 
+    separate(Q14.3, into = c(paste0("int_reason_get_", seq(1:12))), "\\,")
+  for (i in 1:12) {
+    country_data[[country]][[paste0("int_reason_get_", i)]] <- gsub("\\|", ", ", country_data[[country]][[paste0("int_reason_get_", i)]])
+    country_data[[country]][[paste0("int_reason_get_", i)]] <- gsub(" $", "", country_data[[country]][[paste0("int_reason_get_", i)]])
+  }
+}
+
+# Recode for comorbilities
+
+for (country in country_codes) {
+  country_data[[country]] <- country_data[[country]] %>% 
+    separate(Q19.2, into = c(paste0("qol_condition_", seq(1:10))), "\\,")
+  for (i in 1:10) {
+    country_data[[country]][[paste0("qol_condition_", i)]] <- gsub(" $", "", country_data[[country]][[paste0("qol_condition_", i)]])
+  }
+}
+
+# Writing separate data #
+for (country in country_codes) {
+  write_csv(country_data[[country]], paste0("data/country/data_", country, ".csv"))
+}
+
+# Creating homogenized demographics variables
+
+for (country in country_codes) {
+  country_data[[country]] <- IPUMS_contract(country_data[[country]])
+  country_data[[country]] <- IPUMS_employment(country_data[[country]])
+  country_data[[country]] <- IPUMS_education(country_data[[country]])
+  country_data[[country]] <- IPUMS_work(country_data[[country]])
+}
+
+# Removing redundant questions already recoded
+
+for (country in country_codes) {
+  country_data[[country]] <- country_data[[country]] %>%
+    select(-c(matches("^[Q]", ignore.case=FALSE)))
+}
+
+country_data$CHL$eq5d_scale_pre <- as.character(country_data$CHL$eq5d_scale_pre)
+country_data$CHN$eq5d_scale_pre <- as.character(country_data$CHN$eq5d_scale_pre)
+country_data$IT$eq5d_scale_pre <- as.character(country_data$IT$eq5d_scale_pre)
+
+# Merging data 
+data <- tibble()
+
+for (country in country_data) {
+  data <- bind_rows(data, country)
+}
+
+
+#### 2. Format ####
+
+# Read in data
+country_data <- list()
+
+country_data[["can"]] <- read_csv("data/data_CAN.csv")
+country_data[["col"]] <- read_csv("data/data_col.csv")
+country_data[["esp"]] <- read_csv("data/data_SP.csv")
+country_data[["usa"]] <- read_csv("data/data_US.csv")
+country_data[["aus"]] <- read_csv("data/data_AUS.csv")
+country_data[["uk"]] <- read_csv("data/data_UK.csv") %>% rename(int_pol_implem_6 = Q14.8_6)
+country_data[["fra"]] <- read_csv("data/data_FR.csv")
+country_data[["ita"]] <- read_csv("data/data_IT.csv")
+country_data[["chn"]] <- read_csv("data/data_CHN.csv") %>% mutate(ideology = NA)
+country_data[["bra"]] <- read_csv("data/data_BR.csv")
+country_data[["chl"]] <- read_csv("data/data_CHL.csv")
+country_data[["uga"]] <- read_csv("data/data_UGA.csv") %>% rename(int_pol_implem_6 = Q14.8_6)
+country_data[["ind"]] <- read_csv("data/data_IND.csv") %>% rename(int_pol_implem_6 = Q14.8_6)
+
+## First we recode the data:
+# To translate survey responses across countries into English
+# To create binned or dichotomous versions of variables used in the heterogeneity analysis
+# Please see 'conjoint_functions.R' for the generic code
+country_codes <- c("aus","bra","can","chl","chn","col",
+                   "fra","ind","ita","esp","uga","uk","usa")
+
+for (country in country_codes) {
+  
+  country_data[[country]] <- recode_inc(country_data[[country]], 
+                                        ccode = country)
+}
+
+# Recode data for conjoint format
+global_data <- recode_for_conjoint(country_data[[1]])
+for (i in 2:length(country_data)) {
+  global_data <- rbind(global_data, recode_for_conjoint(country_data[[i]]))
+}
+
+# Recode data for wtp format
+wtp_data <- recode_for_wtp(data)
+
+# Labeling
+data <- labeling(data)
+
+# Removing conjoint and WTP variables
+data <- data %>%
+  select(-c(starts_with(c("person", "wtp_amount", "geq_taxes", "geq_ticket")), 
+            ends_with(c("Q5.4_1", "Q5.5_1", "Q5.6_1")), "wtp_access", 
+            "wtp_private", "wtpVal", "taxesExtra", "ticketExtra"))
+
+# Save CSV for reference
+write_csv(global_data, "data/nbh_clean_conjoint_global.csv")
+write_csv(wtp_data, "data/clean_wtp_global.csv")
+write_csv(data, "data/data_combined.csv")
+
+# Save RDS to preserve factor coding for use in replication.R
+write_rds(global_data, "data/nbh_clean_conjoint_global.rds")
+write_rds(wtp_data, "data/clean_wtp_global.rds")
+write_rds(data, "data/data_combined.rds")
+
+# Save DTA
+write_dta(global_data, "data/nbh_clean_conjoint_global.dta")
+write_dta(wtp_data, "data/clean_wtp_global.dta")
+write_dta(data, "data/data_combined.dta")

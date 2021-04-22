@@ -1,0 +1,1 @@
+Note: This figure plots average Lottery Vignette outcomes for treatment (Triage) and control (Lottery) groups, alongside their 95% confidence intervals, within each subset of the data as defined by the respective sociodemographic characteristic. Estimates of the difference-in-means (ATE) as well as two-sided p-values using a t-distribution are reported.
