@@ -1,11 +1,11 @@
-**Data last updated: 21 April 2021**
+**Data last updated: 20 June 2021**
 
 # CANDOUR
 Covid-19 vAccine prefereNce anD Opinion sURvey
 
 # Data Folders
 
-[Codebook](data/codebook): codebook files.
+[Codebook](codebook): codebook files.
 
 [Country data](data/country): datasets of each country (cleaned, with weights variables, have all of the variables, demographics non-harmonized).
 
