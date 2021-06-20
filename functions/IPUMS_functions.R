@@ -523,12 +523,12 @@ IPUMS_education<-function(data_fram){
               "研")
     
     
-    Less_than_primary <- c("从",
-                           "小","初")
+    Less_than_primary <- c("从")
     
-    Primary_com <- c("高")
+    Primary_com <- c("小","初")
     
-    Secondary_com <- c("高",
+    Secondary_com <- c(
+                       "高",
                        "职",
                        "中",
                        "高")
@@ -537,6 +537,7 @@ IPUMS_education<-function(data_fram){
                         "研")
     
     Unknow <- c(NA)
+    
 
     
   }

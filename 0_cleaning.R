@@ -39,7 +39,18 @@ data_AUS <- data_AUS %>%
 data_AUS <- data_AUS %>%
   rename(age = Q3.1,
          gender = Q3.2,
-         ideology = Q21.1_1)
+         ideology = Q21.1_1,
+         INCOME = Q22.10,
+         HH_INCOME = Q22.11,
+         race = Q22.12,
+         ancestry = Q22.13,
+         citizen = Q22.14,
+         nationality = Q22.15,
+         religion = Q22.16,
+         marital_status = Q22.17,
+         dep_children = Q22.18,
+         dep_children_amount = Q22.19,
+         HH_size_adults = Q22.20)
 
 data_AUS <- data_AUS %>% 
   mutate(REGION_0 = Q3.3,
@@ -240,18 +251,29 @@ data_BR <- data_BR %>%
 data_BR <- data_BR %>%
   rename(age = Q3.1,
          gender = Q3.2,
-         ideology = Q21.1_1)
+         ideology = Q21.1_1,
+         INCOME = Q22.8,
+         HH_INCOME = Q22.9,
+         race = Q22.10,
+         nationality = Q22.12,
+         religion = Q22.11,
+         marital_status = Q22.13,
+         dep_children = Q22.14,
+         dep_children_amount = Q22.15,
+         HH_size_adults = Q22.16)
 
 data_BR <- data_BR %>% 
   mutate(REGION_0 = Q3.3,
          REGION_1 = coalesce(Q3.4, Q3.5, Q3.6, Q3.7, Q3.8, Q3.9, Q3.10, Q3.11,
                              Q3.12, Q3.13, Q3.14, Q3.15, Q3.16, Q3.17, Q3.18, 
                              Q3.19, Q3.20, Q3.21, Q3.22, Q3.23, Q3.24, Q3.25, 
-                             Q3.26, Q3.27, Q3.28, Q3.29, Q3.30)) %>%
+                             Q3.26, Q3.27, Q3.28, Q3.29, Q3.30),
+         religion = if_else(Q22.11 == "Sim - Outra", Q22.11_13_TEXT, Q22.11)) %>%
   select(-c(Q3.3, Q3.4, Q3.5, Q3.6, Q3.7, Q3.8, Q3.9, Q3.10, Q3.11,
             Q3.12, Q3.13, Q3.14, Q3.15, Q3.16, Q3.17, Q3.18, 
             Q3.19, Q3.20, Q3.21, Q3.22, Q3.23, Q3.24, Q3.25, 
-            Q3.26, Q3.27, Q3.28, Q3.29, Q3.30))
+            Q3.26, Q3.27, Q3.28, Q3.29, Q3.30,
+            Q22.11_13_TEXT, Q22.11))
   
 
 data_BR <- data_BR %>%
@@ -451,7 +473,15 @@ data_CAN <- data_CAN %>%
          ideology = Q21.1_1,
          REGION_0 = Q3.3_1, 
          REGION_1 = Q3.3_2,
-         postal_code = Q3.4)
+         postal_code = Q3.4,
+         INCOME = Q22.7,
+         HH_INCOME = Q22.8,
+         race = Q22.9,
+         religion = Q22.10,
+         marital_status = Q22.11,
+         dep_children = Q22.12,
+         dep_children_amount = Q22.13,
+         HH_size_adults = Q22.14)
 
 data_CAN <- data_CAN %>%
   rename(willing_risk = Q10.1_1,
@@ -648,17 +678,30 @@ data_CHL <- data_CHL %>%
   rename(age = Q3.1,
          gender = Q3.2,
          ideology = Q21.1_1,
-         postal_code = Q3.20)
+         postal_code = Q3.20,
+         INCOME = Q22.13,
+         HH_INCOME = Q22.14,
+         marital_status = Q22.20,
+         dep_children = Q22.21,
+         dep_children_amount = Q22.22,
+         HH_size_adults = Q22.23)
 
+data_CHL$Q22.15 <- data_CHL$Q22.15 %>%
+  recode("Sí" = "Chile")
 
 data_CHL <- data_CHL %>%
   mutate(REGION_0 = Q3.3,
          REGION_1 = coalesce(Q3.4, Q3.5, Q3.6, Q3.7, Q3.8, Q3.9, Q3.10, Q3.11,
                              Q3.12, Q3.13, Q3.14, Q3.15, Q3.16, Q3.17, Q3.18, 
-                             Q3.19)) %>%
+                             Q3.19),
+         Q22.16 = if_else(Q22.16 == "Otro, ¿cuál?", Q22.16_7_TEXT, Q22.16),
+         nationality = if_else(!is.na(Q22.16), Q22.16, Q22.15),
+         religion = if_else(Q22.17 == "Otra", Q22.17_21_TEXT, Q22.17),
+         Q22.19 = if_else(Q22.16 == "Otro, ¿Cuál?", Q22.19_10_TEXT, Q22.19),
+         race = if_else(!is.na(Q22.19), Q22.19, Q22.18)) %>%
   select(-c(Q3.3, Q3.4, Q3.5, Q3.6, Q3.7, Q3.8, Q3.9, Q3.10, Q3.11,
-            Q3.12, Q3.13, Q3.14, Q3.15, Q3.16, Q3.17, Q3.18, 
-            Q3.19))
+            Q3.12, Q3.13, Q3.14, Q3.15, Q3.16, Q3.17, Q3.18, Q3.19,
+            Q22.15, Q22.16, Q22.16_7_TEXT, Q22.19_10_TEXT))
 
 data_CHL <- data_CHL %>%
   rename(willing_risk = Q10.1_1,
@@ -850,7 +893,13 @@ data_CHN <- data_CHN %>%
   rename(age = Q3.1,
          gender = Q3.2,
          REGION_0 = Q3.3_1, 
-         REGION_1 = Q3.3_2)
+         REGION_1 = Q3.3_2,
+         INCOME = Q22.9,
+         HH_INCOME = Q22.10,
+         marital_status = Q22.11,
+         dep_children = Q22.12,
+         dep_children_amount = Q22.13,
+         HH_size_adults = Q22.14)
 
 data_CHN <- data_CHN %>%
   rename(willing_risk = Q10.1_1,
@@ -1024,7 +1073,23 @@ data_COL <- data_COL %>%
          ideology = Q21.1_1,
          REGION_0 = Q3.3_1, 
          REGION_1 = Q3.3_2,
-         postal_code = Q3.4)
+         postal_code = Q3.4,
+         INCOME = Q22.9,
+         HH_INCOME = Q22.10,
+         race = Q22.14,
+         marital_status = Q22.15,
+         dep_children = Q22.16,
+         dep_children_amount = Q22.17,
+         HH_size_adults = Q22.18)
+
+data_COL$Q22.11 <- data_COL$Q22.11 %>%
+  recode("Sí" = "Colombia")
+
+data_COL <- data_COL %>%
+  mutate(Q22.12 = if_else(Q22.12 == "Otro país", Q22.12_11_TEXT, Q22.12),
+         nationality = if_else(!is.na(Q22.12), Q22.12, Q22.11),
+         religion = if_else(Q22.13 == "Otra", Q22.13_11_TEXT, Q22.13)) %>%
+  select(-c(Q22.12, Q22.12_11_TEXT, Q22.13, Q22.13_11_TEXT))
 
 data_COL <- data_COL %>%
   rename(willing_risk = Q10.1_1,
@@ -1222,7 +1287,18 @@ data_FR <- data_FR %>%
          ideology = Q21.1_1,
          REGION_0 = Q3.3_1, 
          REGION_1 = Q3.3_2,
-         postal_code = Q3.4)
+         postal_code = Q3.4,
+         INCOME = Q22.8,
+         HH_INCOME = Q22.9,
+         foreign_parents = Q22.11,
+         marital_status = Q22.12,
+         dep_children = Q22.13,
+         dep_children_amount = Q22.14,
+         HH_size_adults = Q22.15)
+
+data_FR <- data_FR %>%
+  mutate(religion = if_else(Q22.10 == "Autre religion", Q22.10_5_TEXT, Q22.10)) %>%
+  select(-c(Q22.10, Q22.10_5_TEXT))
 
 data_FR <- data_FR %>%
   rename(willing_risk = Q10.1_1,
@@ -1421,7 +1497,25 @@ data_IND <- data_IND %>%
          postal_code = Q3.4,
          ideology = Q21.1_1,
          REGION_0 = Q3.3_1, 
-         REGION_1 = Q3.3_2)
+         REGION_1 = Q3.3_2,
+         INCOME = Q22.7,
+         HH_INCOME = Q22.8,
+         race = Q22.9,
+         marital_status = Q22.12,
+         dep_children = Q22.13,
+         dep_children_amount = Q22.14,
+         HH_size_adults = Q22.15,
+         language_spoken = Q22.16,
+         birth_state = Q22.17)
+
+data_IND <- data_IND %>%
+  unite(news, Q22.1:Q22.1_7_TEXT, sep = ",", na.rm = T, remove = T)
+
+data_IND <- data_IND %>%
+  mutate(religion = if_else(Q22.10 == "Other", Q22.10_7_TEXT, Q22.10),
+         years_residence = if_else(Q22.18 == "Number of years:", Q22.18_2_TEXT, Q22.18),
+         rent_home = if_else(Q22.19 == "Other", Q22.19_4_TEXT, Q22.19)) %>%
+  select(-c(Q22.10, Q22.10_7_TEXT, Q22.18, Q22.18_2_TEXT, Q22.19, Q22.19_4_TEXT))
 
 data_IND <- data_IND %>%
   rename(willing_risk = Q10.1_1,
@@ -1450,6 +1544,7 @@ data_IND <- data_IND %>%
          int_pol_implem_3 = Q14.8_3,
          int_pol_implem_4 = Q14.8_4,
          int_pol_implem_5 = Q14.8_5,
+         int_pol_implem_6 = Q14.8_6,
          int_gov_priority_1 = Q14.9_1,
          int_gov_priority_2 = Q14.9_2,
          int_gov_priority_3 = Q14.9_3,
@@ -1617,7 +1712,14 @@ data_IT <- data_IT %>%
   rename(age = Q3.1,
          gender = Q3.2,
          ideology = Q21.1_1,
-         postal_code = Q3.24)
+         postal_code = Q3.24,
+         INCOME = Q22.15,
+         HH_INCOME = Q22.16,
+         nationality = Q22.17,
+         marital_status = Q22.19,
+         dep_children = Q22.20,
+         dep_children_amount = Q22.21,
+         HH_size_adults = Q22.22)
 
 data_IT <- data_IT %>% 
   mutate(REGION_0 = Q3.3,
@@ -1628,7 +1730,8 @@ data_IT <- data_IT %>%
          REGION_2 = coalesce(Q3.4_2, Q3.5_2, Q3.6_2, Q3.7_2, Q3.8_2, Q3.9_2, 
                              Q3.10_2, Q3.11_2, Q3.12_2, Q3.13_2, Q3.14_2, 
                              Q3.15_2, Q3.16_2, Q3.17_2, Q3.18_2, Q3.19_2, 
-                             Q3.20_2, Q3.21_2, Q3.22_2, Q3.23_2)) %>%
+                             Q3.20_2, Q3.21_2, Q3.22_2, Q3.23_2),
+         religion = if_else(Q22.18 == "Altro", Q22.18_48_TEXT, Q22.18)) %>%
   select(-c(Q3.3, Q3.4_1, Q3.5_1, Q3.6_1, Q3.7_1, Q3.8_1, Q3.9_1,
             Q3.10_1, Q3.11_1, Q3.12_1, Q3.13_1, Q3.14_1, 
             Q3.15_1, Q3.16_1, Q3.17_1, Q3.18_1, Q3.19_1, 
@@ -1636,7 +1739,8 @@ data_IT <- data_IT %>%
             Q3.4_2, Q3.5_2, Q3.6_2, Q3.7_2, Q3.8_2, Q3.9_2, 
             Q3.10_2, Q3.11_2, Q3.12_2, Q3.13_2, Q3.14_2, 
             Q3.15_2, Q3.16_2, Q3.17_2, Q3.18_2, Q3.19_2, 
-            Q3.20_2, Q3.21_2, Q3.22_2, Q3.23_2))
+            Q3.20_2, Q3.21_2, Q3.22_2, Q3.23_2,
+            Q22.18_48_TEXT, Q22.18))
 
 data_IT <- data_IT %>%
   rename(willing_risk = Q10.1_1,
@@ -1832,7 +1936,14 @@ data_SP <- data_SP %>%
 data_SP <- data_SP %>%
   rename(age = Q3.1,
          gender = Q3.2,
-         ideology = Q21.1_1)
+         ideology = Q21.1_1,
+         INCOME = Q22.8,
+         HH_INCOME = Q22.9,
+         nationality = Q22.10,
+         marital_status = Q22.12,
+         dep_children = Q22.13,
+         dep_children_amount = Q22.14,
+         HH_size_adults = Q22.15)
 
 data_SP <- data_SP %>% 
   mutate(REGION_0 = Q3.3,
@@ -1843,7 +1954,8 @@ data_SP <- data_SP %>%
          REGION_2 = coalesce(Q3.4_2, Q3.5_2, Q3.6_2, Q3.7_2, Q3.8_2, Q3.9_2,
                              Q3.10_2, Q3.11_2, Q3.12_2, Q3.13_2, Q3.14_2,
                              Q3.15_2, Q3.16_2, Q3.17_2, Q3.18_2, Q3.19_2,
-                             Q3.20_2, Q3.21_2, Q3.22_2)) %>%
+                             Q3.20_2, Q3.21_2, Q3.22_2),
+         religion = if_else(Q22.11 == "Otra", Q22.11_12_TEXT, Q22.11)) %>%
   select(-c(Q3.3, Q3.4_1, Q3.5_1, Q3.6_1, Q3.7_1, Q3.8_1, Q3.9_1,
             Q3.10_1, Q3.11_1, Q3.12_1, Q3.13_1, Q3.14_1,
             Q3.15_1, Q3.16_1, Q3.17_1, Q3.18_1, Q3.19_1,
@@ -1851,7 +1963,8 @@ data_SP <- data_SP %>%
             Q3.4_2, Q3.5_2, Q3.6_2, Q3.7_2, Q3.8_2, Q3.9_2,
             Q3.10_2, Q3.11_2, Q3.12_2, Q3.13_2, Q3.14_2,
             Q3.15_2, Q3.16_2, Q3.17_2, Q3.18_2, Q3.19_2,
-            Q3.20_2, Q3.21_2, Q3.22_2))
+            Q3.20_2, Q3.21_2, Q3.22_2,
+            Q22.11_12_TEXT, Q22.11))
 
 data_SP <- data_SP %>%
   rename(willing_risk = Q10.1_1,
@@ -2048,7 +2161,19 @@ data_UGA <- data_UGA %>%
          gender = Q3.2,
          ideology = Q21.1_1,
          REGION_0 = Q3.3_1, 
-         REGION_1 = Q3.3_2)
+         REGION_1 = Q3.3_2,
+         INCOME = Q22.7,
+         HH_INCOME = Q22.8,
+         race = Q22.9,
+         religion = Q22.10,
+         marital_status = Q22.12,
+         dep_children = Q22.13,
+         dep_children_amount = Q22.14,
+         HH_size_adults = Q22.15)
+
+data_UGA <- data_UGA %>%
+  mutate(rent_home = if_else(Q22.16 == "Other (please specify in the box below)", Q22.16_4_TEXT, Q22.16)) %>%
+  select(-c(Q22.16_4_TEXT, Q22.16))
 
 data_UGA <- data_UGA %>%
   rename(willing_risk = Q10.1_1,
@@ -2077,6 +2202,7 @@ data_UGA <- data_UGA %>%
          int_pol_implem_3 = Q14.8_3,
          int_pol_implem_4 = Q14.8_4,
          int_pol_implem_5 = Q14.8_5,
+         int_pol_implem_6 = Q14.8_6,
          int_gov_priority_1 = Q14.9_1,
          int_gov_priority_2 = Q14.9_2,
          int_gov_priority_3 = Q14.9_3,
@@ -2243,7 +2369,20 @@ data_UK <- data_UK %>%
          postal_code = Q3.4,
          ideology = Q21.1_1,
          REGION_0 = Q3.3_1, 
-         REGION_1 = Q3.3_2)
+         REGION_1 = Q3.3_2,
+         INCOME = Q22.7,
+         HH_INCOME = Q22.8,
+         race = Q22.9,
+         religion = Q22.10,
+         news = Q22.11,
+         marital_status = Q22.12,
+         dep_children = Q22.13,
+         dep_children_amount = Q22.14,
+         HH_size_adults = Q22.15)
+
+data_UK <- data_UK %>%
+  mutate(rent_home = if_else(Q22.16 == "Other (please specify in the box below)", Q22.16_4_TEXT, Q22.16)) %>%
+  select(-c(Q22.16_4_TEXT, Q22.16))
 
 data_UK <- data_UK %>%
   rename(willing_risk = Q10.1_1,
@@ -2272,6 +2411,7 @@ data_UK <- data_UK %>%
          int_pol_implem_3 = Q14.8_3,
          int_pol_implem_4 = Q14.8_4,
          int_pol_implem_5 = Q14.8_5,
+         int_pol_implem_ = Q14.8_6,
          int_gov_priority_1 = Q14.9_1,
          int_gov_priority_2 = Q14.9_2,
          int_gov_priority_3 = Q14.9_3,
@@ -2441,7 +2581,21 @@ data_US <- data_US %>%
          ideology = Q21.1_1,
          REGION_0 = Q3.3_1, 
          REGION_1 = Q3.3_2,
-         postal_code = Q3.4)
+         postal_code = Q3.4,
+         INCOME = Q22.7,
+         HH_INCOME = Q22.8,
+         race = Q22.10,
+         #nationality = Q22.9,
+         #religion = Q22.16,
+         marital_status = Q22.12,
+         dep_children = Q22.13,
+         dep_children_amount = Q22.14,
+         HH_size_adults = Q22.15)
+
+data_US <- data_US %>%
+  mutate(nationality = if_else(Q22.9 == "Yes, Other", Q22.9_7_TEXT, Q22.9),
+         religion = if_else(Q22.11 == "Other", Q22.11_35_TEXT, Q22.11)) %>%
+  select(-c(Q22.9_7_TEXT, Q22.9, Q22.11_35_TEXT, Q22.11))
 
 data_US <- data_US %>%
   rename(willing_risk = Q10.1_1,
