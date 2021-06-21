@@ -1,4 +1,4 @@
-setwd("C:/Users/Matias/Dropbox/Predoctoral/Vaccine Survey Data")
+setwd("C:/Users/Matias/CESS Dropbox/Matias Fuentes/Predoctoral/Vaccine Survey Data")
 
 rm(list = ls())
 
@@ -15,6 +15,7 @@ col_path <- "Colombia/Vaccine Survey - Colombia_2 January 2021_19.10.csv"
 fr_path <- "France/Vaccine Survey - France_2 January 2021_19.11.csv"
 ind_path <- "India/Vaccine Survey - India_2 January 2021_19.02.csv"
 it_path <- "Italy/Vaccine Survey - Italy_2 January 2021_19.12.csv"
+rus_path <- "Russia/Vaccine Survey - Russian_May 17, 2021_06.43.csv"
 sp_path <- "Spain/Vaccine Survey - Spain_2 January 2021_19.13.csv"
 uga_path <- "Uganda/Vaccine Survey - Uganda_January 14, 2021_09.21.csv"
 uk_path <- "UK/Vaccine Survey - UK_2 January 2021_19.14.csv"
@@ -28,6 +29,11 @@ data_AUS <- data_AUS[-c(1:2),]
 
 data_AUS <- data_AUS %>%
   rowid_to_column("id")
+
+data_AUS<- data_AUS %>%
+  separate(StartDate, into = c("Date", "Time"), sep = " ", remove = FALSE) %>%
+  mutate(Date = lubridate::as_date(Date, format = "%Y-%m-%d"),
+         Time = hms::as_hms(str_c(Time, ":00")))
 
 data_AUS <- data_AUS %>%
   rename(time_secs = `Duration (in seconds)`,
@@ -240,6 +246,11 @@ data_BR <- data_BR[-c(1:2),]
 
 data_BR <- data_BR %>%
   rowid_to_column("id")
+
+data_BR <- data_BR %>%
+  separate(StartDate, into = c("Date", "Time"), sep = " ", remove = FALSE) %>%
+  mutate(Date = lubridate::as_date(Date, format = "%Y-%m-%d"),
+         Time = hms::as_hms(str_c(Time, ":00")))
 
 data_BR <- data_BR %>%
   rename(time_secs = `Duration (in seconds)`,
@@ -461,6 +472,11 @@ data_CAN <- data_CAN %>%
   rowid_to_column("id")
 
 data_CAN <- data_CAN %>%
+  separate(StartDate, into = c("Date", "Time"), sep = " ", remove = FALSE) %>%
+  mutate(Date = lubridate::as_date(Date, format = "%Y-%m-%d"),
+         Time = hms::as_hms(str_c(Time, ":00")))
+
+data_CAN <- data_CAN %>%
   rename(time_secs = `Duration (in seconds)`,
          age_consent = Q1.2,
          consent = Q1.3)
@@ -666,6 +682,11 @@ data_CHL <- data_CHL[-c(1:2),]
 
 data_CHL <- data_CHL %>%
   rowid_to_column("id")
+
+data_CHL <- data_CHL %>%
+  separate(StartDate, into = c("Date", "Time"), sep = " ", remove = FALSE) %>%
+  mutate(Date = lubridate::as_date(Date, format = "%Y-%m-%d"),
+         Time = hms::as_hms(str_c(Time, ":00")))
 
 data_CHL <- data_CHL %>%
   rename(time_secs = `Duration (in seconds)`,
@@ -883,6 +904,11 @@ data_CHN <- data_CHN %>%
   rowid_to_column("id")
 
 data_CHN <- data_CHN %>%
+  separate(StartDate, into = c("Date", "Time"), sep = " ", remove = FALSE) %>%
+  mutate(Date = lubridate::as_date(Date, format = "%Y-%m-%d"),
+         Time = hms::as_hms(str_c(Time, ":00")))
+
+data_CHN <- data_CHN %>%
   rename(time_secs = `Duration (in seconds)`,
          age_consent = Q1.2,
          consent = Q1.3)
@@ -1059,6 +1085,11 @@ data_COL <- data_COL[-c(1:2),]
 
 data_COL <- data_COL %>%
   rowid_to_column("id")
+
+data_COL <- data_COL %>%
+  separate(StartDate, into = c("Date", "Time"), sep = " ", remove = FALSE) %>%
+  mutate(Date = lubridate::as_date(Date, format = "%Y-%m-%d"),
+         Time = hms::as_hms(str_c(Time, ":00")))
 
 data_COL <- data_COL %>%
   rename(time_secs = `Duration (in seconds)`,
@@ -1275,6 +1306,11 @@ data_FR <- data_FR %>%
   rowid_to_column("id")
 
 data_FR <- data_FR %>%
+  separate(StartDate, into = c("Date", "Time"), sep = " ", remove = FALSE) %>%
+  mutate(Date = lubridate::as_date(Date, format = "%Y-%m-%d"),
+         Time = hms::as_hms(str_c(Time, ":00")))
+
+data_FR <- data_FR %>%
   rename(time_secs = `Duration (in seconds)`,
          age_consent = Q1.2,
          consent = Q1.3)
@@ -1483,6 +1519,11 @@ data_IND <- data_IND[-c(1:2),]
 
 data_IND <- data_IND %>%
   rowid_to_column("id")
+
+data_IND <- data_IND %>%
+  separate(StartDate, into = c("Date", "Time"), sep = " ", remove = FALSE) %>%
+  mutate(Date = lubridate::as_date(Date, format = "%Y-%m-%d"),
+         Time = hms::as_hms(str_c(Time, ":00")))
 
 data_IND <- data_IND %>%
   rename(time_secs = `Duration (in seconds)`,
@@ -1702,6 +1743,11 @@ data_IT <- data_IT %>%
   rowid_to_column("id")
 
 data_IT <- data_IT %>%
+  separate(StartDate, into = c("Date", "Time"), sep = " ", remove = FALSE) %>%
+  mutate(Date = lubridate::as_date(Date, format = "%Y-%m-%d"),
+         Time = hms::as_hms(str_c(Time, ":00")))
+
+data_IT <- data_IT %>%
   rename(time_secs = `Duration (in seconds)`,
          age_consent = Q1.2,
          consent = Q1.3)
@@ -1917,6 +1963,224 @@ data_IT <- data_IT %>%
 write_csv(data_IT, "Italy/data_IT.csv")
 write_csv(respondi_IT, "Respondi/respondi_IT.csv")
 
+#### Russia ####
+
+data_RUS <- read_csv(rus_path)
+
+data_RUS <- data_RUS[-c(1:2),]
+
+data_RUS <- data_RUS %>%
+  filter(!Q_TerminateFlag %in% c("Screened", "QuotaMet"), Status == "IP Address",
+         Progress == "100", !is.na(ac))
+
+data_RUS <- data_RUS %>%
+  separate(StartDate, into = c("Date", "Time"), sep = " ", remove = FALSE) %>%
+  mutate(Date = lubridate::as_date(Date, format = "%Y-%m-%d"),
+         Time = hms::as_hms(str_c(Time, ":00")))
+
+data_RUS <- data_RUS %>%
+  mutate(pilot = if_else(Date < "2021-04-21", 1, 0))
+
+data_RUS <- data_RUS %>%
+  select(-c(StartDate, EndDate, Status, IPAddress, Progress, Finished, ResponseId,
+            RecipientLastName, RecipientFirstName, RecipientEmail, ExternalReference, 
+            LocationLatitude, LocationLongitude, DistributionChannel, UserLanguage, Q_TerminateFlag, starts_with("seed"), hideFooter,
+            ends_with(c("First Click", "Last Click", "Page Submit", "Click Count"))))
+
+data_RUS <- data_RUS %>%
+  rename(time_secs = `Duration (in seconds)`,
+         age_consent = Q1.2,
+         consent = Q1.3)
+
+#### .Demographics and Political Partisanship ####
+
+data_RUS <- data_RUS %>%
+  rename(age = Q3.1,
+         gender = Q3.2,
+         REGION_0 = Q3.3_1,
+         postal_code = Q3.4,
+         INCOME = Q22.7,
+         HH_INCOME = Q22.6)
+
+data_RUS <- data_RUS %>%
+  rename(willing_risk = Q10.1_1,
+         willing_punish = Q10.2_1,
+         return_favour = Q10.3_1,
+         donation = Q10.4,
+         donation_amount = Q10.4_1_TEXT,
+         wtp_access = Q11.1,
+         wtp_private = Q11.2,
+         wtp_amount_1 = Q11.4,
+         wtp_amount_2a = Q11.5,
+         wtp_amount_2b = Q11.6,
+         int_get_vacc = Q14.1,
+         int_lost_job = Q14.4,
+         int_perc_job = Q14.5_1,
+         int_exp_1 = Q14.6_1,
+         int_exp_2 = Q14.6_2,
+         int_exp_3 = Q14.6_3,
+         int_exp_4 = Q14.6_4,
+         int_exp_5 = Q14.6_5,
+         int_family_vacc_1 = Q14.7_1,
+         int_family_vacc_2 = Q14.7_2,
+         int_family_vacc_3 = Q14.7_3,
+         int_pol_implem_1 = Q14.8_1,
+         int_pol_implem_2 = Q14.8_2,
+         int_pol_implem_3 = Q14.8_3,
+         int_pol_implem_4 = Q14.8_4,
+         int_pol_implem_5 = Q14.8_5,
+         int_pol_implem_6 = Q14.8_6,
+         int_gov_priority_1 = Q14.9_1,
+         int_gov_priority_2 = Q14.9_2,
+         int_gov_priority_3 = Q14.9_3,
+         int_gov_priority_4 = Q14.9_5,
+         int_behaviour_1 = Q14.10_1,
+         int_behaviour_2 = Q14.10_2,
+         int_behaviour_3 = Q14.10_3,
+         hes_general_1 = Q16.1_1,
+         hes_general_2 = Q16.1_2,
+         hes_general_3 = Q16.1_3,
+         hes_covid_1 = Q16.2_1,
+         hes_covid_2 = Q16.2_2,
+         beh_measure_1 = Q17.1_1,
+         beh_measure_2 = Q17.1_2,
+         beh_measure_3 = Q17.1_3,
+         beh_measure_4 = Q17.1_4,
+         beh_measure_5 = Q17.1_5,
+         beh_measure_6 = Q17.1_6,
+         beh_measure_7 = Q17.1_7,
+         beh_measure_8 = Q17.1_8,
+         beh_measure_9 = Q17.1_9,
+         beh_measure_10 = Q17.1_10,
+         beh_measure_11 = Q17.1_11,
+         beh_measure_12 = Q17.1_12,
+         beh_measure_13 = Q17.1_13,
+         beh_measure_14 = Q17.1_14,
+         beh_measure_15 = Q17.1_15,
+         beh_measure_16 = Q17.1_16,
+         beh_measure_17 = Q17.1_17,
+         beh_risk = Q17.2_1,
+         geq_taxes_0 = Q18.1,
+         geq_taxes_1 = Q18.3,
+         geq_taxes_2a = Q18.4,
+         geq_taxes_2b = Q18.5,
+         geq_provision_1 = Q18.6_1,
+         geq_provision_2 = Q18.6_2,
+         geq_provision_3 = Q18.6_4,
+         geq_donation = Q18.7,
+         geq_ticket_0 = Q18.9,
+         geq_ticket_1 = Q18.11,
+         geq_ticket_2a = Q18.12,
+         geq_ticket_2b = Q18.13,
+         geq_current_spending = Q18.14_1,
+         geq_future_spending = Q18.15,
+         eq5d_mobility_pre = Q20.3_1,
+         eq5d_mobility_post = Q20.3_2,
+         eq5d_selfcare_pre = Q20.4_1,
+         eq5d_selfcare_post = Q20.4_2,
+         eq5d_usual_pre = Q20.5_1,
+         eq5d_usual_post = Q20.5_2,
+         eq5d_pain_pre = Q20.6_1,
+         eq5d_pain_post = Q20.6_2,
+         eq5d_anxiety_pre = Q20.7_1,
+         eq5d_anxiety_post = Q20.7_2,
+         eq5d_scale_pre = Q20.9,
+         eq5d_scale_post = Q20.10,
+         person1_ans = "1_Q5.3",
+         person2_ans = "2_Q5.3",
+         person3_ans = "3_Q5.3",
+         person4_ans = "4_Q5.3",
+         person5_ans = "5_Q5.3",
+         person6_ans = "6_Q5.3",
+         person7_ans = "7_Q5.3",
+         person8_ans = "8_Q5.3",
+         person1_a = person1a,
+         person2_a = person2a,
+         person3_a = person3a,
+         person4_a = person4a,
+         person5_a = person5a,
+         person6_a = person6a,
+         person7_a = person7a,
+         person8_a = person8a,
+         person1_b = person1b,
+         person2_b = person2b,
+         person3_b = person3b,
+         person4_b = person4b,
+         person5_b = person5b,
+         person6_b = person6b,
+         person7_b = person7b,
+         person8_b = person8b)
+
+#### .Lottery vignette ####
+
+data_RUS <- data_RUS %>%
+  mutate(tvignette = if_else(is.na(Q12.1_1) & !is.na(Q12.2_1), 1,
+                             if_else(!is.na(Q12.1_1) & is.na(Q12.2_1), 0, NA_real_)),
+         lottery_vignette = as.numeric(coalesce(Q12.1_1, Q12.2_1))) %>%
+  select(-c(Q12.1_1, Q12.2_1))
+
+#### .List Experiment ####
+
+data_RUS <- data_RUS %>%
+  mutate(tlist = if_else(is.na(Q15.1) & !is.na(Q15.2), 1,
+                         if_else(!is.na(Q15.1) & is.na(Q15.2), 0, NA_real_)),
+         list_merged = coalesce(Q15.1, Q15.2)) %>%
+  select(-c(Q15.1, Q15.2))
+
+
+data_RUS <- data_RUS %>%
+  mutate(list_merged = if_else(list_merged == "Ноль", 0,
+                               if_else(list_merged == "Одна", 1, 
+                                       if_else(list_merged %in% c("Два", "Две"), 2,
+                                               if_else(list_merged == "Tри", 3,
+                                                       if_else(list_merged == "Четыре", 4, NA_real_))))))
+
+
+#### .Person Trade-off questions ####
+
+data_RUS <- data_RUS %>%
+  mutate(group = if_else(!is.na(Q6.1), 1,
+                         if_else(!is.na(Q7.1), 2, 
+                                 if_else(!is.na(Q8.1), 3, 
+                                         if_else(!is.na(Q9.1), 4, NA_real_)))),
+         select0 = coalesce(Q6.1, Q7.1, Q8.1, Q9.1),
+         select1 = coalesce(Q6.4, Q7.4, Q8.4, Q9.4),
+         select2 = coalesce(Q6.5, Q7.5, Q8.5, Q9.5, Q6.6, Q7.6, Q8.6, Q9.6),
+         select2a = coalesce(Q6.5, Q7.5, Q8.5, Q9.5),
+         select2b = coalesce(Q6.6, Q7.6, Q8.6, Q9.6),
+         value_l = if_else(select2a == "Группу А" & !is.na(select2a), 6,
+                           if_else(select2a == "Группу Б" & !is.na(select2a), 3,
+                                   if_else(select2b ==  "Группу А" & !is.na(select2b), 2, 
+                                           if_else(select2b == "Группу Б" & !is.na(select2b), 2, NA_real_)))),
+         value1 = 3,
+         value2 = if_else(select1 == "Группу А", 6, 
+                          if_else(select1 == "Группу Б", 2, NA_real_)),
+         response1 = if_else(select1 == "Группу А", 1, 
+                             if_else(select1 == "Группу Б", 0, NA_real_)),
+         response2 = if_else(select2 == "Группу А", 1,
+                             if_else(select2 == "Группу Б", 0, NA_real_)))
+
+# id
+
+data_RUS <- data_RUS %>%
+  rowid_to_column("id")
+
+#pilot
+
+pretest_RUS <- data_RUS %>%
+  filter(pilot == 1) %>%
+  select(-postal_code)
+
+write_csv(pretest_RUS, "Cleaned Data/Cleaned Data (without postal codes)/pilot/pretest_RUS.csv")
+
+# full
+
+write_csv(data_RUS, "Cleaned Data/data_RUS.csv")
+
+# Without postal_codes
+
+write_csv(data_RUS %>% select(-postal_code), "Cleaned Data/Cleaned Data (without postal codes)/data_RUS.csv")
+
 #### Spain ####
 
 data_SP <- read_csv(sp_path)
@@ -1925,6 +2189,11 @@ data_SP <- data_SP[-c(1:2),]
 
 data_SP <- data_SP %>%
   rowid_to_column("id")
+
+data_SP <- data_SP %>%
+  separate(StartDate, into = c("Date", "Time"), sep = " ", remove = FALSE) %>%
+  mutate(Date = lubridate::as_date(Date, format = "%Y-%m-%d"),
+         Time = hms::as_hms(str_c(Time, ":00")))
 
 data_SP <- data_SP %>%
   rename(time_secs = `Duration (in seconds)`,
@@ -2150,6 +2419,11 @@ data_UGA <- data_UGA %>%
   rowid_to_column("id")
 
 data_UGA <- data_UGA %>%
+  separate(StartDate, into = c("Date", "Time"), sep = " ", remove = FALSE) %>%
+  mutate(Date = lubridate::as_date(Date, format = "%Y-%m-%d"),
+         Time = hms::as_hms(str_c(Time, ":00")))
+
+data_UGA <- data_UGA %>%
   rename(time_secs = `Duration (in seconds)`,
          age_consent = Q1.2,
          consent = Q1.3)
@@ -2355,6 +2629,11 @@ data_UK <- data_UK[-c(1:2),]
 
 data_UK <- data_UK %>%
   rowid_to_column("id")
+
+data_UK <- data_UK %>%
+  separate(StartDate, into = c("Date", "Time"), sep = " ", remove = FALSE) %>%
+  mutate(Date = lubridate::as_date(Date, format = "%Y-%m-%d"),
+         Time = hms::as_hms(str_c(Time, ":00")))
 
 data_UK <- data_UK %>%
   rename(time_secs = `Duration (in seconds)`,
@@ -2567,6 +2846,11 @@ data_US <- data_US[-c(1:2),]
 
 data_US <- data_US %>%
   rowid_to_column("id")
+
+data_US <- data_US %>%
+  separate(StartDate, into = c("Date", "Time"), sep = " ", remove = FALSE) %>%
+  mutate(Date = lubridate::as_date(Date, format = "%Y-%m-%d"),
+         Time = hms::as_hms(str_c(Time, ":00")))
 
 data_US <- data_US %>%
   rename(time_secs = `Duration (in seconds)`,

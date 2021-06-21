@@ -15,7 +15,8 @@ eval(parse("functions/labels_functions.R", encoding="UTF-8"))
 #### 1. Cleaning and Combining ####
 
 country_data <- list()
-country_codes <- c("AUS", "BR", "CAN", "CHL", "CHN", "COL", "FR", "IT", "SP", "UK", "US", "UGA", "IND")
+country_codes <- c("AUS", "BR", "CAN", "CHL", "CHN", "COL", "FR", "IT", "SP", 
+                   "UK", "US", "UGA", "IND", "RUS")
 
 for (country in country_codes) {
   country_data[[country]] <- read_csv(paste0("data/raw/data_", country, ".csv"))
@@ -75,6 +76,9 @@ for (country in country_codes) {
 
 # Recode for comorbilities
 
+country_data$RUS <- country_data$RUS %>%
+  rename(Q19.2 = Q19.1)
+
 for (country in country_codes) {
   country_data[[country]] <- country_data[[country]] %>% 
     separate(Q19.2, into = c(paste0("qol_condition_", seq(1:10))), "\\,")
@@ -104,9 +108,12 @@ for (country in country_codes) {
     select(-c(matches("^[Q]", ignore.case=FALSE)))
 }
 
-country_data$CHL$eq5d_scale_pre <- as.character(country_data$CHL$eq5d_scale_pre)
-country_data$CHN$eq5d_scale_pre <- as.character(country_data$CHN$eq5d_scale_pre)
-country_data$IT$eq5d_scale_pre <- as.character(country_data$IT$eq5d_scale_pre)
+for (country in country_codes) {
+  country_data[[country]]$eq5d_scale_pre <- country_data[[country]]$eq5d_scale_pre %>%
+    as.numeric()
+}
+
+country_data$RUS$donation_amount <- as.double(country_data$RUS$donation_amount)
 
 # Merging data 
 data <- tibble()

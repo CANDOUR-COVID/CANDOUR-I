@@ -147,6 +147,30 @@ IPUMS_contract<-function(data_fram){
     
   }
   
+  else if(data_fram$country=="Russia"){
+    
+    data_fram <- data_fram %>% rename(PROF_POSITION = Q22.7)
+    
+    Self_employ <- c("Индивидуальный предприниматель/ самозанятый",
+                     "Libero professionista",
+                     "Lavoratore in proprio")
+    
+    Wage_salary_worker <- c("Работаю по найму",
+                            "Работаю в вооруженных силах или правоохранительных органах")
+    
+    Unpaid <- c("Домохозяйка")
+    
+    Other <- c("Не работаю, ищу работу",
+               "Не работаю, не ищу работу",
+               "Студент дневного отделения",
+               "Пенсионер",
+               "Не в состоянии работать")
+    
+    Unknow <- c("Не знаю",
+                "Предпочитаю не отвечать")
+    
+  }
+  
   else if(data_fram$country=="Spain"){
      
     data_fram <- data_fram %>% rename(PROF_POSITION = Q22.5)
@@ -421,6 +445,28 @@ IPUMS_education<-function(data_fram){
     
     Unknow <- c("Non saprei","Preferisco non rispondere")
 
+  }
+  
+  else if(data_fram$country=="Russia"){
+    
+    data_fram <- data_fram %>% rename(EDUCATION_LEVEL = Q22.2 )
+    
+    Less_than_primary <- c("")
+    
+    Primary_com <- c("Неполное среднее")
+    
+    Secondary_com <- c("Среднее общее образование",
+                       "Неоконченное высшее",
+                       "Среднее профессиональное (техникум, училище)",
+                       "Начальное профессиональное (профессиональный лицей, ПТУ)")
+    
+    University_com <- c("Высшее образование –бакалавриат",
+                        "Высшее образование –специалитет",
+                        "Высшее образование –магистратура",
+                        "Высшее послевузовское образование (аспирантура, докторантура)")
+    
+    Unknow <- c("Не знаю","Предпочитаю не отвечать")
+    
   }
   
   else if(data_fram$country=="Spain"){
@@ -769,6 +815,35 @@ IPUMS_employment<-function(data_fram){
     Others <- c("Altro")
     
     Unknow <- c("Non saprei","Preferisco non rispondere")
+    
+  }
+  
+  else if(data_fram$country=="Russia"){
+    
+    data_fram <- data_fram %>% mutate(EMPLOYMENT = Q22.3)
+    
+    Employed <- c("Работаю по найму",
+                  "Индивидуальный предприниматель/ самозанятый",
+                  "Работаю в вооруженных силах или правоохранительных органах")
+    
+    Unemployed <- c("Не работаю, ищу работу")
+    
+    Unemployed_never_work <- c("")
+    
+    Not_economic <- c("Не работаю, не ищу работу",
+                      "Не в состоянии работать")
+    
+    Students <- c("Студент дневного отделения")
+    
+    Pension_or_K <- c("Пенсионер")
+    
+    Homemakers <- c("Домохозяйка")
+    
+    Others <- c("")
+    
+    Unknow <- c("Не знаю",
+                "Предпочитаю не отвечать")
+    
     
   }
   

@@ -1777,11 +1777,11 @@ recode_for_wtp <- function(data) {
               as.numeric)
   
   data <- data %>%
-    mutate(wtpVal_PPP = if_else(wtpVal %in% c(50, 44000, 15000, 85, 30, 30, 30, 30, 6000, 50), 50,
-                                if_else(wtpVal %in% c(135, 105, 87000, 30000, 175, 60, 795, 60, 13000, 100), 100,
-                                        if_else(wtpVal %in% c(270, 210, 175000, 60000, 345, 130, 1595, 110, 26000, 200), 200,
-                                                if_else(wtpVal %in% c(460, 535, 415, 349000, 119000, 690, 260, 3190, 220, 51000), 400,
-                                                        if_else(wtpVal %in% c(1145, 1340, 1040, 874000, 299000, 1730, 645, 575, 7975, 575, 550, 128000, 1000), 1000,
+    mutate(wtpVal_PPP = if_else(wtpVal %in% c(50, 44000, 15000, 85, 30, 30, 30, 30, 6000, 50, 1650), 50,
+                                if_else(wtpVal %in% c(135, 105, 87000, 30000, 175, 60, 795, 60, 13000, 100, 3300), 100,
+                                        if_else(wtpVal %in% c(270, 210, 175000, 60000, 345, 130, 1595, 110, 26000, 200, 6600), 200,
+                                                if_else(wtpVal %in% c(460, 535, 415, 349000, 119000, 690, 260, 3190, 220, 51000, 13200), 400,
+                                                        if_else(wtpVal %in% c(1145, 1340, 1040, 874000, 299000, 1730, 645, 7975, 575, 550, 128000, 1000, 33000), 1000,
                                                                 if_else(wtpVal == 55 & country == "Australia", 50,
                                                                         if_else(wtpVal == 55 & country == "Spain", 100,
                                                                                 if_else(wtpVal == 65 & country == "Brazil", 50,
@@ -1792,12 +1792,12 @@ recode_for_wtp <- function(data) {
                                                                                                                         if_else(wtpVal == 230 & country %in% c("UK", "Italy"), 400,
                                                                                                                                 if_else(wtpVal == 400 & country == "India", 50,
                                                                                                                                         if_else(wtpVal == 400 & country == "US", 400, NA_real_))))))))))))))),
-           taxesExtra_PPP = if_else(taxesExtra %in% c(10, 15, 10, 9000, 3000, 5, 80), 10,
-                                    if_else(taxesExtra %in% c(30, 50, 65, 85, 400, 6000, 15000, 44000), 50,
-                                            if_else(taxesExtra %in% c(60, 65, 100, 105, 115, 135, 175, 795, 13000, 30000, 87000), 100,
-                                                    if_else(taxesExtra %in% c(275, 290, 325, 500, 520, 670, 865, 3985, 64000, 149000, 437000), 500,
-                                                            if_else(taxesExtra %in% c(550, 645, 1040, 1145, 1340, 1730, 7975, 128000, 299000, 874000), 1000,
-                                                                    if_else(taxesExtra %in% c(2755, 2880, 2885, 3225, 5000, 5205, 5730, 6690, 8650, 39865, 642000, 1493000, 4368000), 5000,
+           taxesExtra_PPP = if_else(taxesExtra %in% c(10, 15, 10, 9000, 3000, 5, 80, 330), 10,
+                                    if_else(taxesExtra %in% c(30, 50, 65, 85, 400, 6000, 15000, 44000, 1650), 50,
+                                            if_else(taxesExtra %in% c(60, 65, 100, 105, 115, 135, 175, 795, 13000, 30000, 87000, 3300), 100,
+                                                    if_else(taxesExtra %in% c(275, 290, 325, 500, 520, 670, 865, 3985, 64000, 149000, 437000, 16500), 500,
+                                                            if_else(taxesExtra %in% c(550, 645, 1040, 1145, 1340, 1730, 7975, 128000, 299000, 874000, 33000), 1000,
+                                                                    if_else(taxesExtra %in% c(2755, 2880, 2885, 3225, 5000, 5205, 5730, 6690, 8650, 39865, 642000, 1493000, 4368000, 165000), 5000,
                                                                             if_else(taxesExtra == 55 & country == "Australia", 50,
                                                                                     if_else(taxesExtra == 55 & country == "Spain", 100,
                                                                                             if_else(taxesExtra == 575 & country == "Australia", 500,
@@ -1824,21 +1824,7 @@ recode_for_wtp <- function(data) {
                                                                                                                                                                     if_else(ticketExtra == 6000 & country == "Chile", 20,
                                                                                                                                                                             if_else(ticketExtra == 6000 & country == "Uganda", 50, NA_real_))))))))))))))))))))
   
-  data_UK <- data %>%
-    filter(country == "UK") %>%
-    mutate_at(vars(wtp_amount_1, wtp_amount_2a, wtp_amount_2b,
-                   geq_taxes_0, geq_taxes_1, geq_taxes_2a, geq_taxes_2b,
-                   geq_ticket_0, geq_ticket_1, geq_ticket_2a, geq_ticket_2b),
-              list(~factor(., levels = c("Yes",
-                                         "No",
-                                         "Do not know",
-                                         "Prefer not to say"), 
-                           labels = c("Yes",
-                                      "No",
-                                      "DK",
-                                      "RS"))))
-  
-  data_Australia <- data %>%
+    data_Australia <- data %>%
     filter(country == "Australia") %>%
     mutate_at(vars(wtp_amount_1, wtp_amount_2a, wtp_amount_2b,
                    geq_taxes_0, geq_taxes_1, geq_taxes_2a, geq_taxes_2b,
@@ -1972,6 +1958,20 @@ recode_for_wtp <- function(data) {
                                       "DK",
                                       "RS")))) 
   
+  data_Russia <- data %>%
+    filter(country == "Russia") %>%
+    mutate_at(vars(wtp_amount_1, wtp_amount_2a, wtp_amount_2b,
+                   geq_taxes_0, geq_taxes_1, geq_taxes_2a, geq_taxes_2b,
+                   geq_ticket_0, geq_ticket_1, geq_ticket_2a, geq_ticket_2b),
+              list(~factor(., levels = c("Да",
+                                         "Нет",
+                                         "Не знаю",
+                                         "Предпочту не отвечать"), 
+                           labels = c("Yes",
+                                      "No",
+                                      "DK",
+                                      "RS")))) 
+  
   data_Spain <- data %>%
     filter(country == "Spain") %>%
     mutate_at(vars(wtp_amount_1, wtp_amount_2a, wtp_amount_2b,
@@ -2000,6 +2000,20 @@ recode_for_wtp <- function(data) {
                                       "DK",
                                       "RS")))) 
   
+  data_UK <- data %>%
+    filter(country == "UK") %>%
+    mutate_at(vars(wtp_amount_1, wtp_amount_2a, wtp_amount_2b,
+                   geq_taxes_0, geq_taxes_1, geq_taxes_2a, geq_taxes_2b,
+                   geq_ticket_0, geq_ticket_1, geq_ticket_2a, geq_ticket_2b),
+              list(~factor(., levels = c("Yes",
+                                         "No",
+                                         "Do not know",
+                                         "Prefer not to say"), 
+                           labels = c("Yes",
+                                      "No",
+                                      "DK",
+                                      "RS"))))
+  
   data_UnitedStates <- data %>%
     filter(country == "US") %>%
     mutate_at(vars(wtp_amount_1, wtp_amount_2a, wtp_amount_2b,
@@ -2020,89 +2034,85 @@ recode_for_wtp <- function(data) {
   
   data$wtp_access[data$country == "China"] <- substr(data$wtp_access[data$country == "China"], 1, 3)
   
-  data$wtp_access <- case_when(data$wtp_access == "Vacinas disponibilizadas somente pelo governo a um preço baixo ou gratuitamente?"
-                               ~ "Vaccines only made available by government at low or no cost",
-                               data$wtp_access == "Vacinas disponibilizadas somente para aquisição particular?"
-                               ~ "Vaccines are only available for private purchase",
-                               data$wtp_access == "Vacinas disponibilizadas pelo governo, mas que os cidadãos possam pagar por conta própria para obterem acesso?"
-                               ~ "Vaccines made available by government but citizens can pay privately to gain access",
-                               data$wtp_access == "Não sei" ~ "Do not know",
-                               data$wtp_access == "Vacunas disponibles solo a través del gobierno a bajo costo o sin costo alguno?"
-                               ~ "Vaccines only made available by government at low or no cost",
-                               data$wtp_access == "Vacunas disponibles solo a través de distribuidores privados?"
-                               ~ "Vaccines are only available for private purchase",
-                               data$wtp_access == "Vacunas disponibles a través del gobierno, pero que ciudadanos puedan pagar de forma privada para obtener acceso?"
-                               ~ "Vaccines made available by government but citizens can pay privately to gain access",
-                               data$wtp_access == "No lo sé" ~ "Do not know",
-                               data$wtp_access == "仅由政"
-                               ~ "Vaccines only made available by government at low or no cost",
-                               data$wtp_access == "​仅供"
-                               ~ "Vaccines are only available for private purchase",
-                               data$wtp_access == "​由政"
-                               ~ "Vaccines made available by government but citizens can pay privately to gain access",
-                               data$wtp_access == "不知道" ~ "Do not know",
-                               data$wtp_access == "Vacunas disponibles solo a través del gobierno a bajo costo o sin costo alguno?"
-                               ~ "Vaccines only made available by government at low or no cost",
-                               data$wtp_access == "Vacunas disponibles solo a través de distribuidores privados?"
-                               ~ "Vaccines are only available for private purchase",
-                               data$wtp_access == "Vacunas disponibles a través del gobierno, pero que ciudadanos puedan pagar de forma privada para obtener acceso?"
-                               ~ "Vaccines made available by government but citizens can pay privately to gain access",
-                               data$wtp_access == "No lo sé" ~ "Do not know",
-                               data$wtp_access == "Vaccins uniquement mis à disposition par le gouvernement à faible coût ou gratuitement ?"
-                               ~ "Vaccines only made available by government at low or no cost",
-                               data$wtp_access == "Les vaccins ne sont disponibles que par achat privé ?"
-                               ~ "Vaccines are only available for private purchase",
-                               data$wtp_access == "Vaccins mis à disposition par le gouvernement mais les citoyens peuvent y avoir accès rapidement par achat privé ?"
-                               ~ "Vaccines made available by government but citizens can pay privately to gain access",
-                               data$wtp_access == "Ne sait pas" ~ "Do not know",
-                               data$wtp_access == "Vaccini forniti solo dal governo a basso costo o a costo zero"
-                               ~ "Vaccines only made available by government at low or no cost",
-                               data$wtp_access == "Vaccini solo disponibili attraverso acquisto privato" 
-                               ~ "Vaccines are only available for private purchase",
-                               data$wtp_access == "Vaccini forniti dal governo, ma i cittadini possono pagare privatamente per ottenere accesso anticipato"
-                               ~ "Vaccines made available by government but citizens can pay privately to gain access",
-                               data$wtp_access == "Non saprei" ~ "Do not know",
-                               data$wtp_access == "Preferisco non rispondere" ~ "Prefer not to say",
-                               data$wtp_access == "Vaccines only made available by government at low or no cost?"
-                               ~ "Vaccines only made available by government at low or no cost",
-                               data$wtp_access == "Vaccines are only available for private purchase?"
-                               ~ "Vaccines are only available for private purchase",
-                               data$wtp_access == "Vaccines made available by government but citizens can pay privately to gain access?"
-                               ~ "Vaccines made available by government but citizens can pay privately to gain access",
-                               data$wtp_access == "Do not know"
-                               ~ "Do not know",
-                               data$wtp_access == "Vaccines only made available by government at low or no cost"
-                               ~ "Vaccines only made available by government at low or no cost",
-                               data$wtp_access == "Vaccines are only available for private purchase"
-                               ~ "Vaccines are only available for private purchase",
-                               data$wtp_access == "Vaccines made available by government but citizens can pay privately to gain access"
-                               ~ "Vaccines made available by government but citizens can pay privately to gain access",
-                               data$wtp_access == "Do not know"
-                               ~ "Do not know")
+  wtp_access_text1 <- c("Vacinas disponibilizadas somente pelo governo a um preço baixo ou gratuitamente?",
+                        "Vacunas disponibles solo a través del gobierno a bajo costo o sin costo alguno?",
+                        "仅由政",
+                        "Vacunas disponibles solo a través del gobierno a bajo costo o sin costo alguno?",
+                        "Vaccins uniquement mis à disposition par le gouvernement à faible coût ou gratuitement ?",
+                        "Vaccini forniti solo dal governo a basso costo o a costo zero",
+                        "Vaccines only made available by government at low or no cost?",
+                        "Vaccines only made available by government at low or no cost",
+                        "Вакцины, предоставляемые только государством по льготной цене или бесплатно?")
   
-  data$wtp_private <-case_when(data$wtp_private == "Sim" ~ "Yes",
-                               data$wtp_private == "Não" ~ "No",
-                               data$wtp_private == "Não sei" ~ "Do not know",
-                               data$wtp_private == "Sí" ~ "Yes",
-                               data$wtp_private == "No" ~ "No",
-                               data$wtp_private == "No lo sé" ~ "Do not know",
-                               data$wtp_private == "会" ~ "Yes",
-                               data$wtp_private == "不会" ~ "No",
-                               data$wtp_private == "不知道" ~ "Do not know",
-                               data$wtp_private == "Sí" ~ "Yes",
-                               data$wtp_private == "No" ~ "No",
-                               data$wtp_private == "No lo sé" ~ "Do not know",
-                               data$wtp_private == "Oui" ~ "Yes",
-                               data$wtp_private == "Non" ~ "No",
-                               data$wtp_private == "Ne sait pas" ~ "Do not know",
-                               data$wtp_private == "Sì" ~ "Yes",
-                               data$wtp_private == "No" ~ "No",
-                               data$wtp_private == "Non saprei" ~ "Do not know",
-                               data$wtp_private == "Preferisco non rispondere" ~ "Prefer not to say",
-                               data$wtp_private == "Yes" ~ "Yes",
-                               data$wtp_private == "No" ~ "No",
-                               data$wtp_private == "Do not know" ~ "Do not know",
-                               data$wtp_private == "Prefer not to say" ~ "Prefer not to say")
+  wtp_access_text2 <- c("Vacinas disponibilizadas somente para aquisição particular?",
+                        "Vacunas disponibles solo a través de distribuidores privados?",
+                        "​仅供",
+                        "Vacunas disponibles solo a través de distribuidores privados?",
+                        "Les vaccins ne sont disponibles que par achat privé ?",
+                        "Vaccini solo disponibili attraverso acquisto privato",
+                        "Vaccines are only available for private purchase?",
+                        "Vaccines are only available for private purchase",
+                        "Вакцины, только приобретаются индивидуально за деньги?")
+  
+  wtp_access_text3 <- c("Vacinas disponibilizadas pelo governo, mas que os cidadãos possam pagar por conta própria para obterem acesso?",
+                        "Vacunas disponibles a través del gobierno, pero que ciudadanos puedan pagar de forma privada para obtener acceso?",
+                        "​由政",
+                        "Vacunas disponibles a través del gobierno, pero que ciudadanos puedan pagar de forma privada para obtener acceso?",
+                        "Vaccins mis à disposition par le gouvernement mais les citoyens peuvent y avoir accès rapidement par achat privé ?",
+                        "Vaccini forniti dal governo, ma i cittadini possono pagare privatamente per ottenere accesso anticipato",
+                        "Vaccines made available by government but citizens can pay privately to gain access?",
+                        "Vaccines made available by government but citizens can pay privately to gain access",
+                        "Вакцины, предоставляемые государством с возможностью платной вакцинации за деньги?")
+  
+  wtp_access_text4 <- c("Não sei",
+                        "No lo sé",
+                        "不知道",
+                        "No lo sé",
+                        "Ne sait pas",
+                        "Non saprei",
+                        "Do not know",
+                        "Не знаю")
+  
+  
+  
+  data$wtp_access <- case_when(data$wtp_access %in% wtp_access_text1
+                               ~ "Vaccines only made available by government at low or no cost",
+                               data$wtp_access %in% wtp_access_text2
+                               ~ "Vaccines are only available for private purchase",
+                               data$wtp_access %in% wtp_access_text3
+                               ~ "Vaccines made available by government but citizens can pay privately to gain access",
+                               data$wtp_access %in% wtp_access_text4 ~ "Do not know",
+                               data$wtp_access == "Preferisco non rispondere" ~ "Prefer not to say")
+  
+  wtp_private_text1 <- c("Sim",
+                         "Sí",
+                         "会",
+                         "Sí",
+                         "Oui",
+                         "Sì",
+                         "Yes",
+                         "Да")
+  
+  wtp_private_text2 <- c("Não",
+                         "No",
+                         "不会",
+                         "Non",
+                         "Нет")
+  
+  wtp_private_text3 <- c("Não sei",
+                         "No lo sé",
+                         "不知道",
+                         "No lo sé",
+                         "Ne sait pas",
+                         "Non saprei",
+                         "Do not know",
+                         "Не знаю")
+  
+  data$wtp_private <- case_when(data$wtp_private %in% wtp_private_text1 ~ "Yes",
+                               data$wtp_private %in% wtp_private_text2  ~ "No",
+                               data$wtp_private %in% wtp_private_text3  ~ "Do not know",
+                               data$wtp_private %in% c("Preferisco non rispondere",
+                                                       "Prefer not to say") ~ "Prefer not to say")
   
   data <- data %>% 
     mutate(WTP_R1 = if_else(wtp_amount_1 == "Yes", 1, 
