@@ -149,7 +149,7 @@ IPUMS_contract<-function(data_fram){
   
   else if(data_fram$country=="Russia"){
     
-    data_fram <- data_fram %>% rename(PROF_POSITION = Q22.7)
+    data_fram <- data_fram %>% mutate(PROF_POSITION = Q22.3)
     
     Self_employ <- c("Индивидуальный предприниматель/ самозанятый",
                      "Libero professionista",
@@ -820,7 +820,7 @@ IPUMS_employment<-function(data_fram){
   
   else if(data_fram$country=="Russia"){
     
-    data_fram <- data_fram %>% mutate(EMPLOYMENT = Q22.3)
+    data_fram <- data_fram %>% rename(EMPLOYMENT = Q22.3)
     
     Employed <- c("Работаю по найму",
                   "Индивидуальный предприниматель/ самозанятый",
@@ -1546,22 +1546,22 @@ IPUMS_work<-function(data_fram){
     Unknow <- c("Non agricultural wage labour",
                 "Salaried employment")
     
-    
   }
   else{
-    return(print("There is not a survey for this country, try again"))}
+    print("There is not a survey for this country, try again")
+    return(data_fram)}
   
   data_fram <- data_fram %>% mutate(OCCUPATION = if_else(OCCUPATION %in% Leg_manag,"Legislator, senior officials and manager",
-                                             if_else(OCCUPATION %in% Professionals,"Professional",
-                                                     if_else(OCCUPATION %in% Tec_assoc_pro  ,"Technician and associate professional",
-                                                             if_else(OCCUPATION %in% Cler ,"Clerk", 
-                                                                     if_else(OCCUPATION %in% Serv_sales ,"Service worker and shop and market sale",
-                                                                             if_else(OCCUPATION %in% Farmers_fi,"Skilled agricultural and fishery worker",
-                                                                                     if_else(OCCUPATION %in% Crafts,"Craft and related trades worker",
-                                                                                             if_else(OCCUPATION %in% Plan_opera,"Plant and machine operator and assembler",
-                                                                                                     if_else(OCCUPATION %in% Element_ocu ,"Elementary occupation",
-                                                                                                             if_else(OCCUPATION %in% Armed_forces,"Armed forces",
-                                                                                                                     if_else(OCCUPATION %in% Other_occu,"Other occupations, unspecified or n.e.c.", "Unknown/missing"))))))))))))
+                                                         if_else(OCCUPATION %in% Professionals,"Professional",
+                                                                 if_else(OCCUPATION %in% Tec_assoc_pro  ,"Technician and associate professional",
+                                                                         if_else(OCCUPATION %in% Cler ,"Clerk", 
+                                                                                 if_else(OCCUPATION %in% Serv_sales ,"Service worker and shop and market sale",
+                                                                                         if_else(OCCUPATION %in% Farmers_fi,"Skilled agricultural and fishery worker",
+                                                                                                 if_else(OCCUPATION %in% Crafts,"Craft and related trades worker",
+                                                                                                         if_else(OCCUPATION %in% Plan_opera,"Plant and machine operator and assembler",
+                                                                                                                 if_else(OCCUPATION %in% Element_ocu ,"Elementary occupation",
+                                                                                                                         if_else(OCCUPATION %in% Armed_forces,"Armed forces",
+                                                                                                                                 if_else(OCCUPATION %in% Other_occu,"Other occupations, unspecified or n.e.c.", "Unknown/missing"))))))))))))
   
   
   return(data_fram)

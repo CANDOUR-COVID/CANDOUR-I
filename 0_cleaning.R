@@ -2000,7 +2000,11 @@ data_RUS <- data_RUS %>%
          REGION_0 = Q3.3_1,
          postal_code = Q3.4,
          INCOME = Q22.7,
-         HH_INCOME = Q22.6)
+         HH_INCOME = Q22.6,
+         marital_status = Q22.10,
+         dep_children = Q22.11,
+         dep_children_amount = Q22.12,
+         HH_size_adults = Q22.13)
 
 data_RUS <- data_RUS %>%
   rename(willing_risk = Q10.1_1,
