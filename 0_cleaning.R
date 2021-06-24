@@ -1,4 +1,4 @@
-setwd("C:/Users/Matias/CESS Dropbox/Matias Fuentes/Predoctoral/Vaccine Survey Data")
+setwd("C:/Users/Matias/CESS Dropbox/Matias Fuentes/Predoctoral/CANDOUR/Vaccine Survey Data/Wave I")
 
 rm(list = ls())
 

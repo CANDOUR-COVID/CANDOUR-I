@@ -6,21 +6,24 @@ labeling <- function(data) {
             "Masculino", 
             "男",
             "Homme",
-            "Maschio")
+            "Maschio",
+            "Мужской")
   
   female <- c("Female", 
               "Feminino",
               "Femenino",
               "女",
               "Femme",
-              "Femmina")
+              "Femmina",
+              "Женский")
   
   other_gender <- c("Other",
                     "Outro",
                     "Otro",
                     "其他",
                     "Autres",
-                    "Altro")
+                    "Altro",
+                    "Другое")
   
   RS_gender <- c("Prefer not to say",
                  "Prefiro não informar",
@@ -29,7 +32,8 @@ labeling <- function(data) {
                  "Prefiero no responder",
                  "Préfère ne pas dire",
                  "Preferisco non rispondere",
-                 "I do not know")
+                 "I do not know",
+                 "Предпочитаю не отвечать")
   
   data$gender <- case_when(data$gender %in% female ~ "Female",
                            data$gender %in% male ~ "Male",
@@ -944,42 +948,48 @@ labeling <- function(data) {
                           "Certainement se faire vacciner",
                           "Definitivamente la obtendría",
                           "绝对可以",
-                          "Sicuramente si")
+                          "Sicuramente si",
+                          "Определенно ей воспользовались")
   
   int_get_vacc_text2 <- c("Probably get it",
                           "Talvez tomaria",
                           "Probablement se faire vacciner",
                           "Probablemente la obtendría",
                           "大概可以",
-                          "Probabilmente sì")
+                          "Probabilmente sì",
+                          "Вероятно воспользовались")
   
   int_get_vacc_text3 <- c("Probably not get it",
                           "Provavelmente não tomaria",
                           "Probablement pas",
                           "Probablemente no la obtendría",
                           "大概无法",
-                          "Probabilmente no")
+                          "Probabilmente no",
+                          "Вероятно не воспользовались")
   
   int_get_vacc_text4 <- c("Definitely not get it",
                           "Com certeza não tomaria",
                           "Certainement pas",
                           "Definitivamente no la obtendría",
                           "绝对无法",
-                          "Sicuramente no")
+                          "Sicuramente no",
+                          "Точно не воспользовались")
   
   int_get_vacc_text5 <- c("Do not know",
                           "Não sei",
                           "Ne sait pas",
                           "No lo sé",
                           "不知道",
-                          "Non saprei")
+                          "Non saprei",
+                          "Не знаю")
   
   int_get_vacc_text6 <- c("Prefer not to say",
                           "Prefiro não informar",
                           "Préfère ne pas dire",
                           "Prefiero no contestar",
                           "不想说",
-                          "Preferisco non rispondere")
+                          "Preferisco non rispondere",
+                          "Предпочту не отвечать")
   
   data$int_get_vacc <- case_when(data$int_get_vacc %in% int_get_vacc_text1 ~ "Definitely get it",
                                  data$int_get_vacc %in% int_get_vacc_text2 ~ "Probably get it",
@@ -1001,49 +1011,56 @@ labeling <- function(data) {
                                "我不相信新冠肺炎疫苗有效",
                                "Não acredito que a vacina contra COVID-19 será eficaz",
                                "Je ne crois pas que le vaccin contre la COVID-19 sera efficace",
-                               "Non credo che il vaccino COVID-19 sarà efficace")
+                               "Non credo che il vaccino COVID-19 sarà efficace",
+                               "Не верю, что вакцина будет действенной")
   
   int_reason_notget_text2 <- c("I am concerned about dangerous side effects from the COVID-19 vaccine",
                                "Me preocupan los posibles efectos secundarios adversos de la vacuna contra el COVID-19",
                                "我担心新冠肺炎疫苗有害的副作用",
                                "Estou preocupado quanto a efeitos colaterais perigosos da vacina contra COVID-19",
                                "Je suis préoccupé par les effets secondaires dangereux du vaccin contre la COVID-19",
-                               "Sono preoccupato di possibili nocivi effetti collaterali del vaccino COVID-19")
+                               "Sono preoccupato di possibili nocivi effetti collaterali del vaccino COVID-19",
+                               "Беспокоят опасные побочные эффекты от вакцины")
   
   int_reason_notget_text3 <- c("Enough other people will accept vaccination so I will benefit from herd immunity",
                                "Suficientes personas aceptarán la vacunación, por lo que me beneficiaré de la inmunidad colectiva (\"efecto rebaño\")",
                                "足够多的人会接种疫苗，所以我将从群体免疫中受益",
                                "Uma quantidade suficiente de pessoas aceitará a vacina, então vou me beneficiar da imunidade coletiva",
                                "Assez d'autres personnes accepteront la vaccination alors je bénéficierai de l'immunité collective",
-                               "Tanti altri faranno la vaccinazione quindi sarò protetto dall’immunità di gregge")
+                               "Tanti altri faranno la vaccinazione quindi sarò protetto dall’immunità di gregge",
+                               "Достаточное количество людей и так воспользуется вакциной, а значит я смогу пользоваться коллективным иммунитетом")
   
   int_reason_notget_text4 <- c("I have already been infected with COVID-19 and believe I have developed natural immunity",
                                "Ya he sido infectado con el COVID-19 y creo haber desarrollado inmunidad naturalmente",
                                "我已经感染了新冠肺炎，并相信自己的身体已经产生了自然免疫力",
                                "Eu já fui infectado pela COVID-19, e acredito que desenvolvi imunidade natural",
                                "J'ai déjà été infecté par la COVID-19 et je pense avoir développé une immunité naturelle",
-                               "Sono già stato infettato dal COVID-19 e credo di aver sviluppato una naturale immunità")
+                               "Sono già stato infettato dal COVID-19 e credo di aver sviluppato una naturale immunità",
+                               "Я уже переболел COVID-19 и считаю, что у меня выработался естественный иммунитет")
   
   int_reason_notget_text5 <- c("The COVID-19 virus will not be very harmful to my health",
                                "El virus COVID-19 no será virus tan perjudicial para mi salud",
                                "​新冠病毒不会对我的健康造成太大伤害",
                                "O vírus da COVID-19 não será muito prejudicial à minha saúde",
                                "Le virus COVID-19 ne sera pas très nocif pour ma santé",
-                               "Il virus COVID-19 non e’ molto dannoso per la mia salute")
+                               "Il virus COVID-19 non e’ molto dannoso per la mia salute",
+                               "COVID-19 несущественно навредит моему здоровью")
   
   int_reason_notget_text6 <- c("I don't trust the health care providers in this country",
                                "No confío en los proveedores de atención médica de este país",
                                "​我不信任这个国家的医疗服务提供方",
                                "Não confio nos provedores de assistência médica neste país",
                                "Je ne fais pas confiance au système de santé de ce pays",
-                               "Non mi fido degli operatori sanitari in questo Paese")
+                               "Non mi fido degli operatori sanitari in questo Paese",
+                               "Я не доверяю поставщикам медицинских услуг в этой стране")
   
   int_reason_notget_text7 <- c("Other",
                                "Otra",
                                "其他",
                                "Outro",
                                "Autre",
-                               "Altro")
+                               "Altro",
+                               "Другое")
   
   int_reason_notget_text8 <- c("Non saprei",
                                "Preferisco non rispondere")
@@ -1074,87 +1091,99 @@ labeling <- function(data) {
                             "Para protegerme",
                             "为了保护自己",
                             "Pour me protéger",
-                            "Per proteggermi")
+                            "Per proteggermi",
+                            "Чтобы обезопасить себя")
   
   int_reason_get_text2 <- c("To protect my family",
                             "Proteger minha família",
                             "Para proteger a mi familia",
                             "为了保护我的家人",
                             "Pour protéger ma famille",
-                            "Per proteggere la mia famiglia")
+                            "Per proteggere la mia famiglia",
+                            "Чтобы обезопасить свою семью")
   
   int_reason_get_text3 <- c("To protect the public (people I don't know)",
                             "Proteger o público (pessoas que eu não conheço)",
                             "Para proteger a las demás personas (que no conozco)",
                             "为了保护公众 （陌生人）",
                             "Pour protéger le public (les gens que je ne connais pas)",
-                            "Per proteggere la popolazione (persone che non conosco)")
+                            "Per proteggere la popolazione (persone che non conosco)",
+                            "Чтобы обезопасить окружающих (людей, с которыми я не знаком)")
   
   int_reason_get_text4 <- c("Because everyone else will",
                             "Porque todas as pessoas tomarão",
                             "Porque todos los demás lo hicieron",
                             "因为每个人都会接种疫苗",
                             "Parce que tous les autres le feront",
-                            "Perché tutti gli altri lo faranno")
+                            "Perché tutti gli altri lo faranno",
+                            "Потому что все остальные так сделают")
   
   int_reason_get_text5 <- c("Because friends and family recommend it",
                             "Porque meus amigos e familiares recomendam",
                             "Porque mis amigos y familiares me lo recomendaron",
                             "因为亲朋好友建议接种疫苗",
                             "Parce que les amis et la famille le recommandent",
-                            "Perché amici e familiari lo consigliano")
+                            "Perché amici e familiari lo consigliano",
+                            "Потому что друзья и семья рекомендуют так сделать")
   
   int_reason_get_text6 <- c("Because doctors recommend it",
                             "Porque os médicos recomendam",
                             "Porque los doctores lo recomiendan",
                             "因为医生建议接种疫苗",
                             "Parce que les médecins le recommandent",
-                            "Perché i medici lo raccomandano")
+                            "Perché i medici lo raccomandano",
+                            "Потому что так рекомендуют врачи")
   
   int_reason_get_text7 <- c("Because health officials recommend it",
                             "Porque agentes de saúde recomendam",
                             "Porque los funcionarios de la salud lo recomiendan",
                             "因为卫生官员建议接种疫苗",
                             "Parce que les responsables de la santé le recommandent",
-                            "Perché i funzionari sanitari lo raccomandano")
+                            "Perché i funzionari sanitari lo raccomandano",
+                            "Потому что публичные лица, связанные со здравоохранением, рекомендуют так сделать")
   
   int_reason_get_text8 <- c("Because politicians recommend it",
                             "Porque os políticos recomendam",
                             "Porque los políticos lo recomiendan",
                             "因为政治家建议接种疫苗",
                             "Parce que les politiciens le recommandent",
-                            "Perché i politici lo raccomandano")
+                            "Perché i politici lo raccomandano",
+                            "Потому что политики рекомендуют так сделать")
   
   int_reason_get_text9 <- c("Because of contact with COVID-19 infected people",
                             "Devido ao contato com pessoas infectadas pelo COVID-19",
                             "Por tener contacto con personas infectadas por COVID-19",
                             "由于接触新冠肺炎感染者",
                             "À cause du contact avec des personnes infectées par la COVID-19",
-                            "A causa del contatto con persone infette da COVID-19")
+                            "A causa del contatto con persone infette da COVID-19",
+                            "Потому что контактировал с людьми, инфицированными COVID-19")
   
   int_reason_get_text10 <- c("Because I had COVID-19 related symptoms",
                              "Porque tenho sintomas relacionados à COVID-19",
                              "Porque tuve síntomas relacionados al COVID-19",
                              "因为我出现了新冠肺炎的相关症状",
                              "Parce que j'avais des symptômes similaires à ceux du COVID-19",
-                             "Perché ho avuto sintomi del COVID-19")
+                             "Perché ho avuto sintomi del COVID-19",
+                             "Потому что у меня были симптомы, которые связывают с COVID-19")
   
   int_reason_get_text11 <- c("If it were required for my work or school",
                              "Se fosse exigência de meu trabalho ou escola",
                              "Si fuera requerido por mi trabajo o donde estudio",
                              "如果我的工作或学校要求",
                              "Si mon travail ou mes études l'exigent",
-                             "Se richiesto per lavoro o dalla scuola")
+                             "Se richiesto per lavoro o dalla scuola",
+                             "Если бы было необходимо для посещения рабочего места или учебы")
   
   int_reason_get_text12 <- c("Other",
                              "Outro",
                              "Otra",
                              "其他",
                              "Autre",
-                             "Altro")
+                             "Altro",
+                             "Другое")
   
   int_reason_get_text13 <- c("Non saprei",
-                               "Preferisco non rispondere")
+                             "Preferisco non rispondere")
   
   for (i in 1:12) {
     
@@ -1188,35 +1217,37 @@ labeling <- function(data) {
                         "DK/RF"))
   }
   
-  
-  
   int_lost_job_text1 <- c("Yes",
                           "Sim",
                           "Oui",
                           "Si",
                           "是",
-                          "Sì")
+                          "Sì",
+                          "Да")
   
   int_lost_job_text2 <- c("No",
                           "Não",
                           "Non",
                           "No",
                           "否",
-                          "No")
+                          "No",
+                          "Нет")
   
   int_lost_job_text3 <- c("Do not know",
                           "Não sei",
                           "Ne sait pas",
                           "No lo sé",
                           "不知道",
-                          "Non saprei")
+                          "Non saprei",
+                          "Не знаю")
   
   int_lost_job_text4 <- c("Prefer not to say",
                           "Prefiro não informar",
                           "Préfère ne pas dire",
                           "Prefiero no contestar",
                           "不想说",
-                          "Preferisco non rispondere")
+                          "Preferisco non rispondere",
+                          "Предпочту не отвечать")
   
   data$int_lost_job <- case_when(data$int_lost_job %in% int_lost_job_text1 ~ "Yes",
                                  data$int_lost_job %in% int_lost_job_text2 ~ "No",
@@ -1229,542 +1260,247 @@ labeling <- function(data) {
                       "Do not know",
                       "Prefer not to say"))
   
-  int_exp_1_text1 <- c("Yes",
-                       "Sim",
-                       "Oui",
-                       "Si",
-                       "是",
-                       "Sì")
+  int_exp_text1 <- c("Yes",
+                     "Sim",
+                     "Oui",
+                     "Si",
+                     "是",
+                     "Sì",
+                     "Да")
   
-  int_exp_1_text2 <- c("No",
-                       "Não",
-                       "Non",
-                       "No",
-                       "否",
-                       "No")
+  int_exp_text2 <- c("No",
+                     "Não",
+                     "Non",
+                     "No",
+                     "否",
+                     "No",
+                     "Нет")
   
-  int_exp_1_text3 <- c("Do not know",
-                       "Não sei",
-                       "Ne sait pas",
-                       "No lo sé",
-                       "不知道",
-                       "Non saprei")
+  int_exp_text3 <- c("Do not know",
+                     "Não sei",
+                     "Ne sait pas",
+                     "No lo sé",
+                     "不知道",
+                     "Non saprei",
+                     "Не знаю")
   
-  data$int_exp_1 <- case_when(data$int_exp_1 %in% int_exp_1_text1 ~ "Yes",
-                              data$int_exp_1 %in% int_exp_1_text2 ~ "No",
-                              data$int_exp_1 %in% int_exp_1_text3 ~ "Do not know")
+  for (i in 1:5) {
+    
+    data[[paste0("int_exp_", i)]] <- case_when(data[[paste0("int_exp_", i)]] %in% int_exp_text1 ~ "Yes",
+                                               data[[paste0("int_exp_", i)]] %in% int_exp_text2 ~ "No",
+                                               data[[paste0("int_exp_", i)]] %in% int_exp_text3 ~ "Do not know")
+    
+    data[[paste0("int_exp_", i)]] <- data[[paste0("int_exp_", i)]] %>%
+      factor(levels = c("Yes",
+                        "No",
+                        "Do not know"))
+  }
   
-  data$int_exp_1 <- data$int_exp_1 %>%
-    factor(levels = c("Yes",
-                      "No",
-                      "Do not know"))
+  int_behaviour_text1 <- c("Yes",
+                           "Sim",
+                           "Oui",
+                           "Si",
+                           "是",
+                           "Sì",
+                           "Да")
   
-  int_exp_2_text1 <- c("Yes",
-                       "Sim",
-                       "Oui",
-                       "Si",
-                       "是",
-                       "Sì")
+  int_behaviour_text2 <- c("No",
+                           "Não",
+                           "Non",
+                           "No",
+                           "否",
+                           "No",
+                           "Нет")
   
-  int_exp_2_text2 <- c("No",
-                       "Não",
-                       "Non",
-                       "No",
-                       "否",
-                       "No")
+  int_behaviour_text3 <- c("Do not know",
+                           "Não sei",
+                           "Ne sait pas",
+                           "No lo sé",
+                           "不知道",
+                           "Non saprei",
+                           "Не знаю")
   
-  int_exp_2_text3 <- c("Do not know",
-                       "Não sei",
-                       "Ne sait pas",
-                       "No lo sé",
-                       "不知道",
-                       "Non saprei")
+  int_behaviour_text4 <- c("Not applicable",
+                           "Não aplicável",
+                           "Pas applicable",
+                           "No aplica",
+                           "不使用",
+                           "Non mi concerne",
+                           "Не применимо")
   
-  data$int_exp_2 <- case_when(data$int_exp_2 %in% int_exp_2_text1 ~ "Yes",
-                              data$int_exp_2 %in% int_exp_2_text2 ~ "No",
-                              data$int_exp_2 %in% int_exp_2_text3 ~ "Do not know")
-  
-  data$int_exp_2 <- data$int_exp_2 %>%
-    factor(levels = c("Yes",
-                      "No",
-                      "Do not know"))
-  
-  int_exp_3_text1 <- c("Yes",
-                       "Sim",
-                       "Oui",
-                       "Si",
-                       "是",
-                       "Sì")
-  
-  int_exp_3_text2 <- c("No",
-                       "Não",
-                       "Non",
-                       "No",
-                       "否",
-                       "No")
-  
-  int_exp_3_text3 <- c("Do not know",
-                       "Não sei",
-                       "Ne sait pas",
-                       "No lo sé",
-                       "不知道",
-                       "Non saprei")
-  
-  data$int_exp_3 <- case_when(data$int_exp_3 %in% int_exp_3_text1 ~ "Yes",
-                              data$int_exp_3 %in% int_exp_3_text2 ~ "No",
-                              data$int_exp_3 %in% int_exp_3_text3 ~ "Do not know")
-  
-  data$int_exp_3 <- data$int_exp_3 %>%
-    factor(levels = c("Yes",
-                      "No",
-                      "Do not know"))
-  
-  int_exp_4_text1 <- c("Yes",
-                       "Sim",
-                       "Oui",
-                       "Si",
-                       "是",
-                       "Sì")
-  
-  int_exp_4_text2 <- c("No",
-                       "Não",
-                       "Non",
-                       "No",
-                       "否",
-                       "No")
-  
-  int_exp_4_text3 <- c("Do not know",
-                       "Não sei",
-                       "Ne sait pas",
-                       "No lo sé",
-                       "不知道",
-                       "Non saprei")
-  
-  data$int_exp_4 <- case_when(data$int_exp_4 %in% int_exp_4_text1 ~ "Yes",
-                              data$int_exp_4 %in% int_exp_4_text2 ~ "No",
-                              data$int_exp_4 %in% int_exp_4_text3 ~ "Do not know")
-  
-  data$int_exp_4 <- data$int_exp_4 %>%
-    factor(levels = c("Yes",
-                      "No",
-                      "Do not know"))
-  
-  int_exp_5_text1 <- c("Yes",
-                       "Sim",
-                       "Oui",
-                       "Si",
-                       "是",
-                       "Sì")
-  
-  int_exp_5_text2 <- c("No",
-                       "Não",
-                       "Non",
-                       "No",
-                       "否",
-                       "No")
-  
-  int_exp_5_text3 <- c("Do not know",
-                       "Não sei",
-                       "Ne sait pas",
-                       "No lo sé",
-                       "不知道",
-                       "Non saprei")
-  
-  data$int_exp_5 <- case_when(data$int_exp_5 %in% int_exp_5_text1 ~ "Yes",
-                              data$int_exp_5 %in% int_exp_5_text2 ~ "No",
-                              data$int_exp_5 %in% int_exp_5_text3 ~ "Do not know")
-  
-  data$int_exp_5 <- data$int_exp_5 %>%
-    factor(levels = c("Yes",
-                      "No",
-                      "Do not know"))
-  
-  int_behaviour_1_text1 <- c("Yes",
-                             "Sim",
-                             "Oui",
-                             "Si",
-                             "是",
-                             "Sì")
-  
-  int_behaviour_1_text2 <- c("No",
-                             "Não",
-                             "Non",
-                             "No",
-                             "否",
-                             "No")
-  
-  int_behaviour_1_text3 <- c("Do not know",
-                             "Não sei",
-                             "Ne sait pas",
-                             "No lo sé",
-                             "不知道",
-                             "Non saprei")
-  
-  int_behaviour_1_text4 <- c("Not applicable",
-                             "Não aplicável",
-                             "Pas applicable",
-                             "No aplica",
-                             "不使用",
-                             "Non mi concerne")
-  
-  data$int_behaviour_1 <- case_when(data$int_behaviour_1 %in% int_behaviour_1_text1 ~ "Yes",
-                                    data$int_behaviour_1 %in% int_behaviour_1_text2 ~ "No",
-                                    data$int_behaviour_1 %in% int_behaviour_1_text3 ~ "Do not know",
-                                    data$int_behaviour_1 %in% int_behaviour_1_text4 ~ "Not applicable")
-  
-  data$int_behaviour_1 <- data$int_behaviour_1 %>%
-    factor(levels = c("Yes",
-                      "No",
-                      "Do not know",
-                      "Not applicable"))
-  
-  data$int_behaviour_2 <- case_when(data$int_behaviour_2 %in% int_behaviour_1_text1 ~ "Yes",
-                                    data$int_behaviour_2 %in% int_behaviour_1_text2 ~ "No",
-                                    data$int_behaviour_2 %in% int_behaviour_1_text3 ~ "Do not know",
-                                    data$int_behaviour_2 %in% int_behaviour_1_text4 ~ "Not applicable")
-  
-  data$int_behaviour_2 <- data$int_behaviour_2 %>%
-    factor(levels = c("Yes",
-                      "No",
-                      "Do not know",
-                      "Not applicable"))
-  
-  data$int_behaviour_3 <- case_when(data$int_behaviour_3 %in% int_behaviour_1_text1 ~ "Yes",
-                                    data$int_behaviour_3 %in% int_behaviour_1_text2 ~ "No",
-                                    data$int_behaviour_3 %in% int_behaviour_1_text3 ~ "Do not know",
-                                    data$int_behaviour_3 %in% int_behaviour_1_text4 ~ "Not applicable")
-  
-  data$int_behaviour_3 <- data$int_behaviour_3 %>%
-    factor(levels = c("Yes",
-                      "No",
-                      "Do not know",
-                      "Not applicable"))
+  for (i in 1:3) {
+    
+    data[[paste0("int_behaviour_", i)]] <- case_when(data[[paste0("int_behaviour_", i)]] %in% int_behaviour_text1 ~ "Yes",
+                                                     data[[paste0("int_behaviour_", i)]] %in% int_behaviour_text2 ~ "No",
+                                                     data[[paste0("int_behaviour_", i)]] %in% int_behaviour_text3 ~ "Do not know",
+                                                     data[[paste0("int_behaviour_", i)]] %in% int_behaviour_text4 ~ "Not applicable")
+    
+    data[[paste0("int_behaviour_", i)]] <- data[[paste0("int_behaviour_", i)]] %>%
+      factor(levels = c("Yes",
+                        "No",
+                        "Do not know",
+                        "Not applicable"))
+  }
   
   #### Hesitancy Questions ####
   
-  hes_general_1_text1 <- c("Strongly agree",
+  hes_general_text1 <- c("Strongly agree",
                            "Concordo Totalmente",
                            "Tout à fait d'accord",
                            "强烈赞同",
                            "Totalmente de acuerdo",
-                           "Completamente d'accordo")
+                           "Completamente d'accordo",
+                           "Полностью согласны")
   
-  hes_general_1_text2 <- c("Agree",
+  hes_general_text2 <- c("Agree",
                            "Concordo",
                            "Plutôt d'accord",
                            "赞同",
                            "De acuerdo",
-                           "D'accordo")
+                           "D'accordo",
+                           "Согласны")
   
-  hes_general_1_text3 <- c("Neither agree nor disagree",
+  hes_general_text3 <- c("Neither agree nor disagree",
                            "Não concordo nem discordo",
                            "Ni d'accord, ni pas d'accord",
                            "既不赞同，亦不反对",
                            "Ni de acuerdo ni en desacuerdo",
-                           "Né d'accordo né in disaccordo")
+                           "Né d'accordo né in disaccordo",
+                           "Ни согласны, ни не согласны")
   
-  hes_general_1_text4 <- c("Disagree",
+  hes_general_text4 <- c("Disagree",
                            "Discordo",
                            "Pas vraiment d'accord",
                            "反对",
                            "Desacuerdo",
-                           "In disaccordo")
+                           "In disaccordo",
+                           "Не согласны")
   
-  hes_general_1_text5 <- c("Strongly disagree",
+  hes_general_text5 <- c("Strongly disagree",
                            "Discordo Totalmente",
                            "Pas du tout d'accord",
                            "强烈反对",
                            "Totalmente en desacuerdo",
-                           "Completamente in disaccordo")
+                           "Completamente in disaccordo",
+                           "Совершенно не согласны")
   
-  hes_general_1_text6 <- c("Do not know",
+  hes_general_text6 <- c("Do not know",
                            "Não sei",
                            "Ne sait pas",
                            "不知道",
                            "No lo sé",
                            "Non lo so")
   
-  data$hes_general_1 <- case_when(data$hes_general_1 %in% hes_general_1_text1 ~ "Strongly agree",
-                                  data$hes_general_1 %in% hes_general_1_text2 ~ "Agree",
-                                  data$hes_general_1 %in% hes_general_1_text3 ~ "Neither agree nor disagree",
-                                  data$hes_general_1 %in% hes_general_1_text4 ~ "Disagree",
-                                  data$hes_general_1 %in% hes_general_1_text5 ~ "Strongly disagree",
-                                  data$hes_general_1 %in% hes_general_1_text6 ~ "Do not know")
+  for (i in 1:3) {
+    
+    data[[paste0("hes_general_", i)]] <- case_when(data[[paste0("hes_general_", i)]] %in% hes_general_text1 ~ "Strongly agree",
+                                                     data[[paste0("hes_general_", i)]] %in% hes_general_text2 ~ "Agree",
+                                                     data[[paste0("hes_general_", i)]] %in% hes_general_text3 ~ "Neither agree nor disagree",
+                                                     data[[paste0("hes_general_", i)]] %in% hes_general_text4 ~ "Disagree",
+                                                     data[[paste0("hes_general_", i)]] %in% hes_general_text5 ~ "Strongly disagree",
+                                                     data[[paste0("hes_general_", i)]] %in% hes_general_text6 ~ "Do not know")
+    
+    data[[paste0("hes_general_", i)]] <- data[[paste0("hes_general_", i)]] %>%
+      factor(levels = c("Strongly agree",
+                        "Agree",
+                        "Neither agree nor disagree",
+                        "Disagree",
+                        "Strongly disagree",
+                        "Do not know"))
+  }
   
-  data$hes_general_1 <- data$hes_general_1 %>%
-    factor(levels = c("Strongly agree",
-                      "Agree",
-                      "Neither agree nor disagree",
-                      "Disagree",
-                      "Strongly disagree",
-                      "Do not know"))
-  
-  data$hes_general_2 <- case_when(data$hes_general_2 %in% hes_general_1_text1 ~ "Strongly agree",
-                                  data$hes_general_2 %in% hes_general_1_text2 ~ "Agree",
-                                  data$hes_general_2 %in% hes_general_1_text3 ~ "Neither agree nor disagree",
-                                  data$hes_general_2 %in% hes_general_1_text4 ~ "Disagree",
-                                  data$hes_general_2 %in% hes_general_1_text5 ~ "Strongly disagree",
-                                  data$hes_general_2 %in% hes_general_1_text6 ~ "Do not know")
-  
-  data$hes_general_2 <- data$hes_general_2 %>%
-    factor(levels = c("Strongly agree",
-                      "Agree",
-                      "Neither agree nor disagree",
-                      "Disagree",
-                      "Strongly disagree",
-                      "Do not know"))
-  
-  data$hes_general_3 <- case_when(data$hes_general_3 %in% hes_general_1_text1 ~ "Strongly agree",
-                                  data$hes_general_3 %in% hes_general_1_text2 ~ "Agree",
-                                  data$hes_general_3 %in% hes_general_1_text3 ~ "Neither agree nor disagree",
-                                  data$hes_general_3 %in% hes_general_1_text4 ~ "Disagree",
-                                  data$hes_general_3 %in% hes_general_1_text5 ~ "Strongly disagree",
-                                  data$hes_general_3 %in% hes_general_1_text6 ~ "Do not know")
-  
-  data$hes_general_3 <- data$hes_general_3 %>%
-    factor(levels = c("Strongly agree",
-                      "Agree",
-                      "Neither agree nor disagree",
-                      "Disagree",
-                      "Strongly disagree",
-                      "Do not know"))
-  
-  data$hes_covid_1 <- case_when(data$hes_covid_1 %in% hes_general_1_text1 ~ "Strongly agree",
-                                data$hes_covid_1 %in% hes_general_1_text2 ~ "Agree",
-                                data$hes_covid_1 %in% hes_general_1_text3 ~ "Neither agree nor disagree",
-                                data$hes_covid_1 %in% hes_general_1_text4 ~ "Disagree",
-                                data$hes_covid_1 %in% hes_general_1_text5 ~ "Strongly disagree",
-                                data$hes_covid_1 %in% hes_general_1_text6 ~ "Do not know")
-  
-  data$hes_covid_1 <- data$hes_covid_1 %>%
-    factor(levels = c("Strongly agree",
-                      "Agree",
-                      "Neither agree nor disagree",
-                      "Disagree",
-                      "Strongly disagree",
-                      "Do not know"))
-  
-  data$hes_covid_2 <- case_when(data$hes_covid_2 %in% hes_general_1_text1 ~ "Strongly agree",
-                                data$hes_covid_2 %in% hes_general_1_text2 ~ "Agree",
-                                data$hes_covid_2 %in% hes_general_1_text3 ~ "Neither agree nor disagree",
-                                data$hes_covid_2 %in% hes_general_1_text4 ~ "Disagree",
-                                data$hes_covid_2 %in% hes_general_1_text5 ~ "Strongly disagree",
-                                data$hes_covid_2 %in% hes_general_1_text6 ~ "Do not know")
-  
-  data$hes_covid_2 <- data$hes_covid_2 %>%
-    factor(levels = c("Strongly agree",
-                      "Agree",
-                      "Neither agree nor disagree",
-                      "Disagree",
-                      "Strongly disagree",
-                      "Do not know"))
+  for (i in 1:2) {
+    
+    data[[paste0("hes_covid_", i)]] <- case_when(data[[paste0("hes_covid_", i)]] %in% hes_general_text1 ~ "Strongly agree",
+                                                   data[[paste0("hes_covid_", i)]] %in% hes_general_text2 ~ "Agree",
+                                                   data[[paste0("hes_covid_", i)]] %in% hes_general_text3 ~ "Neither agree nor disagree",
+                                                   data[[paste0("hes_covid_", i)]] %in% hes_general_text4 ~ "Disagree",
+                                                   data[[paste0("hes_covid_", i)]] %in% hes_general_text5 ~ "Strongly disagree",
+                                                   data[[paste0("hes_covid_", i)]] %in% hes_general_text6 ~ "Do not know")
+    
+    data[[paste0("hes_covid_", i)]] <- data[[paste0("hes_covid_", i)]] %>%
+      factor(levels = c("Strongly agree",
+                        "Agree",
+                        "Neither agree nor disagree",
+                        "Disagree",
+                        "Strongly disagree",
+                        "Do not know"))
+  }
   
   #### Behavior ####
   
-  beh_measure_1_text1 <- c("Yes",
+  beh_measure_text1 <- c("Yes",
                            "Sim",
                            "Oui",
                            "Si",
                            "是",
-                           "Sì")
+                           "Sì",
+                         "Да")
   
-  beh_measure_1_text2 <- c("No",
+  beh_measure_text2 <- c("No",
                            "Não",
                            "Non",
                            "No",
                            "否",
-                           "No")
+                           "No",
+                         "Нет")
   
-  beh_measure_1_text3 <- c("Don't know",
+  beh_measure_text3 <- c("Don't know",
                            "Não sei",
                            "Sans opinion",
                            "No lo sé",
                            "不知道",
-                           "Non lo so")
+                           "Non lo so",
+                         "Не знаю")
   
-  data$beh_measure_1 <- case_when(data$beh_measure_1 %in% beh_measure_1_text1 ~ "Yes",
-                                  data$beh_measure_1 %in% beh_measure_1_text2 ~ "No",
-                                  data$beh_measure_1 %in% beh_measure_1_text3 ~ "Don't know")
+  for (i in 1:17) {
+    
+    data[[paste0("beh_measure_", i)]] <- case_when(data[[paste0("beh_measure_", i)]] %in% beh_measure_text1 ~ "Yes",
+                                                 data[[paste0("beh_measure_", i)]] %in% beh_measure_text2 ~ "No",
+                                                 data[[paste0("beh_measure_", i)]] %in% beh_measure_text3 ~ "Don't know")
+    
+    data[[paste0("beh_measure_", i)]] <- data[[paste0("beh_measure_", i)]] %>%
+      factor(levels = c("Yes",
+                        "No",
+                        "Don't know"))
+  }
   
-  data$beh_measure_1 <- data$beh_measure_1 %>%
-    factor(levels = c("Yes",
-                      "No",
-                      "Don't know"))
-  
-  data$beh_measure_2 <- case_when(data$beh_measure_2 %in% beh_measure_1_text1 ~ "Yes",
-                                  data$beh_measure_2 %in% beh_measure_1_text2 ~ "No",
-                                  data$beh_measure_2 %in% beh_measure_1_text3 ~ "Don't know")
-  
-  data$beh_measure_2 <- data$beh_measure_2 %>%
-    factor(levels = c("Yes",
-                      "No",
-                      "Don't know"))
-  
-  data$beh_measure_3 <- case_when(data$beh_measure_3 %in% beh_measure_1_text1 ~ "Yes",
-                                  data$beh_measure_3 %in% beh_measure_1_text2 ~ "No",
-                                  data$beh_measure_3 %in% beh_measure_1_text3 ~ "Don't know")
-  
-  data$beh_measure_3 <- data$beh_measure_3 %>%
-    factor(levels = c("Yes",
-                      "No",
-                      "Don't know"))
-  
-  data$beh_measure_4 <- case_when(data$beh_measure_4 %in% beh_measure_1_text1 ~ "Yes",
-                                  data$beh_measure_4 %in% beh_measure_1_text2 ~ "No",
-                                  data$beh_measure_4 %in% beh_measure_1_text3 ~ "Don't know")
-  
-  data$beh_measure_4 <- data$beh_measure_4 %>%
-    factor(levels = c("Yes",
-                      "No",
-                      "Don't know"))
-  
-  data$beh_measure_5 <- case_when(data$beh_measure_5 %in% beh_measure_1_text1 ~ "Yes",
-                                  data$beh_measure_5 %in% beh_measure_1_text2 ~ "No",
-                                  data$beh_measure_5 %in% beh_measure_1_text3 ~ "Don't know")
-  
-  data$beh_measure_5 <- data$beh_measure_5 %>%
-    factor(levels = c("Yes",
-                      "No",
-                      "Don't know"))
-  
-  data$beh_measure_6 <- case_when(data$beh_measure_6 %in% beh_measure_1_text1 ~ "Yes",
-                                  data$beh_measure_6 %in% beh_measure_1_text2 ~ "No",
-                                  data$beh_measure_6 %in% beh_measure_1_text3 ~ "Don't know")
-  
-  data$beh_measure_6 <- data$beh_measure_6 %>%
-    factor(levels = c("Yes",
-                      "No",
-                      "Don't know"))
-  
-  data$beh_measure_7 <- case_when(data$beh_measure_7 %in% beh_measure_1_text1 ~ "Yes",
-                                  data$beh_measure_7 %in% beh_measure_1_text2 ~ "No",
-                                  data$beh_measure_7 %in% beh_measure_1_text3 ~ "Don't know")
-  
-  data$beh_measure_7 <- data$beh_measure_7 %>%
-    factor(levels = c("Yes",
-                      "No",
-                      "Don't know"))
-  
-  data$beh_measure_8 <- case_when(data$beh_measure_8 %in% beh_measure_1_text1 ~ "Yes",
-                                  data$beh_measure_8 %in% beh_measure_1_text2 ~ "No",
-                                  data$beh_measure_8 %in% beh_measure_1_text3 ~ "Don't know")
-  
-  data$beh_measure_8 <- data$beh_measure_8 %>%
-    factor(levels = c("Yes",
-                      "No",
-                      "Don't know"))
-  
-  data$beh_measure_9 <- case_when(data$beh_measure_9 %in% beh_measure_1_text1 ~ "Yes",
-                                  data$beh_measure_9 %in% beh_measure_1_text2 ~ "No",
-                                  data$beh_measure_9 %in% beh_measure_1_text3 ~ "Don't know")
-  
-  data$beh_measure_9 <- data$beh_measure_9 %>%
-    factor(levels = c("Yes",
-                      "No",
-                      "Don't know"))
-  
-  data$beh_measure_10 <- case_when(data$beh_measure_10 %in% beh_measure_1_text1 ~ "Yes",
-                                  data$beh_measure_10 %in% beh_measure_1_text2 ~ "No",
-                                  data$beh_measure_10 %in% beh_measure_1_text3 ~ "Don't know")
-  
-  data$beh_measure_10 <- data$beh_measure_10 %>%
-    factor(levels = c("Yes",
-                      "No",
-                      "Don't know"))
-  
-  data$beh_measure_11 <- case_when(data$beh_measure_11 %in% beh_measure_1_text1 ~ "Yes",
-                                  data$beh_measure_11 %in% beh_measure_1_text2 ~ "No",
-                                  data$beh_measure_11 %in% beh_measure_1_text3 ~ "Don't know")
-  
-  data$beh_measure_11 <- data$beh_measure_11 %>%
-    factor(levels = c("Yes",
-                      "No",
-                      "Don't know"))
-  
-  data$beh_measure_12 <- case_when(data$beh_measure_12 %in% beh_measure_1_text1 ~ "Yes",
-                                  data$beh_measure_12 %in% beh_measure_1_text2 ~ "No",
-                                  data$beh_measure_12 %in% beh_measure_1_text3 ~ "Don't know")
-  
-  data$beh_measure_12 <- data$beh_measure_12 %>%
-    factor(levels = c("Yes",
-                      "No",
-                      "Don't know"))
-  
-  data$beh_measure_13 <- case_when(data$beh_measure_13 %in% beh_measure_1_text1 ~ "Yes",
-                                  data$beh_measure_13 %in% beh_measure_1_text2 ~ "No",
-                                  data$beh_measure_13 %in% beh_measure_1_text3 ~ "Don't know")
-  
-  data$beh_measure_13 <- data$beh_measure_13 %>%
-    factor(levels = c("Yes",
-                      "No",
-                      "Don't know"))
-  
-  data$beh_measure_14 <- case_when(data$beh_measure_14 %in% beh_measure_1_text1 ~ "Yes",
-                                  data$beh_measure_14 %in% beh_measure_1_text2 ~ "No",
-                                  data$beh_measure_14 %in% beh_measure_1_text3 ~ "Don't know")
-  
-  data$beh_measure_14 <- data$beh_measure_14 %>%
-    factor(levels = c("Yes",
-                      "No",
-                      "Don't know"))
-  
-  data$beh_measure_15 <- case_when(data$beh_measure_15 %in% beh_measure_1_text1 ~ "Yes",
-                                  data$beh_measure_15 %in% beh_measure_1_text2 ~ "No",
-                                  data$beh_measure_15 %in% beh_measure_1_text3 ~ "Don't know")
-  
-  data$beh_measure_15 <- data$beh_measure_15 %>%
-    factor(levels = c("Yes",
-                      "No",
-                      "Don't know"))
-  
-  data$beh_measure_16 <- case_when(data$beh_measure_16 %in% beh_measure_1_text1 ~ "Yes",
-                                  data$beh_measure_16 %in% beh_measure_1_text2 ~ "No",
-                                  data$beh_measure_16 %in% beh_measure_1_text3 ~ "Don't know")
-  
-  data$beh_measure_16 <- data$beh_measure_16 %>%
-    factor(levels = c("Yes",
-                      "No",
-                      "Don't know"))
-  
-  data$beh_measure_17 <- case_when(data$beh_measure_17 %in% beh_measure_1_text1 ~ "Yes",
-                                  data$beh_measure_17 %in% beh_measure_1_text2 ~ "No",
-                                  data$beh_measure_17 %in% beh_measure_1_text3 ~ "Don't know")
-  
-  data$beh_measure_17 <- data$beh_measure_17 %>%
-    factor(levels = c("Yes",
-                      "No",
-                      "Don't know"))
   #### Global Equity Questions ####
   
   geq_future_spending_text1 <- c("Spend more on medical research than before the pandemic",
                                  "Gastar mais em pesquisa médica do que gastava antes da pandemia",
                                  "Dépenser plus pour la recherche médicale qu'avant la pandémie",
                                  "Debería gastar más en investigación médica de lo que gastaba antes de la pandemia",
-                                 "Spendere di più per la ricerca medica rispetto a prima della pandemia")
+                                 "Spendere di più per la ricerca medica rispetto a prima della pandemia",
+                                 "Надо тратить на медицинские исследования больше, чем до пандемии")
   
   geq_future_spending_text2 <- c("Spend the same amount on medical research as before the pandemic",
                                  "Gastar o mesmo valor em pesquisa médica que gastava antes da pandemia",
                                  "Dépenser le même montant pour la recherche médicale qu'avant la pandémie",
                                  "Debería gastar la misma cantidad en investigación médica que antes de la pandemia",
-                                 "Spendere lo stesso per la ricerca medica rispetto a prima della pandemia")
+                                 "Spendere lo stesso per la ricerca medica rispetto a prima della pandemia",
+                                 "Надо тратить на медицинские исследования столько же, сколько до пандемии")
   
   geq_future_spending_text3 <- c("Spend less on medical research than before the pandemic",
                                  "Gastar menos em pesquisa médica do que gastava antes da pandemia",
                                  "Dépenser moins pour la recherche médicale qu'avant la pandémie",
                                  "Debería gastar menos en investigación médica que antes de la pandemia",
-                                 "Spendere meno per la ricerca medica rispetto a prima della pandemia")
+                                 "Spendere meno per la ricerca medica rispetto a prima della pandemia",
+                                 "Надо тратить на медицинские исследования меньше, чем до пандемии")
   
   geq_future_spending_text4 <- c("Do not know",
                                  "Não sei",
                                  "Ne sait pas",
                                  "No lo sé",
-                                 "Non saprei")
+                                 "Non saprei",
+                                 "Не знаю")
   
   geq_future_spending_text5 <- c("Prefer not to say",
                                  "Prefiro não informar",
                                  "Préfère ne pas dire",
                                  "Prefiero no contestar",
-                                 "Preferisco non rispondere")
+                                 "Preferisco non rispondere",
+                                 "Предпочитаю не отвечать")
   
   data$geq_future_spending <- case_when(data$geq_future_spending %in% geq_future_spending_text1 ~ "Spend more on medical research than before the pandemic",
                                         data$geq_future_spending %in% geq_future_spending_text2 ~ "Spend the same amount on medical research as before the pandemic",
@@ -1791,7 +1527,8 @@ labeling <- function(data) {
             "The UK government should not donate any vaccine it has purchased",
             "The U.S. government should not donate any vaccine it has purchased",
             "Richer countries should not donate any vaccine they have purchased",
-            "Richer countries should not donate any vaccine it has purchased")
+            "Richer countries should not donate any vaccine it has purchased",
+            "Российскому правительству не следует передавать приобретенные вакцины в качестве пожертвований")
   
   don2 <- c("The Australian government should donate less than 10% of its purchased vaccine",         
             "Países mais ricos deveriam doar-menos de 10% das vacinas adquiridas",
@@ -1803,7 +1540,8 @@ labeling <- function(data) {
             "Richer countries should donate less than 10% of their purchased vaccine",
             "The UK government should donate less than 10% of its purchased vaccine",
             "The U.S. government should donate less than 10% of its purchased vaccine",
-            "Richer countries should donate less than 10% of its purchased vaccine")
+            "Richer countries should donate less than 10% of its purchased vaccine",
+            "Российскому правительству следует передавать  менее 10% от приобретенных вакцин в качестве пожертвований")
   
   don3 <- c("The Australian government should donate 10% of its purchased vaccine",
             "Países mais ricos deveriam doar 10% das vacinas adquiridas",
@@ -1815,7 +1553,8 @@ labeling <- function(data) {
             "El gobierno de España debería donar 10% de las vacunas que haya comprado",
             "Richer countries should donate 10% of their purchased vaccine",
             "The UK government should donate 10% of its purchased vaccine",
-            "The U.S. government should donate 10% of its purchased vaccine")
+            "The U.S. government should donate 10% of its purchased vaccine",
+            "Российскому правительству следует передавать 10% от приобретенных вакцин в качестве пожертвований")
   
   don4 <- c("The Australian government should donate more than 10% of its purchased amount of vaccine",
             "Países mais ricos deveriam doar-mais de 10% das vacinas adquiridas",
@@ -1827,19 +1566,22 @@ labeling <- function(data) {
             "El gobierno de España debería donar más del 10% de las vacunas que haya comprado",
             "Richer countries should donate more than 10% of their purchased amount of vaccine",
             "The UK government should donate more than 10% of its purchased amount of vaccine",
-            "The U.S. government should donate more than 10% of its purchased amount of vaccine")
+            "The U.S. government should donate more than 10% of its purchased amount of vaccine",
+            "Российскому правительству следует передавать  более 10% от приобретенных вакцин в качестве пожертвований")
   
   don5 <- c("Do not know",
             "Não sei",
             "No lo sé",
             "Ne sait pas",
-            "Non saprei")
+            "Non saprei",
+            "Не знаю")
   
   don6 <- c("Prefer not to say",
             "Prefiro não informar",
             "Prefiero no contestar",
             "Préfère ne pas dire",
-            "Preferisco non rispondere")
+            "Preferisco non rispondere",
+            "Предпочитаю не отвечать")
   
   
   data$geq_donation <- case_when(data$geq_donation %in% don1 ~ "Should not donate",
@@ -1857,98 +1599,76 @@ labeling <- function(data) {
                       "Do not know",
                       "Prefer not to say"))
   
-  ticket_0_text1 <- c("Yes",
+  geq_wtp_text1 <- c("Yes",
                       "Sim",
                       "Sí",
                       "愿意",
                       "Oui",
-                      "Sì")
+                      "Sì",
+                     "Да")
   
-  ticket_0_text2 <- c("No",
+  geq_wtp_text2 <- c("No",
                       "Não",
                       "No",
                       "不愿意",
                       "Non",
-                      "No")
+                      "No",
+                     "Нет")
   
-  ticket_0_text3 <- c("Do not know",
+  geq_wtp_text3 <- c("Do not know",
                       "Não sei",
                       "No lo sé",
                       "不知道",
                       "Ne sait pas",
-                      "Non saprei")
+                      "Non saprei",
+                     "Не знаю")
   
-  ticket_0_text4 <- c("Prefer not to say",
+  geq_wtp_text4 <- c("Prefer not to say",
                       "Prefiro não informar",
                       "Prefiero no contestar",
                       "不想说",
                       "Préfère ne pas dire",
-                      "Preferisco non rispondere")
+                      "Preferisco non rispondere",
+                     "Предпочитаю не отвечать")
   
-  data$geq_ticket_0 <- case_when(data$geq_ticket_0 %in% ticket_0_text1 ~ "Yes",
-                                 data$geq_ticket_0 %in% ticket_0_text2 ~ "No",
-                                 data$geq_ticket_0 %in% ticket_0_text3 ~ "Do not know",
-                                 data$geq_ticket_0 %in% ticket_0_text4 ~ "Prefer not to say")
-  
-  data$geq_ticket_0 <- data$geq_ticket_0 %>%
-    factor(levels = c("Yes",
-                      "No",
-                      "Do not know",
-                      "Prefer not to say"))
-  
-  data$geq_ticket_1 <- case_when(data$geq_ticket_1 %in% ticket_0_text1 ~ "Yes",
-                                 data$geq_ticket_1 %in% ticket_0_text2 ~ "No",
-                                 data$geq_ticket_1 %in% ticket_0_text3 ~ "Do not know",
-                                 data$geq_ticket_1 %in% ticket_0_text4 ~ "Prefer not to say")
-  
-  data$geq_ticket_1 <- data$geq_ticket_1 %>%
-    factor(levels = c("Yes",
-                      "No",
-                      "Do not know",
-                      "Prefer not to say"))
-  
-  data$geq_ticket_2a <- case_when(data$geq_ticket_2a %in% ticket_0_text1 ~ "Yes",
-                                 data$geq_ticket_2a %in% ticket_0_text2 ~ "No",
-                                 data$geq_ticket_2a %in% ticket_0_text3 ~ "Do not know",
-                                 data$geq_ticket_2a %in% ticket_0_text4 ~ "Prefer not to say")
-  
-  data$geq_ticket_2a <- data$geq_ticket_2a %>%
-    factor(levels = c("Yes",
-                      "No",
-                      "Do not know",
-                      "Prefer not to say"))
-  
-  data$geq_ticket_2b <- case_when(data$geq_ticket_2b %in% ticket_0_text1 ~ "Yes",
-                                 data$geq_ticket_2b %in% ticket_0_text2 ~ "No",
-                                 data$geq_ticket_2b %in% ticket_0_text3 ~ "Do not know",
-                                 data$geq_ticket_2b %in% ticket_0_text4 ~ "Prefer not to say")
-  
-  data$geq_ticket_2b <- data$geq_ticket_2b %>%
-    factor(levels = c("Yes",
-                      "No",
-                      "Do not know",
-                      "Prefer not to say"))
+  for (i in c("geq_taxes_0", "geq_taxes_1", "geq_taxes_2a", "geq_taxes_2b",
+              "geq_ticket_0", "geq_ticket_1", "geq_ticket_2a", "geq_ticket_2b")) {
+    
+    data[[i]] <- case_when(data[[i]] %in% geq_wtp_text1 ~ "Yes",
+                                                   data[[i]] %in% geq_wtp_text2 ~ "No",
+                                                   data[[i]] %in% geq_wtp_text3 ~ "Don't know",
+                                                   data[[i]] %in% geq_wtp_text4 ~ "Prefer not to say")
+    
+    data[[i]] <- data[[i]] %>%
+      factor(levels = c("Yes",
+                        "No",
+                        "Do not know",
+                        "Prefer not to say"))
+  }
   
   #### Quality of Life ####
   
   qol_condition_text1 <- c("Diabetes",
                            "糖尿病",
                            "Diabete",
-                           "Diabète")
+                           "Diabète",
+                           "Диабет")
   
   qol_condition_text2 <- c("High blood pressure/hypertension",
                            "Presión sanguínea alta/ Hipertensión",
                            "高血压",
                            "Pressão alta sanguínea/hipertensão",
                            "Pressione alta/Ipertensione",
-                           "Hypertension artérielle/hypertension")
+                           "Hypertension artérielle/hypertension",
+                           "Гипертония / высокое кровяное давление")
   
   qol_condition_text3 <- c("Heart disease",
                            "Enfermedad cardiaca",
                            "心脏病",
                            "Doença cardíaca",
                            "Malattie cardiache",
-                           "Maladies cardiaques")
+                           "Maladies cardiaques",
+                           "Заболевания сердечно-сосудистой системы")
   
   qol_condition_text4 <- c("Asthma or other chronic respiratory issues",
                            "Asma u otra enfermedad respiratoria crónica.",
@@ -1956,14 +1676,16 @@ labeling <- function(data) {
                            "哮喘或其他慢性呼吸疾病",
                            "Asma ou outras doenças respiratórias crônicas",
                            "Asma o altri problemi respiratori cronici",
-                           "Asthme ou autres problèmes respiratoires chroniques")
+                           "Asthme ou autres problèmes respiratoires chroniques",
+                           "Астма или другие хронические респираторные заболевания")
   
   qol_condition_text5 <- c("Allergies",
                            "Alergias.",
                            "过敏",
                            "Alergias",
                            "Allergie",
-                           "Allergies")
+                           "Allergies",
+                           "Аллергии")
   
   qol_condition_text6 <- c("Kidney disease",
                            "Enfermedad renal.",
@@ -1971,7 +1693,8 @@ labeling <- function(data) {
                            "肾病",
                            "Doença renal",
                            "Malattie renali",
-                           "Maladies rénales")
+                           "Maladies rénales",
+                           "Болезнь почек")
   
   qol_condition_text7 <- c("Other chronic illnesses that require long term care from a doctor",
                            "Otra enfermedad crónica que requiera cuidado a largo plazo por doctor.",
@@ -1979,27 +1702,31 @@ labeling <- function(data) {
                            "其他需要医生长期监管的慢性疾病",
                            "Outras doenças crônicas que necessitem de tratamento médico de longo prazo",
                            "Altre malattie croniche che richiedono cure a lungo termine",
-                           "Autres maladies chroniques qui nécessitent des soins de longue durée de la part d'un médecin")
+                           "Autres maladies chroniques qui nécessitent des soins de longue durée de la part d'un médecin",
+                           "Другие хронические заболевания, требующие длительного наблюдения у врача")
   
   qol_condition_text8 <- c("None",
                            "Ninguna",
                            "无",
                            "Nenhum",
                            "Nessuna",
-                           "Aucun")
+                           "Aucun",
+                           "Ничего из указанного")
   
   qol_condition_text9 <- c("Do not know",
                            "不知道",
                            "Não sei",
                            "Non saprei",
-                           "Ne sait pas")
+                           "Ne sait pas",
+                           "Не знаю")
   
   qol_condition_text10 <- c("Prefiero no responder",
                             "Prefer not to say",
                             "不想说",
                             "Prefiro não informar",
                             "Preferisco non rispondere",
-                            "Préfère ne pas dire")
+                            "Préfère ne pas dire",
+                            "Предпочитаю не отвечать")
   
   for (i in 1:10) {
     data[[paste0("qol_condition_", i)]] <- case_when(data[[paste0("qol_condition_", i)]] %in% qol_condition_text1 ~ "Diabetes",
@@ -2036,7 +1763,8 @@ labeling <- function(data) {
                                "Je n’ai aucun problème pour me déplacer à pied",
                                "我四处走动没有困难",
                                "No tengo problemas para caminar",
-                               "Non ho difficoltà nel camminare")
+                               "Non ho difficoltà nel camminare",
+                               "Я не испытываю/не испытывал(а) никаких трудностей при ходьбе")
   
   eq5d_mobility_pre_text2 <- c("I have slight problems with walking around",
                                "I had/have slight problems in walking about",
@@ -2046,7 +1774,8 @@ labeling <- function(data) {
                                "J’ai des problèmes légers pour me déplacer à pied",
                                "我四处走动有一点困难",
                                "Tengo problemas leves para caminar",
-                               "Ho lievi difficoltà nel camminare")
+                               "Ho lievi difficoltà nel camminare",
+                               "Я испытываю/испытывал(а) небольшие трудности при ходьбе")
   
   eq5d_mobility_pre_text3 <- c("I have moderate problems with walking around",
                                "I had/have moderate problems in walking about",
@@ -2057,7 +1786,8 @@ labeling <- function(data) {
                                "我四处走动有中度的困难",
                                "Tengo problemas moderados para caminar",
                                "Ho moderate difficoltà nel camminare",
-                               "I had/have moderate problems in walking about")
+                               "I had/have moderate problems in walking about",
+                               "Я испытываю/испытывал(а) умеренные трудности при ходьбе")
   
   eq5d_mobility_pre_text4 <- c("I have severe problems with walking around",
                                "I had/have severe problems in walking about",
@@ -2067,7 +1797,8 @@ labeling <- function(data) {
                                "J’ai des problèmes sévères pour me déplacer à pied",
                                "我四处走动有严重的困难",
                                "Tengo problemas graves para caminar",
-                               "Ho gravi difficoltà nel camminare")
+                               "Ho gravi difficoltà nel camminare",
+                               "Я испытываю/испытывал(а) большие трудности при ходьбе")
   
   eq5d_mobility_pre_text5 <- c("I am unable to walk around",
                                "I was/am unable to walk about",
@@ -2078,7 +1809,8 @@ labeling <- function(data) {
                                "我无法四处走动",
                                "No puedo caminar",
                                "Soy incapaz de caminar",
-                               "Non sono in grado di camminare")
+                               "Non sono in grado di camminare",
+                               "Я не в состоянии ходить")
   
   data$eq5d_mobility_pre <- case_when(data$eq5d_mobility_pre %in% eq5d_mobility_pre_text1 ~ "I had/have no problems in walking about",
                                       data$eq5d_mobility_pre %in% eq5d_mobility_pre_text2 ~ "I had/have slight problems in walking about",
@@ -2113,7 +1845,8 @@ labeling <- function(data) {
                                "我自己洗澡或穿衣没有困难",
                                "No tengo problemas para lavarme o vestirme",
                                "No tengo problemas para bañarme o vestirme",
-                               "Non ho difficoltà nel lavarmi o vestirmi")
+                               "Non ho difficoltà nel lavarmi o vestirmi",
+                               "Я не испытываю/не испытывал(а)  никаких трудностей с мытьем или одеванием")
   
   eq5d_selfcare_pre_text2 <- c("I had/have slight problems washing or dressing myself",
                                "I have slight problems in bathing or dressing myself",
@@ -2122,7 +1855,8 @@ labeling <- function(data) {
                                "我自己洗澡或穿衣有一点困难",
                                "Tengo problemas leves para lavarme o vestirme",
                                "Tengo problemas leves para bañarme o vestirme",
-                               "Ho lievi difficoltà nel lavarmi o vestirmi")
+                               "Ho lievi difficoltà nel lavarmi o vestirmi",
+                               "Я испытываю/испытывал(а)  небольшие трудности с мытьем или одеванием")
   
   eq5d_selfcare_pre_text3 <- c("I had/have moderate problems washing or dressing myself",
                                "I have moderate problems in bathing or dressing myself",
@@ -2131,7 +1865,8 @@ labeling <- function(data) {
                                "我自己洗澡或穿衣有中度的困难",
                                "Tengo problemas moderados para lavarme o vestirme",
                                "Tengo problemas moderados para bañarme o vestirme",
-                               "Ho moderate difficoltà nel lavarmi o vestirmi")
+                               "Ho moderate difficoltà nel lavarmi o vestirmi",
+                               "Я испытываю/испытывал(а)  умеренные трудности с мытьем или одеванием")
   
   eq5d_selfcare_pre_text4 <- c("I had/have severe problems washing or dressing myself",
                                "I have severe problems in bathing or dressing myself",
@@ -2140,7 +1875,8 @@ labeling <- function(data) {
                                "我自己洗澡或穿衣有严重的困难",
                                "Tengo problemas graves para lavarme o vestirme",
                                "Tengo problemas graves para bañarme o vestirme",
-                               "Ho gravi difficoltà nel lavarmi o vestirmi")
+                               "Ho gravi difficoltà nel lavarmi o vestirmi",
+                               "Я испытываю/испытывал(а)  большие трудности с мытьем или одеванием")
   
   eq5d_selfcare_pre_text5 <- c("I was/am unable to wash or dress myself",
                                "I am unable to bathe or dress myself",
@@ -2149,7 +1885,8 @@ labeling <- function(data) {
                                "我无法自己洗澡或穿衣",
                                "No puedo lavarme o vestirme",
                                "Soy incapaz de bañarme o vestirme",
-                               "Non sono in grado di lavarmi o vestirmi")
+                               "Non sono in grado di lavarmi o vestirmi",
+                               "Я не в состоянии сам(а) мыться или одеваться")
   
   data$eq5d_selfcare_pre <- case_when(data$eq5d_selfcare_pre %in% eq5d_selfcare_pre_text1 ~ "I had/have no problems washing or dressing myself",
                                       data$eq5d_selfcare_pre %in% eq5d_selfcare_pre_text2 ~ "I had/have slight problems washing or dressing myself",
@@ -2185,7 +1922,8 @@ labeling <- function(data) {
                             "No tengo problemas para realizar mis actividades habituales",
                             "No tengo problemas para hacer mis actividades cotidianas",
                             "No tengo problemas para realizar mis actividades cotidianas",
-                            "Non ho difficoltà nello svolgimento delle attività abituali")
+                            "Non ho difficoltà nello svolgimento delle attività abituali",
+                            "Моя привычная повседневная деятельность дается/давалась мне без труда")
   
   eq5d_usual_pre_text2 <- c("I had/have slight problems doing my usual activities",
                             "I have slight problems doing my usual activities",
@@ -2195,7 +1933,8 @@ labeling <- function(data) {
                             "Tengo problemas leves para realizar mis actividades habituales",
                             "Tengo problemas leves para hacer mis actividades cotidianas",
                             "Tengo problemas leves para realizar mis actividades cotidianas",
-                            "Ho lievi difficoltà nello svolgimento delle attività abituali")
+                            "Ho lievi difficoltà nello svolgimento delle attività abituali",
+                            "Моя привычная повседневная деятельность для меня немного затруднительна")
   
   eq5d_usual_pre_text3 <- c("I had/have moderate problems doing my usual activities",
                             "I have moderate problems doing my usual activities",
@@ -2205,7 +1944,8 @@ labeling <- function(data) {
                             "Tengo problemas moderados para realizar mis actividades habituales",
                             "Tengo problemas moderados para hacer mis actividades cotidianas",
                             "Tengo problemas moderados para realizar mis actividades cotidianas",
-                            "Ho moderate difficoltà nello svolgimento delle attività abituali")
+                            "Ho moderate difficoltà nello svolgimento delle attività abituali",
+                            "Моя привычная повседневная деятельность для меня умеренно затруднительна")
   
   eq5d_usual_pre_text4 <- c("I had/have severe problems doing my usual activities",
                             "I have severe problems doing my usual activities",
@@ -2215,7 +1955,8 @@ labeling <- function(data) {
                             "Tengo problemas graves para realizar mis actividades habituales",
                             "Tengo problemas graves para hacer mis actividades cotidianas",
                             "Tengo problemas graves para realizar mis actividades cotidianas",
-                            "Ho gravi difficoltà nello svolgimento delle attività abituali")
+                            "Ho gravi difficoltà nello svolgimento delle attività abituali",
+                            "Моя привычная повседневная деятельность для меня очень затруднительна")
   
   eq5d_usual_pre_text5 <- c("I was/am unable to do my usual activities",
                             "I am unable to do my usual activities",
@@ -2225,7 +1966,8 @@ labeling <- function(data) {
                             "No puedo realizar mis actividades habituales",
                             "Soy incapaz de hacer mis actividades cotidianas",
                             "No puedo realizar mis actividades cotidianas",
-                            "Non sono in grado di svolgere le mie attività abituali")
+                            "Non sono in grado di svolgere le mie attività abituali",
+                            "Я не в состоянии заниматься своей привычной повседневной  деятельностью")
   
   data$eq5d_usual_pre <- case_when(data$eq5d_usual_pre %in% eq5d_usual_pre_text1 ~ "I had/have no problems doing my usual activities",
                                    data$eq5d_usual_pre %in% eq5d_usual_pre_text2 ~ "I had/have slight problems doing my usual activities",
@@ -2259,7 +2001,8 @@ labeling <- function(data) {
                            "Je n’ai ni douleur ni gêne",
                            "我没有疼痛或不舒服",
                            "No tengo dolor ni malestar",
-                           "Non provo alcun dolore o fastidio")
+                           "Non provo alcun dolore o fastidio",
+                           "Я не испытываю/не испытывал(а) боли или дискомфорта")
   
   eq5d_pain_pre_text2 <- c("I had/have slight pain or discomfort",
                            "I have slight pain or discomfort",
@@ -2267,7 +2010,8 @@ labeling <- function(data) {
                            "J’ai des douleurs ou une gêne légère(s)",
                            "我有一点疼痛或不舒服",
                            "Tengo dolor o malestar leve",
-                           "Provo lieve dolore o fastidio")
+                           "Provo lieve dolore o fastidio",
+                           "Я испытываю/испытывал(а) небольшую боль или дискомфорт")
   
   eq5d_pain_pre_text3 <- c("I had/have moderate pain or discomfort",
                            "I have moderate pain or discomfort",
@@ -2275,7 +2019,8 @@ labeling <- function(data) {
                            "J’ai des douleurs ou une gêne modérée(s)",
                            "我有中度的疼痛或不舒服",
                            "Tengo dolor o malestar moderado",
-                           "Provo moderato dolore o fastidio")
+                           "Provo moderato dolore o fastidio",
+                           "Я испытываю/испытывал(а) умеренную боль или дискомфорт")
   
   eq5d_pain_pre_text4 <- c("I had/have severe pain or discomfort",
                            "I have severe pain or discomfort",
@@ -2283,7 +2028,8 @@ labeling <- function(data) {
                            "J’ai des douleurs ou une gêne sévère(s)",
                            "我有严重的疼痛或不舒服",
                            "Tengo dolor o malestar fuerte",
-                           "Provo grave dolore o fastidio")
+                           "Provo grave dolore o fastidio",
+                           "Я испытываю/испытывал(а) сильную боль или дискомфорт")
   
   eq5d_pain_pre_text5 <- c("I had/have extreme pain or discomfort",
                            "I have extreme pain or discomfort",
@@ -2291,7 +2037,8 @@ labeling <- function(data) {
                            "J’ai des douleurs ou une gêne extrême(s)",
                            "我有非常严重的疼痛或不舒服",
                            "Tengo dolor o malestar extremo",
-                           "Provo estremo dolore o fastidio")
+                           "Provo estremo dolore o fastidio",
+                           "Я испытываю/испытывал(а) чрезвычайно сильную боль или дискомфорт")
   
   data$eq5d_pain_pre <- case_when(data$eq5d_pain_pre %in% eq5d_pain_pre_text1 ~ "I had/have no pain or discomfort",
                                   data$eq5d_pain_pre %in% eq5d_pain_pre_text2 ~ "I had/have slight pain or discomfort",
@@ -2327,7 +2074,8 @@ labeling <- function(data) {
                               "No estoy angustiado/a o deprimido/a",
                               "No estoy angustiado(a) ni deprimido(a)",
                               "No estoy ansioso ni deprimido",
-                              "Non sono ansioso/a o depresso/a")
+                              "Non sono ansioso/a o depresso/a",
+                              "Я не испытываю/не испытывал(а) тревоги или депрессии")
   
   eq5d_anxiety_pre_text2 <- c("I was/am slightly anxious or depressed",
                               "I am slightly anxious or depressed",
@@ -2337,7 +2085,8 @@ labeling <- function(data) {
                               "Estoy levemente angustiado/a o deprimido/a",
                               "Estoy levemente angustiado(a) o deprimido(a)",
                               "Estoy levemente ansioso o deprimido",
-                              "Sono lievemente ansioso/a o depresso/a")
+                              "Sono lievemente ansioso/a o depresso/a",
+                              "Я испытываю/испытывал(а) небольшую тревогу или депрессию")
   
   eq5d_anxiety_pre_text3 <- c("I was/am moderately anxious or depressed",
                               "I am moderately anxious or depressed",
@@ -2347,7 +2096,8 @@ labeling <- function(data) {
                               "Estoy moderadamente angustiado/a o deprimido/a",
                               "Estoy moderadamente angustiado(a) o deprimido(a)",
                               "Estoy moderadamente ansioso o deprimido",
-                              "Sono moderatamente ansioso/a o depresso/a")
+                              "Sono moderatamente ansioso/a o depresso/a",
+                              "Я испытываю/испытывал(а) умеренную тревогу или депрессию")
   
   eq5d_anxiety_pre_text4 <- c("I was/am severely anxious or depressed",
                               "I am severely anxious or depressed",
@@ -2357,7 +2107,8 @@ labeling <- function(data) {
                               "Estoy muy angustiado/a o deprimido/a",
                               "Estoy muy angustiado(a) o deprimido(a)",
                               "Estoy muy ansioso o deprimido",
-                              "Sono gravemente ansioso/a o depresso/a")
+                              "Sono gravemente ansioso/a o depresso/a",
+                              "Я испытываю/испытывал(а) сильную тревогу или депрессию")
   
   eq5d_anxiety_pre_text5 <- c("I was/am extremely anxious or depressed",
                               "I am extremely anxious or depressed",
@@ -2367,7 +2118,8 @@ labeling <- function(data) {
                               "Estoy extremadamente angustiado/a o deprimido/a",
                               "Estoy extremadamente angustiado(a) o deprimido(a)",
                               "Estoy extremadamente ansioso o deprimido",
-                              "Sono estremamente ansioso/a o depresso/a")
+                              "Sono estremamente ansioso/a o depresso/a",
+                              "Я испытываю/испытывал(а) крайне сильную тревогу или депрессию")
   
   data$eq5d_anxiety_pre <- case_when(data$eq5d_anxiety_pre %in% eq5d_anxiety_pre_text1 ~ "I was/am not anxious or depressed",
                                      data$eq5d_anxiety_pre %in% eq5d_anxiety_pre_text2 ~ "I was/am slightly anxious or depressed",
