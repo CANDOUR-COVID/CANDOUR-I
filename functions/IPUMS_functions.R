@@ -151,9 +151,7 @@ IPUMS_contract<-function(data_fram){
     
     data_fram <- data_fram %>% mutate(PROF_POSITION = Q22.3)
     
-    Self_employ <- c("Индивидуальный предприниматель/ самозанятый",
-                     "Libero professionista",
-                     "Lavoratore in proprio")
+    Self_employ <- c("Индивидуальный предприниматель/ самозанятый")
     
     Wage_salary_worker <- c("Работаю по найму",
                             "Работаю в вооруженных силах или правоохранительных органах")
@@ -936,7 +934,7 @@ IPUMS_employment<-function(data_fram){
     
     data_fram$EMPLOYMENT <- unlist(lapply(data_fram$EMPLOYMENT,char2))
     
-    Employed <- c("就业")
+    Employed <- c("就业", "怀孕", "长期")
     
     Unemployed <- c("待业")
     

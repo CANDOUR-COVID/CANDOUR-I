@@ -1,5 +1,6 @@
 *.RData
 *.Rhistory
+*.tex
 2_replication.R
 figures
 tables
