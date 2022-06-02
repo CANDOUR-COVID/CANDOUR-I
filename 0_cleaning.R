@@ -1,8 +1,21 @@
-setwd("C:/Users/Matias/CESS Dropbox/Matias Fuentes/Predoctoral/CANDOUR/Vaccine Survey Data/Wave I")
-
 rm(list = ls())
-
 library(tidyverse)
+library(xlsx)
+
+setwd("C:/Users/Matias/Dropbox/Predoctoral/CANDOUR/Vaccine Survey Data/psID")
+
+country_psid <- list()
+
+for (i in list.files()[-1]) {
+  country_psid[[i]] <- read.xlsx(i, sheetIndex = 1)
+}
+
+for (i in 1:length(country_psid)) {
+  country_psid[[i]] <- country_psid[[i]] %>%
+    rename(psid = psID)
+}
+
+setwd("C:/Users/Matias/Dropbox/Predoctoral/CANDOUR/Vaccine Survey Data/Wave I")
 
 #### Paths ####
 
@@ -28,7 +41,8 @@ data_AUS <- read_csv(aus_path)
 data_AUS <- data_AUS[-c(1:2),]
 
 data_AUS <- data_AUS %>%
-  rowid_to_column("id")
+  rowid_to_column("id") %>%
+  mutate(wave = 1)
 
 data_AUS<- data_AUS %>%
   separate(StartDate, into = c("Date", "Time"), sep = " ", remove = FALSE) %>%
@@ -172,6 +186,13 @@ data_AUS <- data_AUS %>%
          person7_b = person7b,
          person8_b = person8b)
 
+#### Adding psid ####
+
+data_AUS <- data_AUS %>%
+  left_join(country_psid$psID_AUS_3104.xlsx, by = c("return_tic" = "tic"))
+
+#### Filtering ####
+
 data_AUS <- data_AUS %>%
   filter(!Q_TerminateFlag %in% c("Screened", "QuotaMet"), Status == "IP Address",
          Progress == "100")
@@ -235,6 +256,8 @@ data_AUS <- data_AUS %>%
          response2 = if_else(select2 == "Group A", 1,
                              if_else(select2 == "Group B", 0, NA_real_)))
 
+#### Writing ####
+
 write_csv(data_AUS, "Australia/data_AUS.csv")
 write_csv(respondi_AUS, "Respondi/respondi_AUS.csv")
 
@@ -245,7 +268,8 @@ data_BR <- read_csv(br_path)
 data_BR <- data_BR[-c(1:2),]
 
 data_BR <- data_BR %>%
-  rowid_to_column("id")
+  rowid_to_column("id") %>%
+  mutate(wave = 1)
 
 data_BR <- data_BR %>%
   separate(StartDate, into = c("Date", "Time"), sep = " ", remove = FALSE) %>%
@@ -279,14 +303,13 @@ data_BR <- data_BR %>%
                              Q3.12, Q3.13, Q3.14, Q3.15, Q3.16, Q3.17, Q3.18, 
                              Q3.19, Q3.20, Q3.21, Q3.22, Q3.23, Q3.24, Q3.25, 
                              Q3.26, Q3.27, Q3.28, Q3.29, Q3.30),
-         religion = if_else(Q22.11 == "Sim - Outra", Q22.11_13_TEXT, Q22.11)) %>%
+         religion = if_else(religion == "Sim - Outra", Q22.11_13_TEXT, religion)) %>%
   select(-c(Q3.3, Q3.4, Q3.5, Q3.6, Q3.7, Q3.8, Q3.9, Q3.10, Q3.11,
             Q3.12, Q3.13, Q3.14, Q3.15, Q3.16, Q3.17, Q3.18, 
             Q3.19, Q3.20, Q3.21, Q3.22, Q3.23, Q3.24, Q3.25, 
             Q3.26, Q3.27, Q3.28, Q3.29, Q3.30,
-            Q22.11_13_TEXT, Q22.11))
+            Q22.11_13_TEXT))
   
-
 data_BR <- data_BR %>%
   rename(willing_risk = Q10.1_1,
          willing_punish = Q10.2_1,
@@ -397,6 +420,9 @@ data_BR <- data_BR %>%
          person8_b = person8b)
 
 data_BR <- data_BR %>%
+  left_join(country_psid$psID_BR_3104.xlsx, by = c("return_tic" = "tic"))
+
+data_BR <- data_BR %>%
   filter(!Q_TerminateFlag %in% c("Screened", "QuotaMet"), Status == "IP Address",
          Progress == "100")
 
@@ -469,7 +495,8 @@ data_CAN <- read_csv(can_path)
 data_CAN <- data_CAN[-c(1:2),]
 
 data_CAN <- data_CAN %>%
-  rowid_to_column("id")
+  rowid_to_column("id") %>%
+  mutate(wave = 1)
 
 data_CAN <- data_CAN %>%
   separate(StartDate, into = c("Date", "Time"), sep = " ", remove = FALSE) %>%
@@ -609,6 +636,9 @@ data_CAN <- data_CAN %>%
          person8_b = person8b)
 
 data_CAN <- data_CAN %>%
+  left_join(country_psid$psID_CA_3104.xlsx, by = c("return_tic" = "tic"))
+
+data_CAN <- data_CAN %>%
   filter(!Q_TerminateFlag %in% c("Screened", "QuotaMet"), Status == "IP Address",
          Progress == "100")
 
@@ -676,12 +706,7 @@ write_csv(respondi_CAN, "Respondi/respondi_CAN.csv")
 
 #### Chile ####
 
-data_CHL <- read_csv(chl_path)
-
-data_CHL <- data_CHL[-c(1:2),]
-
-data_CHL <- data_CHL %>%
-  rowid_to_column("id")
+data_CHL <- read_csv(chl_path)[-c(1:2),]
 
 data_CHL <- data_CHL %>%
   separate(StartDate, into = c("Date", "Time"), sep = " ", remove = FALSE) %>%
@@ -758,11 +783,11 @@ data_CHL <- data_CHL %>%
          int_behaviour_1 = Q14.10_1,
          int_behaviour_2 = Q14.10_2,
          int_behaviour_3 = Q14.10_3,
-         hes_general_1 = Q16.1_1,
-         hes_general_2 = Q16.1_2,
+         hes_general_1 = Q16.1_1...167,
+         hes_general_2 = Q16.1_2...168,
          hes_general_3 = Q16.1_3,
-         hes_covid_1 = Q16.1_1_1,
-         hes_covid_2 = Q16.1_2_1,
+         hes_covid_1 = Q16.1_1...170,
+         hes_covid_2 = Q16.1_2...171,
          beh_measure_1 = Q17.1_1,
          beh_measure_2 = Q17.1_2,
          beh_measure_3 = Q17.1_3,
@@ -833,6 +858,9 @@ data_CHL <- data_CHL %>%
          person8_b = person8b)
 
 data_CHL <- data_CHL %>%
+  left_join(country_psid$psID_CHL_3104_other.xlsx, by = c("RecipientEmail" = "Email"))
+
+data_CHL <- data_CHL %>%
   filter(!Q_TerminateFlag %in% c("Screened", "QuotaMet"), Status == "IP Address",
          Progress == "100")
 
@@ -842,6 +870,10 @@ data_CHL <- data_CHL %>%
             LocationLatitude, LocationLongitude, DistributionChannel, UserLanguage,
             Q_TerminateFlag, starts_with("seed"), hideFooter,
             ends_with(c("First Click", "Last Click", "Page Submit", "Click Count"))))
+
+data_CHL <- data_CHL %>%
+  rowid_to_column("id") %>%
+  mutate(wave = 1)
 
 #### .Lottery vignette ####
 
@@ -901,7 +933,8 @@ data_CHN <- read_csv(chn_path)
 data_CHN <- data_CHN[-c(1:2),]
 
 data_CHN <- data_CHN %>%
-  rowid_to_column("id")
+  rowid_to_column("id") %>%
+  mutate(wave = 1)
 
 data_CHN <- data_CHN %>%
   separate(StartDate, into = c("Date", "Time"), sep = " ", remove = FALSE) %>%
@@ -1028,6 +1061,13 @@ data_CHN <- data_CHN %>%
          person7_b = person7b,
          person8_b = person8b)
 
+#### Adding psid ####
+
+data_CHN <- data_CHN %>%
+  left_join(country_psid$psID_CN_3104.xlsx, by = c("return_tic" = "tic"))
+
+#### Filtering ####
+
 data_CHN <- data_CHN %>%
   filter(!Q_TerminateFlag %in% c("Screened", "QuotaMet"), Status == "IP Address",
          Progress == "100")
@@ -1084,7 +1124,8 @@ data_COL <- read_csv(col_path)
 data_COL <- data_COL[-c(1:2),]
 
 data_COL <- data_COL %>%
-  rowid_to_column("id")
+  rowid_to_column("id") %>%
+  mutate(wave = 1)
 
 data_COL <- data_COL %>%
   separate(StartDate, into = c("Date", "Time"), sep = " ", remove = FALSE) %>%
@@ -1230,6 +1271,13 @@ data_COL <- data_COL %>%
          person7_b = person7b,
          person8_b = person8b)
 
+#### Adding psid ####
+
+data_COL <- data_COL %>%
+  left_join(country_psid$psID_CL_3104.xlsx, by = c("return_tic" = "tic"))
+
+#### Filtering ####
+
 data_COL <- data_COL %>%
   filter(!Q_TerminateFlag %in% c("Screened", "QuotaMet"), Status == "IP Address",
          Progress == "100")
@@ -1303,7 +1351,8 @@ data_FR <- read_csv(fr_path)
 data_FR <- data_FR[-c(1:2),]
 
 data_FR <- data_FR %>%
-  rowid_to_column("id")
+  rowid_to_column("id") %>%
+  mutate(wave = 1)
 
 data_FR <- data_FR %>%
   separate(StartDate, into = c("Date", "Time"), sep = " ", remove = FALSE) %>%
@@ -1445,6 +1494,13 @@ data_FR <- data_FR %>%
          person7_b = person7b,
          person8_b = person8b)
 
+#### Adding psid ####
+
+data_FR <- data_FR %>%
+  left_join(country_psid$psID_FR_3104.xlsx, by = c("return_tic" = "tic"))
+
+#### Filtering ####
+
 data_FR <- data_FR %>%
   filter(!Q_TerminateFlag %in% c("Screened", "QuotaMet"), Status == "IP Address",
          Progress == "100")
@@ -1518,7 +1574,8 @@ data_IND <- read_csv(ind_path)
 data_IND <- data_IND[-c(1:2),]
 
 data_IND <- data_IND %>%
-  rowid_to_column("id")
+  rowid_to_column("id") %>%
+  mutate(wave = 1)
 
 data_IND <- data_IND %>%
   separate(StartDate, into = c("Date", "Time"), sep = " ", remove = FALSE) %>%
@@ -1667,6 +1724,13 @@ data_IND <- data_IND %>%
          person7_b = person7b,
          person8_b = person8b)
 
+#### Adding psid ####
+
+data_IND <- data_IND %>%
+  left_join(country_psid$psID_INDIEN_3104.xlsx, by = c("return_tic" = "tic"))
+
+#### Filtering ####
+
 data_IND <- data_IND %>%
   filter(!Q_TerminateFlag %in% c("Screened", "QuotaMet"), Status == "IP Address",
          Progress == "100")
@@ -1740,7 +1804,8 @@ data_IT <- read_csv(it_path)
 data_IT <- data_IT[-c(1:2),]
 
 data_IT <- data_IT %>%
-  rowid_to_column("id")
+  rowid_to_column("id") %>%
+  mutate(wave = 1)
 
 data_IT <- data_IT %>%
   separate(StartDate, into = c("Date", "Time"), sep = " ", remove = FALSE) %>%
@@ -1896,6 +1961,13 @@ data_IT <- data_IT %>%
          person6_b = person6b,
          person7_b = person7b,
          person8_b = person8b)
+
+#### Adding psid ####
+
+data_IT<- data_IT %>%
+  left_join(country_psid$psID_IT_3104.xlsx, by = c("return_tic" = "tic"))
+
+#### Filtering ####
 
 data_IT <- data_IT %>%
   filter(!Q_TerminateFlag %in% c("Screened", "QuotaMet"), Status == "IP Address",
@@ -2167,7 +2239,8 @@ data_RUS <- data_RUS %>%
 # id
 
 data_RUS <- data_RUS %>%
-  rowid_to_column("id")
+  rowid_to_column("id") %>%
+  mutate(wave = 1)
 
 #pilot
 
@@ -2192,7 +2265,8 @@ data_SP <- read_csv(sp_path)
 data_SP <- data_SP[-c(1:2),]
 
 data_SP <- data_SP %>%
-  rowid_to_column("id")
+  rowid_to_column("id") %>%
+  mutate(wave = 1)
 
 data_SP <- data_SP %>%
   separate(StartDate, into = c("Date", "Time"), sep = " ", remove = FALSE) %>%
@@ -2347,6 +2421,13 @@ data_SP <- data_SP %>%
          person7_b = person7b,
          person8_b = person8b)
 
+#### Adding psid ####
+
+data_SP <- data_SP %>%
+  left_join(country_psid$psID_SP_3104.xlsx, by = c("return_tic" = "tic"))
+
+#### Filtering ####
+
 data_SP <- data_SP %>%
   filter(!Q_TerminateFlag %in% c("Screened", "QuotaMet"), Status == "IP Address",
          Progress == "100")
@@ -2420,7 +2501,8 @@ data_UGA <- read_csv(uga_path)
 data_UGA <- data_UGA[-c(1:2),]
 
 data_UGA <- data_UGA %>%
-  rowid_to_column("id")
+  rowid_to_column("id") %>%
+  mutate(wave = 1)
 
 data_UGA <- data_UGA %>%
   separate(StartDate, into = c("Date", "Time"), sep = " ", remove = FALSE) %>%
@@ -2563,6 +2645,9 @@ data_UGA <- data_UGA %>%
          person8_b = person8b)
 
 data_UGA <- data_UGA %>%
+  left_join(country_psid$psID_UGA_3104_other.xlsx, by = c("RecipientEmail" = "Email"))
+
+data_UGA <- data_UGA %>%
   filter(!Q_TerminateFlag %in% c("Screened"), Status == "IP Address",
          Progress == "100")
 
@@ -2632,7 +2717,8 @@ data_UK <- read_csv(uk_path)
 data_UK <- data_UK[-c(1:2),]
 
 data_UK <- data_UK %>%
-  rowid_to_column("id")
+  rowid_to_column("id") %>%
+  mutate(wave = 1)
 
 data_UK <- data_UK %>%
   separate(StartDate, into = c("Date", "Time"), sep = " ", remove = FALSE) %>%
@@ -2776,6 +2862,13 @@ data_UK <- data_UK %>%
          person7_b = person7b,
          person8_b = person8b)
 
+#### Adding psid ####
+
+data_UK <- data_UK %>%
+  left_join(country_psid$psID_UK_3104.xlsx, by = c("return_tic" = "tic"))
+
+#### Filtering ####
+
 data_UK <- data_UK %>%
   filter(!Q_TerminateFlag %in% c("Screened", "QuotaMet"), Status == "IP Address",
          Progress == "100")
@@ -2849,7 +2942,8 @@ data_US <- read_csv(us_path)
 data_US <- data_US[-c(1:2),]
 
 data_US <- data_US %>%
-  rowid_to_column("id")
+  rowid_to_column("id") %>%
+  mutate(wave = 1)
 
 data_US <- data_US %>%
   separate(StartDate, into = c("Date", "Time"), sep = " ", remove = FALSE) %>%
@@ -2993,6 +3087,13 @@ data_US <- data_US %>%
          person6_b = person6b,
          person7_b = person7b,
          person8_b = person8b)
+
+#### Adding psid ####
+
+data_US <- data_US %>%
+  left_join(country_psid$psID_US_3104.xlsx, by = c("return_tic" = "tic"))
+
+#### Filtering ####
 
 data_US <- data_US %>%
   filter(!Q_TerminateFlag %in% c("Screened", "QuotaMet"), Status == "IP Address",

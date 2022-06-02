@@ -8,7 +8,7 @@ NOTE:
 #######################################CONTRACT###############################################################################
 
 IPUMS_contract<-function(data_fram){
-  if (data_fram$country=="Australia"){
+  if (unique(data_fram$country)=="Australia"){
    
     data_fram <- data_fram %>% rename(PROF_POSITION = Q22.6)
     
@@ -21,7 +21,7 @@ IPUMS_contract<-function(data_fram){
     Other <- c("Other")
     Unknow <- c("Do not know","Prefer not to say")
   }
-  else if(data_fram$country=="Brazil"){
+  else if(unique(data_fram$country)=="Brazil"){
 
     data_fram <- data_fram %>% rename(PROF_POSITION = Q22.4)
     
@@ -40,7 +40,7 @@ IPUMS_contract<-function(data_fram){
     
     Unknow <- c("Não sei","Prefiro não informar")
   }
-  else if(data_fram$country=="Canada"){
+  else if(unique(data_fram$country)=="Canada"){
     
     data_fram <- data_fram %>% mutate(PROF_POSITION = Q22.3)
     
@@ -59,7 +59,7 @@ IPUMS_contract<-function(data_fram){
     Unknow <- c("Do not know","Prefer not to say")
   }
   
-  else if(data_fram$country=="Chile"){
+  else if(unique(data_fram$country)=="Chile"){
     
     data_fram <- data_fram %>% rename(PROF_POSITION = Q22.9)
     
@@ -80,7 +80,7 @@ IPUMS_contract<-function(data_fram){
     
   }
   
-  else if(data_fram$country=="Colombia"){
+  else if(unique(data_fram$country)=="Colombia"){
     
     data_fram <- data_fram %>% rename(PROF_POSITION = Q22.5)
     
@@ -101,7 +101,7 @@ IPUMS_contract<-function(data_fram){
     Unknow <- c("No lo sé","Prefiero no responder")
   
   }
-  else if(data_fram$country=="France"){
+  else if(unique(data_fram$country)=="France"){
     
     data_fram <- data_fram %>% rename(PROF_POSITION = Q22.5)
     
@@ -122,7 +122,7 @@ IPUMS_contract<-function(data_fram){
     
   }
   
-  else if(data_fram$country=="Italy"){
+  else if(unique(data_fram$country)=="Italy"){
     
     data_fram <- data_fram %>% rename(PROF_POSITION = Q22.7)
     
@@ -147,7 +147,7 @@ IPUMS_contract<-function(data_fram){
     
   }
   
-  else if(data_fram$country=="Russia"){
+  else if(unique(data_fram$country)=="Russia"){
     
     data_fram <- data_fram %>% mutate(PROF_POSITION = Q22.3)
     
@@ -169,7 +169,7 @@ IPUMS_contract<-function(data_fram){
     
   }
   
-  else if(data_fram$country=="Spain"){
+  else if(unique(data_fram$country)=="Spain"){
      
     data_fram <- data_fram %>% rename(PROF_POSITION = Q22.5)
     
@@ -187,10 +187,10 @@ IPUMS_contract<-function(data_fram){
     Unknow <- c("No lo sé","Prefiero no responder")
     
   }
-  else if(data_fram$country=="UK"){
+  else if(unique(data_fram$country)=="UK"){
     return(data_fram)
   }
-  else if(data_fram$country=="US"){
+  else if(unique(data_fram$country)=="US"){
     
     data_fram <- data_fram %>% mutate(PROF_POSITION = Q22.3)
     
@@ -211,7 +211,7 @@ IPUMS_contract<-function(data_fram){
     
   }
   
-  else if(data_fram$country=="China"){
+  else if(unique(data_fram$country)=="China"){
     
     data_fram <- data_fram %>% rename(PROF_POSITION = Q22.6)
     
@@ -226,7 +226,7 @@ IPUMS_contract<-function(data_fram){
     
     Unknow <- c("")
   }
-  else if(data_fram$country == "Uganda"){
+  else if(unique(data_fram$country) == "Uganda"){
     
     data_fram <- data_fram %>% mutate(PROF_POSITION = Q22.3)
     
@@ -242,7 +242,7 @@ IPUMS_contract<-function(data_fram){
     Unknow <- c("Do not know","Prefer not to say")
   }
   
-  else if(data_fram$country == "India"){
+  else if(unique(data_fram$country) == "India"){
     
     data_fram <- data_fram %>% mutate(PROF_POSITION = Q22.3)
     
@@ -273,7 +273,7 @@ IPUMS_contract<-function(data_fram){
 #######################################EDUCATION###############################################################################
 
 IPUMS_education<-function(data_fram){
-  if (data_fram$country=="Australia"){
+  if (unique(data_fram$country)=="Australia"){
     
     data_fram <- data_fram %>% rename(EDUCATION_LEVEL = Q22.4 )
     
@@ -292,7 +292,7 @@ IPUMS_education<-function(data_fram){
     
     Unknow <- c("Do not know","Prefer not to say")
   }
-  else if(data_fram$country=="Brazil"){
+  else if(unique(data_fram$country)=="Brazil"){
     
     data_fram <- data_fram %>% rename(EDUCATION_LEVEL = Q22.2 )
     
@@ -319,7 +319,7 @@ IPUMS_education<-function(data_fram){
     
 
   }
-  else if(data_fram$country=="Canada"){
+  else if(unique(data_fram$country)=="Canada"){
     
     data_fram <- data_fram %>% rename(EDUCATION_LEVEL = Q22.2 )
     
@@ -345,7 +345,7 @@ IPUMS_education<-function(data_fram){
     
   }
   
-  else if(data_fram$country=="Chile"){
+  else if(unique(data_fram$country)=="Chile"){
     
     data_fram <- data_fram %>% rename(EDUCATION_LEVEL = Q22.4 )
     
@@ -370,7 +370,7 @@ IPUMS_education<-function(data_fram){
     
   }
   
-  else if(data_fram$country=="Colombia"){
+  else if(unique(data_fram$country)=="Colombia"){
     
     data_fram <- data_fram %>% rename(EDUCATION_LEVEL = Q22.3 )
     
@@ -396,7 +396,7 @@ IPUMS_education<-function(data_fram){
     
     
   }
-  else if(data_fram$country=="France"){
+  else if(unique(data_fram$country)=="France"){
     
     data_fram <- data_fram %>% rename(EDUCATION_LEVEL = Q22.2 )
     
@@ -422,7 +422,7 @@ IPUMS_education<-function(data_fram){
     
   }
   
-  else if(data_fram$country=="Italy"){
+  else if(unique(data_fram$country)=="Italy"){
     
     data_fram <- data_fram %>% rename(EDUCATION_LEVEL = Q22.2 )
     
@@ -445,7 +445,7 @@ IPUMS_education<-function(data_fram){
 
   }
   
-  else if(data_fram$country=="Russia"){
+  else if(unique(data_fram$country)=="Russia"){
     
     data_fram <- data_fram %>% rename(EDUCATION_LEVEL = Q22.2 )
     
@@ -467,7 +467,7 @@ IPUMS_education<-function(data_fram){
     
   }
   
-  else if(data_fram$country=="Spain"){
+  else if(unique(data_fram$country)=="Spain"){
     
     data_fram <- data_fram %>% rename(EDUCATION_LEVEL = Q22.2 )
 
@@ -493,7 +493,7 @@ IPUMS_education<-function(data_fram){
 
     
   }
-  else if(data_fram$country=="UK"){
+  else if(unique(data_fram$country)=="UK"){
     
     data_fram <- data_fram %>% rename(EDUCATION_LEVEL = Q22.2 )
     
@@ -523,7 +523,7 @@ IPUMS_education<-function(data_fram){
     Unknow <- c("Do not know","Prefer not to say")
     
   }
-  else if(data_fram$country=="US"){
+  else if(unique(data_fram$country)=="US"){
     
     data_fram <- data_fram %>% rename(EDUCATION_LEVEL = Q22.2 )
     
@@ -547,7 +547,7 @@ IPUMS_education<-function(data_fram){
     
   }
   
-  else if(data_fram$country=="China"){
+  else if(unique(data_fram$country)=="China"){
     
     char1 <- function(string){
       string <-unlist(strsplit(string,""))[1]
@@ -585,7 +585,7 @@ IPUMS_education<-function(data_fram){
 
     
   }
-  else if(data_fram$country == "Uganda"){
+  else if(unique(data_fram$country) == "Uganda"){
     
     data_fram <- data_fram %>% rename(EDUCATION_LEVEL  = Q22.2)
     
@@ -608,7 +608,7 @@ IPUMS_education<-function(data_fram){
     
     
   }
-  else if(data_fram$country == "India"){
+  else if(unique(data_fram$country) == "India"){
     
     data_fram <- data_fram %>% rename(EDUCATION_LEVEL  = Q22.2)
     
@@ -645,7 +645,7 @@ IPUMS_education<-function(data_fram){
 #######################################Employment###############################################################################
 
 IPUMS_employment<-function(data_fram){
-  if (data_fram$country=="Australia"){
+  if (unique(data_fram$country)=="Australia"){
     
     data_fram <- data_fram %>% mutate(EMPLOYMENT = if_else(Q22.2 == "No" | Q22.2 == "Do not know" | Q22.2 == "Prefer not to say" ,Q22.5,"Student"))
     
@@ -670,7 +670,7 @@ IPUMS_employment<-function(data_fram){
     Unknow <- c("Do not know","Prefer not to say")
     
   }
-  else if(data_fram$country=="Brazil"){
+  else if(unique(data_fram$country)=="Brazil"){
     
     data_fram <- data_fram %>% rename(EMPLOYMENT = Q22.3 )
     
@@ -695,7 +695,7 @@ IPUMS_employment<-function(data_fram){
     Unknow <- c("Não sei","Prefiro não informar")
   
   }
-  else if(data_fram$country=="Canada"){
+  else if(unique(data_fram$country)=="Canada"){
     
     data_fram <- data_fram %>% rename(EMPLOYMENT = Q22.3 )
     
@@ -721,7 +721,7 @@ IPUMS_employment<-function(data_fram){
     
   }
   
-  else if(data_fram$country=="Chile"){
+  else if(unique(data_fram$country)=="Chile"){
     
     data_fram <- data_fram %>% rename(EMPLOYMENT = Q22.8)
     
@@ -749,7 +749,7 @@ IPUMS_employment<-function(data_fram){
     
   }
   
-  else if(data_fram$country=="Colombia"){
+  else if(unique(data_fram$country)=="Colombia"){
     
     data_fram <- data_fram %>% rename(EMPLOYMENT = Q22.4)
     
@@ -776,12 +776,12 @@ IPUMS_employment<-function(data_fram){
     
     
   }
-  else if(data_fram$country=="France"){
+  else if(unique(data_fram$country)=="France"){
     return(data_fram)
     
   }
   
-  else if(data_fram$country=="Italy"){
+  else if(unique(data_fram$country)=="Italy"){
     
     Employment <- function(ITA){
       ITA <- ITA %>% mutate(EMPLOYMENT = if_else(Q22.3=="Non in grado di lavorare permanentemente","Not active",
@@ -816,7 +816,7 @@ IPUMS_employment<-function(data_fram){
     
   }
   
-  else if(data_fram$country=="Russia"){
+  else if(unique(data_fram$country)=="Russia"){
     
     data_fram <- data_fram %>% rename(EMPLOYMENT = Q22.3)
     
@@ -845,7 +845,7 @@ IPUMS_employment<-function(data_fram){
     
   }
   
-  else if(data_fram$country=="Spain"){
+  else if(unique(data_fram$country)=="Spain"){
     
     data_fram <- data_fram %>% rename(EMPLOYMENT = Q22.3)
     
@@ -870,7 +870,7 @@ IPUMS_employment<-function(data_fram){
     Unknow <- c("No lo sé","Prefiero no responder")
     
   }
-  else if(data_fram$country=="UK"){
+  else if(unique(data_fram$country)=="UK"){
     
     data_fram <- data_fram %>% rename(EMPLOYMENT = Q22.3)
     
@@ -895,7 +895,7 @@ IPUMS_employment<-function(data_fram){
     Unknow <- c("Do not know","Prefer not to say")
     
   }
-  else if(data_fram$country=="US"){
+  else if(unique(data_fram$country)=="US"){
     
     data_fram <- data_fram %>% rename(EMPLOYMENT = Q22.3)
     
@@ -923,7 +923,7 @@ IPUMS_employment<-function(data_fram){
     
   }
   
-  else if(data_fram$country=="China"){
+  else if(unique(data_fram$country)=="China"){
     
     data_fram <- data_fram %>% rename(EMPLOYMENT = Q22.4)
     
@@ -956,7 +956,7 @@ IPUMS_employment<-function(data_fram){
     
     
   }
-  else if(data_fram$country == "Uganda"){
+  else if(unique(data_fram$country) == "Uganda"){
     
     data_fram <- data_fram %>% rename(EMPLOYMENT  = Q22.3)
     
@@ -981,7 +981,7 @@ IPUMS_employment<-function(data_fram){
     Unknow <- c("Do not know","Prefer not to say")
     
   }
-  else if(data_fram$country == "India"){
+  else if(unique(data_fram$country) == "India"){
     
     data_fram <- data_fram %>% rename(EMPLOYMENT  = Q22.3)
     
@@ -1025,7 +1025,7 @@ IPUMS_employment<-function(data_fram){
 #######################################WORK###############################################################################
 
 IPUMS_work<-function(data_fram){
-  if (data_fram$country=="Australia"){
+  if (unique(data_fram$country)=="Australia"){
     
     data_fram <- data_fram %>% rename(OCCUPATION = Q22.7 )
     
@@ -1054,7 +1054,7 @@ IPUMS_work<-function(data_fram){
     
     Unknow <- c("Do not know","Prefer not to say")
   }
-  else if(data_fram$country=="Brazil"){
+  else if(unique(data_fram$country)=="Brazil"){
     
     data_fram <- data_fram %>% rename(OCCUPATION = Q22.5 )
     
@@ -1084,7 +1084,7 @@ IPUMS_work<-function(data_fram){
     
     
   }
-  else if(data_fram$country=="Canada"){
+  else if(unique(data_fram$country)=="Canada"){
     
     data_fram <- data_fram %>% rename(OCCUPATION = Q22.4 )
     
@@ -1145,7 +1145,7 @@ IPUMS_work<-function(data_fram){
     
   }
   
-  else if(data_fram$country=="Chile"){
+  else if(unique(data_fram$country)=="Chile"){
     
     data_fram <- data_fram %>% rename(OCCUPATION = Q22.10 )
     
@@ -1176,7 +1176,7 @@ IPUMS_work<-function(data_fram){
     
   }
   
-  else if(data_fram$country=="Colombia"){
+  else if(unique(data_fram$country)=="Colombia"){
     
     data_fram <- data_fram %>% rename(OCCUPATION = Q22.6 )
     
@@ -1207,7 +1207,7 @@ IPUMS_work<-function(data_fram){
     
     
   }
-  else if(data_fram$country=="France"){
+  else if(unique(data_fram$country)=="France"){
     
     data_fram <- data_fram %>% rename(OCCUPATION = Q22.4 )
     
@@ -1247,7 +1247,7 @@ IPUMS_work<-function(data_fram){
     
   }
   
-  else if(data_fram$country=="Italy"){
+  else if(unique(data_fram$country)=="Italy"){
     
     data_fram <- data_fram %>% rename(OCCUPATION = Q22.6 )
     
@@ -1277,7 +1277,7 @@ IPUMS_work<-function(data_fram){
     
   }
   
-  else if(data_fram$country=="Spain"){
+  else if(unique(data_fram$country)=="Spain"){
     
     data_fram <- data_fram %>% rename(OCCUPATION = Q22.4 )
     
@@ -1361,7 +1361,7 @@ IPUMS_work<-function(data_fram){
     
     
   }
-  else if(data_fram$country=="UK"){
+  else if(unique(data_fram$country)=="UK"){
     
     data_fram <- data_fram %>% rename(OCCUPATION = Q22.4 )
     
@@ -1397,7 +1397,7 @@ IPUMS_work<-function(data_fram){
                 "Business proprietor, owner (full or partner) of a company")
     
   }
-  else if(data_fram$country=="US"){
+  else if(unique(data_fram$country)=="US"){
     
     data_fram <- data_fram %>%  rename(OCCUPATION = Q22.4 )
     
@@ -1446,7 +1446,7 @@ IPUMS_work<-function(data_fram){
     
   }
   
-  else if(data_fram$country=="China"){
+  else if(unique(data_fram$country)=="China"){
     
     data_fram <- data_fram %>%  rename(OCCUPATION = Q22.5 )
     
@@ -1475,7 +1475,7 @@ IPUMS_work<-function(data_fram){
     Unknow <- c("Noe")
     
   }
-  else if(data_fram$country == "Uganda"){
+  else if(unique(data_fram$country) == "Uganda"){
     
     data_fram <- data_fram %>% rename(OCCUPATION  = Q22.4)
     
@@ -1512,7 +1512,7 @@ IPUMS_work<-function(data_fram){
     
     
   }
-  else if(data_fram$country == "India"){
+  else if(unique(data_fram$country) == "India"){
     
     data_fram <- data_fram %>% rename(OCCUPATION  = Q22.4)
     
