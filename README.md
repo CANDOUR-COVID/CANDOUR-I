@@ -1,4 +1,4 @@
-**Data last updated: 29 June 2021**
+**Data last updated: 03 June 2022**
 
 # CANDOUR
 Covid-19 vAccine prefereNce anD Opinion sURvey
