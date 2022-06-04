@@ -46,6 +46,24 @@ labeling <- function(data) {
                       "Other",
                       "Prefer not to say"))
   
+  #### Country ####
+  
+  data$country <- data$country %>%
+    factor(levels = c("Australia",
+                      "Brazil",
+                      "Canada",
+                      "Chile",
+                      "China",
+                      "Colombia",
+                      "France",
+                      "India",
+                      "Italy",
+                      "Russia",
+                      "Spain",
+                      "Uganda",
+                      "UK",
+                      "US"))
+  
   #### Income ####
   
   data$INCOME <- data$INCOME %>%
