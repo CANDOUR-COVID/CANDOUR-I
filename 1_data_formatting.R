@@ -172,7 +172,7 @@ for (i in 2:length(country_data)) {
   global_data <- rbind(global_data, recode_for_conjoint(country_data[[i]]))
 }
 
-#### Writing data ####
+#### 3. Writing data ####
 
 # Save CSV for reference
 write_csv(global_data, "data/nbh_clean_conjoint_global.csv")

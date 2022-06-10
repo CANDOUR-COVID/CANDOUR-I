@@ -40,10 +40,6 @@ data_AUS <- read_csv(aus_path)
 
 data_AUS <- data_AUS[-c(1:2),]
 
-data_AUS <- data_AUS %>%
-  rowid_to_column("id") %>%
-  mutate(wave = 1)
-
 data_AUS<- data_AUS %>%
   separate(StartDate, into = c("Date", "Time"), sep = " ", remove = FALSE) %>%
   mutate(Date = lubridate::as_date(Date, format = "%Y-%m-%d"),
@@ -207,6 +203,13 @@ data_AUS <- data_AUS %>%
             return_tic, Q_TerminateFlag, starts_with("seed"), hideFooter,
             ends_with(c("First Click", "Last Click", "Page Submit", "Click Count"))))
 
+#### .id ####
+
+data_AUS <- data_AUS %>%
+  mutate(wave = 1,
+         ccode = 01,
+         id = paste0(ccode, psid))
+
 #### .Lottery vignette ####
 
 data_AUS <- data_AUS %>%
@@ -266,10 +269,6 @@ write_csv(respondi_AUS, "Respondi/respondi_AUS.csv")
 data_BR <- read_csv(br_path)
 
 data_BR <- data_BR[-c(1:2),]
-
-data_BR <- data_BR %>%
-  rowid_to_column("id") %>%
-  mutate(wave = 1)
 
 data_BR <- data_BR %>%
   separate(StartDate, into = c("Date", "Time"), sep = " ", remove = FALSE) %>%
@@ -436,6 +435,13 @@ data_BR <- data_BR %>%
             return_tic, Q_TerminateFlag, starts_with("seed"), hideFooter,
             ends_with(c("First Click", "Last Click", "Page Submit", "Click Count"))))
 
+#### .id ####
+
+data_BR <- data_BR %>%
+  mutate(wave = 1,
+         ccode = 02,
+         id = paste0(ccode, psid))
+
 #### .Lottery vignette ####
 
 data_BR <- data_BR %>%
@@ -493,10 +499,6 @@ write_csv(respondi_BR, "Respondi/respondi_BR.csv")
 data_CAN <- read_csv(can_path)
 
 data_CAN <- data_CAN[-c(1:2),]
-
-data_CAN <- data_CAN %>%
-  rowid_to_column("id") %>%
-  mutate(wave = 1)
 
 data_CAN <- data_CAN %>%
   separate(StartDate, into = c("Date", "Time"), sep = " ", remove = FALSE) %>%
@@ -651,6 +653,13 @@ data_CAN <- data_CAN %>%
             LocationLatitude, LocationLongitude, DistributionChannel, UserLanguage,
             return_tic, Q_TerminateFlag, starts_with("seed"), hideFooter,
             ends_with(c("First Click", "Last Click", "Page Submit", "Click Count"))))
+
+#### .id ####
+
+data_CAN <- data_CAN %>%
+  mutate(wave = 1,
+         ccode = 03,
+         id = paste0(ccode, psid))
 
 #### .Lottery vignette ####
 
@@ -871,9 +880,12 @@ data_CHL <- data_CHL %>%
             Q_TerminateFlag, starts_with("seed"), hideFooter,
             ends_with(c("First Click", "Last Click", "Page Submit", "Click Count"))))
 
+#### .id ####
+
 data_CHL <- data_CHL %>%
-  rowid_to_column("id") %>%
-  mutate(wave = 1)
+  mutate(wave = 1,
+         ccode = 04,
+         id = paste0(ccode, psid))
 
 #### .Lottery vignette ####
 
@@ -931,10 +943,6 @@ write_csv(data_CHL, "Chile/data_CHL.csv")
 data_CHN <- read_csv(chn_path)
 
 data_CHN <- data_CHN[-c(1:2),]
-
-data_CHN <- data_CHN %>%
-  rowid_to_column("id") %>%
-  mutate(wave = 1)
 
 data_CHN <- data_CHN %>%
   separate(StartDate, into = c("Date", "Time"), sep = " ", remove = FALSE) %>%
@@ -1082,6 +1090,13 @@ data_CHN <- data_CHN %>%
             return_tic, Q_TerminateFlag, starts_with("seed"), hideFooter,
             ends_with(c("First Click", "Last Click", "Page Submit", "Click Count"))))
 
+#### .id ####
+
+data_CHN <- data_CHN %>%
+  mutate(wave = 1,
+         ccode = 05,
+         id = paste0(ccode, psid))
+
 #### .Lottery vignette ####
 
 data_CHN <- data_CHN %>%
@@ -1122,10 +1137,6 @@ write_csv(respondi_CHN, "Respondi/respondi_CHN.csv")
 data_COL <- read_csv(col_path)
 
 data_COL <- data_COL[-c(1:2),]
-
-data_COL <- data_COL %>%
-  rowid_to_column("id") %>%
-  mutate(wave = 1)
 
 data_COL <- data_COL %>%
   separate(StartDate, into = c("Date", "Time"), sep = " ", remove = FALSE) %>%
@@ -1291,6 +1302,12 @@ data_COL <- data_COL %>%
             LocationLatitude, LocationLongitude, DistributionChannel, UserLanguage,
             return_tic, Q_TerminateFlag, starts_with("seed"), hideFooter,
             ends_with(c("First Click", "Last Click", "Page Submit", "Click Count"))))
+#### .id ####
+
+data_COL <- data_COL %>%
+  mutate(wave = 1,
+         ccode = 06,
+         id = paste0(ccode, psid))
 
 #### .Lottery vignette ####
 
@@ -1349,10 +1366,6 @@ write_csv(respondi_COL, "Respondi/respondi_COL.csv")
 data_FR <- read_csv(fr_path)
 
 data_FR <- data_FR[-c(1:2),]
-
-data_FR <- data_FR %>%
-  rowid_to_column("id") %>%
-  mutate(wave = 1)
 
 data_FR <- data_FR %>%
   separate(StartDate, into = c("Date", "Time"), sep = " ", remove = FALSE) %>%
@@ -1515,6 +1528,13 @@ data_FR <- data_FR %>%
             return_tic, Q_TerminateFlag, starts_with("seed"), hideFooter,
             ends_with(c("First Click", "Last Click", "Page Submit", "Click Count"))))
 
+#### .id ####
+
+data_FR <- data_FR %>%
+  mutate(wave = 1,
+         ccode = 07,
+         id = paste0(ccode, psid))
+
 #### .Lottery vignette ####
 
 data_FR <- data_FR %>%
@@ -1569,13 +1589,7 @@ write_csv(respondi_FR, "Respondi/respondi_FR.csv")
 
 #### India ####
 
-data_IND <- read_csv(ind_path)
-
-data_IND <- data_IND[-c(1:2),]
-
-data_IND <- data_IND %>%
-  rowid_to_column("id") %>%
-  mutate(wave = 1)
+data_IND <- read_csv(ind_path)[-c(1:2),]
 
 data_IND <- data_IND %>%
   separate(StartDate, into = c("Date", "Time"), sep = " ", remove = FALSE) %>%
@@ -1745,6 +1759,15 @@ data_IND <- data_IND %>%
             return_tic, Q_TerminateFlag, starts_with("seed"), hideFooter,
             ends_with(c("First Click", "Last Click", "Page Submit", "Click Count"))))
 
+#### .id ####
+
+data_IND <- data_IND[-c(1:2),]
+
+data_IND <- data_IND %>%
+  mutate(wave = 1,
+         ccode = 09,
+         id = paste0(ccode, psid))
+
 #### .Lottery vignette ####
 
 data_IND <- data_IND %>%
@@ -1802,10 +1825,6 @@ write_csv(respondi_IND, "Respondi/respondi_IND.csv")
 data_IT <- read_csv(it_path)
 
 data_IT <- data_IT[-c(1:2),]
-
-data_IT <- data_IT %>%
-  rowid_to_column("id") %>%
-  mutate(wave = 1)
 
 data_IT <- data_IT %>%
   separate(StartDate, into = c("Date", "Time"), sep = " ", remove = FALSE) %>%
@@ -1982,6 +2001,13 @@ data_IT <- data_IT %>%
             LocationLatitude, LocationLongitude, DistributionChannel, UserLanguage,
             return_tic, Q_TerminateFlag, starts_with("seed"), hideFooter,
             ends_with(c("First Click", "Last Click", "Page Submit", "Click Count"))))
+
+#### .id ####
+
+data_IT <- data_IT %>%
+  mutate(wave = 1,
+         ccode = 10,
+         id = paste0(ccode, psid))
 
 #### .Lottery vignette ####
 
@@ -2236,11 +2262,15 @@ data_RUS <- data_RUS %>%
          response2 = if_else(select2 == "Группу А", 1,
                              if_else(select2 == "Группу Б", 0, NA_real_)))
 
-# id
+#### .id ####
+
+set.seed(123)
 
 data_RUS <- data_RUS %>%
-  rowid_to_column("id") %>%
-  mutate(wave = 1)
+  mutate(psid = sample(1000000000000:9999999999999, nrow(data_RUS), replace=FALSE),
+         wave = 1,
+         ccode = 13,
+         id = paste0(ccode, psid))
 
 #pilot
 
@@ -2263,10 +2293,6 @@ write_csv(data_RUS %>% select(-postal_code), "Cleaned Data/Cleaned Data (without
 data_SP <- read_csv(sp_path)
 
 data_SP <- data_SP[-c(1:2),]
-
-data_SP <- data_SP %>%
-  rowid_to_column("id") %>%
-  mutate(wave = 1)
 
 data_SP <- data_SP %>%
   separate(StartDate, into = c("Date", "Time"), sep = " ", remove = FALSE) %>%
@@ -2442,6 +2468,13 @@ data_SP <- data_SP %>%
             return_tic, Q_TerminateFlag, starts_with("seed"), hideFooter,
             ends_with(c("First Click", "Last Click", "Page Submit", "Click Count"))))
 
+#### .id ####
+
+data_SP <- data_SP %>%
+  mutate(wave = 1,
+         ccode = 15,
+         id = paste0(ccode, psid))
+
 #### .Lottery vignette ####
 
 data_SP <- data_SP %>%
@@ -2499,10 +2532,6 @@ write_csv(respondi_SP, "Respondi/respondi_SP.csv")
 data_UGA <- read_csv(uga_path)
 
 data_UGA <- data_UGA[-c(1:2),]
-
-data_UGA <- data_UGA %>%
-  rowid_to_column("id") %>%
-  mutate(wave = 1)
 
 data_UGA <- data_UGA %>%
   separate(StartDate, into = c("Date", "Time"), sep = " ", remove = FALSE) %>%
@@ -2658,6 +2687,13 @@ data_UGA <- data_UGA %>%
             ID, Q_TerminateFlag, starts_with("seed"), hideFooter,
             ends_with(c("First Click", "Last Click", "Page Submit", "Click Count"))))
 
+#### .id ####
+
+data_UGA <- data_UGA %>%
+  mutate(wave = 1,
+         ccode = 17,
+         id = paste0(ccode, psid))
+
 #### .Lottery vignette ####
 
 data_UGA <- data_UGA %>%
@@ -2715,10 +2751,6 @@ write_csv(data_UGA, "Uganda/data_UGA.csv")
 data_UK <- read_csv(uk_path)
 
 data_UK <- data_UK[-c(1:2),]
-
-data_UK <- data_UK %>%
-  rowid_to_column("id") %>%
-  mutate(wave = 1)
 
 data_UK <- data_UK %>%
   separate(StartDate, into = c("Date", "Time"), sep = " ", remove = FALSE) %>%
@@ -2883,6 +2915,13 @@ data_UK <- data_UK %>%
             return_tic, Q_TerminateFlag, starts_with("seed"), hideFooter,
             ends_with(c("First Click", "Last Click", "Page Submit", "Click Count"))))
 
+#### .id ####
+
+data_UK <- data_UK %>%
+  mutate(wave = 1,
+         ccode = 18,
+         id = paste0(ccode, psid))
+
 #### .Lottery vignette ####
 
 data_UK <- data_UK %>%
@@ -2940,10 +2979,6 @@ write_csv(respondi_UK, "Respondi/respondi_UK.csv")
 data_US <- read_csv(us_path)
 
 data_US <- data_US[-c(1:2),]
-
-data_US <- data_US %>%
-  rowid_to_column("id") %>%
-  mutate(wave = 1)
 
 data_US <- data_US %>%
   separate(StartDate, into = c("Date", "Time"), sep = " ", remove = FALSE) %>%
@@ -3108,6 +3143,13 @@ data_US <- data_US %>%
             LocationLatitude, LocationLongitude, DistributionChannel, UserLanguage,
             return_tic, Q_TerminateFlag, starts_with("seed"), hideFooter,
             ends_with(c("First Click", "Last Click", "Page Submit", "Click Count"))))
+
+#### .id ####
+
+data_US <- data_US %>%
+  mutate(wave = 1,
+         ccode = 19,
+         id = paste0(ccode, psid))
 
 #### .Lottery vignette ####
 
