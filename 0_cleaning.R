@@ -197,6 +197,10 @@ respondi_AUS <- data_AUS %>%
   select(return_tic)
 
 data_AUS <- data_AUS %>%
+  arrange(EndDate) %>%
+  distinct(psid, .keep_all = T)
+
+data_AUS <- data_AUS %>%
   select(-c(StartDate, EndDate, Status, IPAddress, Progress, Finished, RecordedDate, ResponseId,
             RecipientLastName, RecipientFirstName, RecipientEmail, ExternalReference, 
             LocationLatitude, LocationLongitude, DistributionChannel, UserLanguage,
@@ -429,6 +433,10 @@ respondi_BR <- data_BR %>%
   select(return_tic)
 
 data_BR <- data_BR %>%
+  arrange(EndDate) %>%
+  distinct(psid, .keep_all = T)
+
+data_BR <- data_BR %>%
   select(-c(StartDate, EndDate, Status, IPAddress, Progress, Finished, RecordedDate, ResponseId,
             RecipientLastName, RecipientFirstName, RecipientEmail, ExternalReference, 
             LocationLatitude, LocationLongitude, DistributionChannel, UserLanguage,
@@ -646,6 +654,10 @@ data_CAN <- data_CAN %>%
 
 respondi_CAN <- data_CAN %>%
   select(return_tic)
+
+data_CAN <- data_CAN %>%
+  arrange(EndDate) %>%
+  distinct(psid, .keep_all = T)
 
 data_CAN <- data_CAN %>%
   select(-c(StartDate, EndDate, Status, IPAddress, Progress, Finished, RecordedDate, ResponseId,
@@ -874,6 +886,10 @@ data_CHL <- data_CHL %>%
          Progress == "100")
 
 data_CHL <- data_CHL %>%
+  arrange(EndDate) %>%
+  distinct(psid, .keep_all = T)
+
+data_CHL <- data_CHL %>%
   select(-c(StartDate, EndDate, Status, IPAddress, Progress, Finished, RecordedDate, ResponseId,
             RecipientLastName, RecipientFirstName, RecipientEmail, ExternalReference, 
             LocationLatitude, LocationLongitude, DistributionChannel, UserLanguage,
@@ -1082,6 +1098,10 @@ data_CHN <- data_CHN %>%
 
 respondi_CHN <- data_CHN %>%
   select(return_tic)
+
+data_CHN <- data_CHN %>%
+  arrange(EndDate) %>%
+  distinct(psid, .keep_all = T)
 
 data_CHN <- data_CHN %>%
   select(-c(StartDate, EndDate, Status, IPAddress, Progress, Finished, RecordedDate, ResponseId,
@@ -1295,6 +1315,10 @@ data_COL <- data_COL %>%
 
 respondi_COL <- data_COL %>%
   select(return_tic)
+
+data_COL <- data_COL %>%
+  arrange(EndDate) %>%
+  distinct(psid, .keep_all = T)
 
 data_COL <- data_COL %>%
   select(-c(StartDate, EndDate, Status, IPAddress, Progress, Finished, RecordedDate, ResponseId,
@@ -1520,6 +1544,10 @@ data_FR <- data_FR %>%
 
 respondi_FR <- data_FR %>%
   select(return_tic)
+
+data_FR <- data_FR %>%
+  arrange(EndDate) %>%
+  distinct(psid, .keep_all = T)
 
 data_FR <- data_FR %>%
   select(-c(StartDate, EndDate, Status, IPAddress, Progress, Finished, RecordedDate, ResponseId,
@@ -1751,6 +1779,10 @@ data_IND <- data_IND %>%
 
 respondi_IND <- data_IND %>%
   select(return_tic)
+
+data_IND <- data_IND %>%
+  arrange(EndDate) %>%
+  distinct(psid, .keep_all = T)
 
 data_IND <- data_IND %>%
   select(-c(StartDate, EndDate, Status, IPAddress, Progress, Finished, RecordedDate, ResponseId,
@@ -1996,6 +2028,10 @@ respondi_IT <- data_IT %>%
   select(return_tic)
 
 data_IT <- data_IT %>%
+  arrange(EndDate) %>%
+  distinct(psid, .keep_all = T)
+
+data_IT <- data_IT %>%
   select(-c(StartDate, EndDate, Status, IPAddress, Progress, Finished, RecordedDate, ResponseId,
             RecipientLastName, RecipientFirstName, RecipientEmail, ExternalReference, 
             LocationLatitude, LocationLongitude, DistributionChannel, UserLanguage,
@@ -2078,6 +2114,10 @@ data_RUS <- data_RUS %>%
 
 data_RUS <- data_RUS %>%
   mutate(pilot = if_else(Date < "2021-04-21", 1, 0))
+
+data_RUS <- data_RUS %>%
+  arrange(EndDate) %>%
+  distinct(psid, .keep_all = T)
 
 data_RUS <- data_RUS %>%
   select(-c(StartDate, EndDate, Status, IPAddress, Progress, Finished, ResponseId,
@@ -2462,6 +2502,10 @@ respondi_SP <- data_SP %>%
   select(return_tic)
 
 data_SP <- data_SP %>%
+  arrange(EndDate) %>%
+  distinct(psid, .keep_all = T)
+
+data_SP <- data_SP %>%
   select(-c(StartDate, EndDate, Status, IPAddress, Progress, Finished, RecordedDate, ResponseId,
             RecipientLastName, RecipientFirstName, RecipientEmail, ExternalReference, 
             LocationLatitude, LocationLongitude, DistributionChannel, UserLanguage,
@@ -2679,6 +2723,10 @@ data_UGA <- data_UGA %>%
 data_UGA <- data_UGA %>%
   filter(!Q_TerminateFlag %in% c("Screened"), Status == "IP Address",
          Progress == "100")
+
+data_UGA <- data_UGA %>%
+  arrange(EndDate) %>%
+  distinct(psid, .keep_all = T)
 
 data_UGA <- data_UGA %>%
   select(-c(StartDate, EndDate, Status, IPAddress, Progress, Finished, RecordedDate, ResponseId,
@@ -2907,6 +2955,10 @@ data_UK <- data_UK %>%
 
 respondi_UK <- data_UK %>%
   select(return_tic)
+
+data_UK <- data_UK %>%
+  arrange(EndDate) %>%
+  distinct(psid, .keep_all = T)
 
 data_UK <- data_UK %>%
   select(-c(StartDate, EndDate, Status, IPAddress, Progress, Finished, RecordedDate, ResponseId,
@@ -3138,6 +3190,10 @@ respondi_US <- data_US %>%
   select(return_tic)
 
 data_US <- data_US %>%
+  arrange(EndDate) %>%
+  distinct(psid, .keep_all = T)
+
+data_US <- data_US %>%
   select(-c(StartDate, EndDate, Status, IPAddress, Progress, Finished, RecordedDate, ResponseId,
             RecipientLastName, RecipientFirstName, RecipientEmail, ExternalReference, 
             LocationLatitude, LocationLongitude, DistributionChannel, UserLanguage,
@@ -3206,11 +3262,11 @@ write_csv(respondi_US, "Respondi/respondi_US.csv")
 
 #### Copy ####
 
-file.copy(from="Australia/data_AUS.csv", to="Cleaned Data/", 
+file.copy(from="Australia/data_AUS.csv", to="Cleaned Data/Cleaned Data (without postal codes)/", 
           overwrite = TRUE, recursive = FALSE, 
           copy.mode = TRUE)
 
-file.copy(from="Brazil/data_BR.csv", to="Cleaned Data/", 
+file.copy(from="Brazil/data_BR.csv", to="Cleaned Data/Cleaned Data (without postal codes)/", 
           overwrite = TRUE, recursive = FALSE, 
           copy.mode = TRUE)
 
@@ -3222,7 +3278,7 @@ file.copy(from="Chile/data_CHL.csv", to="Cleaned Data/",
           overwrite = TRUE, recursive = FALSE, 
           copy.mode = TRUE)
 
-file.copy(from="China/data_CHN.csv", to="Cleaned Data/", 
+file.copy(from="China/data_CHN.csv", to="Cleaned Data/Cleaned Data (without postal codes)/", 
           overwrite = TRUE, recursive = FALSE, 
           copy.mode = TRUE)
 
@@ -3242,11 +3298,11 @@ file.copy(from="Italy/data_IT.csv", to="Cleaned Data/",
           overwrite = TRUE, recursive = FALSE, 
           copy.mode = TRUE)
 
-file.copy(from="Spain/data_SP.csv", to="Cleaned Data/", 
+file.copy(from="Spain/data_SP.csv", to="Cleaned Data/Cleaned Data (without postal codes)/", 
           overwrite = TRUE, recursive = FALSE, 
           copy.mode = TRUE)
 
-file.copy(from="Uganda/data_UGA.csv", to="Cleaned Data/", 
+file.copy(from="Uganda/data_UGA.csv", to="Cleaned Data/Cleaned Data (without postal codes)/", 
           overwrite = TRUE, recursive = FALSE, 
           copy.mode = TRUE)
 
@@ -3292,3 +3348,11 @@ write_csv(data_IND, "Cleaned Data/Cleaned Data (without postal codes)/data_IND.c
 write_csv(data_IT, "Cleaned Data/Cleaned Data (without postal codes)/data_IT.csv")
 write_csv(data_UK, "Cleaned Data/Cleaned Data (without postal codes)/data_UK.csv")
 write_csv(data_US, "Cleaned Data/Cleaned Data (without postal codes)/data_US.csv")
+
+for (i in c("AUS", "BR", "CAN", "CHL", "CHN", "COL", "FR", "IND", "IT", "RUS",
+            "SP", "UGA", "UK", "US")) {
+  file.copy(from=paste0("Cleaned Data/Cleaned Data (without postal codes)/data_", i, ".csv"), 
+            to="C:/Users/Matias/Dropbox/Predoctoral/CANDOUR/Github/CANDOUR/Wave I/data/raw/", 
+            overwrite = TRUE, recursive = FALSE, 
+            copy.mode = TRUE)
+}

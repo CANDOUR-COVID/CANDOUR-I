@@ -20,6 +20,7 @@ country_codes <- c("AUS", "BR", "CAN", "CHL", "CHN", "COL", "FR", "IT", "SP",
 
 for (country in country_codes) {
   country_data[[country]] <- read_csv(paste0("data/raw/data_", country, ".csv"))
+  country_data[[country]]$id <- as.numeric(country_data[[country]]$id)
 }
 
 # Merging weights
