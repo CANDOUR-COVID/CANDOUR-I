@@ -131,7 +131,7 @@ data <- labeling(data)
 
 # Removing conjoint and WTP variables
 data <- data %>%
-  select(-c(starts_with(c("person", "wtp_amount", "geq_taxes", "geq_ticket")), 
+  select(-c(starts_with(c("person", "wtp_amount")), 
             ends_with(c("Q5.4_1", "Q5.5_1", "Q5.6_1")), "wtp_access", 
             "wtp_private", "wtpVal", "taxesExtra", "ticketExtra"))
 
