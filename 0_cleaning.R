@@ -6,7 +6,7 @@ setwd("C:/Users/Matias/Dropbox/Predoctoral/CANDOUR/Vaccine Survey Data/psID")
 
 country_psid <- list()
 
-for (i in list.files()[-1]) {
+for (i in setdiff(list.files(), c("otros"))) {
   country_psid[[i]] <- read.xlsx(i, sheetIndex = 1)
 }
 

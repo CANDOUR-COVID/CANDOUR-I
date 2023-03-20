@@ -58,7 +58,6 @@ IPUMS_contract<-function(data_fram){
     
     Unknow <- c("Do not know","Prefer not to say")
   }
-  
   else if(unique(data_fram$country)=="Chile"){
     
     data_fram <- data_fram %>% rename(PROF_POSITION = Q22.9)
@@ -79,7 +78,6 @@ IPUMS_contract<-function(data_fram){
     Unknow <- c("No lo sé","Prefiero no responder")
     
   }
-  
   else if(unique(data_fram$country)=="Colombia"){
     
     data_fram <- data_fram %>% rename(PROF_POSITION = Q22.5)
@@ -121,7 +119,6 @@ IPUMS_contract<-function(data_fram){
     Unknow <- c("Sans objet")
     
   }
-  
   else if(unique(data_fram$country)=="Italy"){
     
     data_fram <- data_fram %>% rename(PROF_POSITION = Q22.7)
@@ -1561,6 +1558,791 @@ IPUMS_work<-function(data_fram){
                                                                                                                          if_else(OCCUPATION %in% Armed_forces,"Armed forces",
                                                                                                                                  if_else(OCCUPATION %in% Other_occu,"Other occupations, unspecified or n.e.c.", "Unknown/missing"))))))))))))
   
+  
+  return(data_fram)
+}
+
+
+#######################################INCOME#####################################
+
+INCOME <- function(data_fram){
+  if (unique(data_fram$country) == "Australia"){
+    
+    INCOME_LOW_str <- "[$]1[-]|7,800|15,600|20,800|26,000|33,800|41,600|52,000|65,000|78,000|91,000|104,000|156,000"
+    INCOME_HIGH_str <- "7,799|15,599|20,799|25,999|33,799|41,599|51,999|64,999|77,999|90,999|103,999|155,999"
+    INCOME_HH_LOW_str <- "[$]1[-]|7,800|15,600|20,800|26,000|33,800|41,600|52,000|65,000|78,000|91,000|104,000|130,000|156,000|182,000|208,000|234,000|260,000|312,000|416,000"
+    INCOME_HH_HIGH_str <- "7,799|15,599|20,799|25,999|33,799|41,599|51,999|64,999|77,999|90,999|103,999|129,999|155,999|181,999|207,999|233,999|259,999|311,999|415,999"
+    
+    data_fram <- data_fram %>% 
+      mutate(INCOME_LOW  = as.numeric(gsub(",|[$]|[-]", "", str_extract(data_fram$INCOME, INCOME_LOW_str))),
+             INCOME_HIGH  = as.numeric(gsub(",", "", str_extract(data_fram$INCOME, INCOME_HIGH_str))),
+             INCOME_MEAN = sum((INCOME_HIGH - INCOME_LOW)/2 + INCOME_LOW, na.rm = T)/nrow(data_fram),
+             INCOME_HH_LOW  = as.numeric(gsub(",|[$]|[-]", "", str_extract(data_fram$HH_INCOME, INCOME_HH_LOW_str))),
+             INCOME_HH_HIGH  = as.numeric(gsub(",", "", str_extract(data_fram$HH_INCOME, INCOME_HH_HIGH_str))),
+             INCOME_HH_MEAN = sum((INCOME_HH_HIGH - INCOME_HH_LOW)/2 + INCOME_HH_LOW, na.rm = T)/nrow(data_fram),
+             INCOME_PPP = 1.471741)
+    
+    freq.table <- data_fram %>%
+      group_by(INCOME_LOW) %>%
+      summarise(n = n()) %>%
+      ungroup() %>%
+      filter(!is.na(INCOME_LOW)) %>%
+      mutate(cumsum = cumsum(n),
+             rel.freq = cumsum/sum(n))
+    
+    for (j in 1:nrow(freq.table)) {
+      if (freq.table$rel.freq[j]>=0.5) {
+        break
+      }
+    }
+    
+    freq.table <- freq.table[(j-1):nrow(freq.table),][1:3,]
+    
+    data_fram <- data_fram %>% 
+      mutate(INCOME_MED = as.numeric(freq.table[2,1] + (0.5 - freq.table[1,4])/(freq.table[2,4] - freq.table[1,4])*(freq.table[3,1] - freq.table[2,1])))
+    
+  }
+  else if(unique(data_fram$country) == "Brazil"){
+    
+    INCOME_LOW_str <- "Menos|523|1.045|2.090|3.135|5.225|10.450|20.900"
+    INCOME_HIGH_str <- "Menos|a R[$] 1.045|a R[$] 2.090|a R[$] 3.135|a R[$] 5.225|a R[$] 10.450|a R[$] 20.900"
+    
+    data_fram <- data_fram %>% 
+      mutate(INCOME_LOW  = as.numeric(gsub("[.]", "", 
+                                           gsub("Menos", "0", 
+                                                str_extract(data_fram$INCOME, INCOME_LOW_str)))),
+             INCOME_HIGH  = str_extract(data_fram$INCOME, INCOME_HIGH_str),
+             INCOME_HH_LOW  = as.numeric(gsub("[.]", "", 
+                                              gsub("Menos", "0", 
+                                                   str_extract(data_fram$HH_INCOME, INCOME_LOW_str)))),
+             INCOME_HH_HIGH  = str_extract(data_fram$HH_INCOME, INCOME_HIGH_str),
+             INCOME_PPP = 2.36170285287039)
+    
+    data_fram$INCOME_HIGH <- data_fram$INCOME_HIGH %>%
+      recode("Menos" = 523, "a R$ 1.045" = 1045,
+             "a R$ 2.090" = 2090, "a R$ 3.135" = 3135,
+             "a R$ 5.225" = 5225, "a R$ 10.450" = 10450,
+             "a R$ 20.900" = 20900)
+    
+    data_fram$INCOME_HH_HIGH <- data_fram$INCOME_HH_HIGH %>%
+      recode("Menos" = 523, "a R$ 1.045" = 1045,
+             "a R$ 2.090" = 2090, "a R$ 3.135" = 3135,
+             "a R$ 5.225" = 5225, "a R$ 10.450" = 10450,
+             "a R$ 20.900" = 20900)
+    
+    data_fram <- data_fram %>% 
+      mutate(INCOME_MEAN = sum((INCOME_HIGH - INCOME_LOW)/2 + INCOME_LOW, na.rm = T)/nrow(data_fram),
+             INCOME_HH_MEAN = sum((INCOME_HH_HIGH - INCOME_HH_LOW)/2 + INCOME_HH_LOW, na.rm = T)/nrow(data_fram))
+    
+    freq.table <- data_fram %>%
+      group_by(INCOME_LOW) %>%
+      summarise(n = n()) %>%
+      ungroup() %>%
+      filter(!is.na(INCOME_LOW)) %>%
+      mutate(cumsum = cumsum(n),
+             rel.freq = cumsum/sum(n))
+    
+    for (j in 1:nrow(freq.table)) {
+      if (freq.table$rel.freq[j]>=0.5) {
+        break
+      }
+    }
+    
+    freq.table <- freq.table[(j-1):nrow(freq.table),][1:3,]
+    
+    data_fram <- data_fram %>% 
+      mutate(INCOME_MED = as.numeric(freq.table[2,1] + (0.5 - freq.table[1,4])/(freq.table[2,4] - freq.table[1,4])*(freq.table[3,1] - freq.table[2,1])))
+    
+  }
+  else if(unique(data_fram$country) == "Canada"){
+    
+    INCOME_LOW_str <- "Under|2,000|5,000|7,000|10,000|12,000|15,000|17,000|20,000|25,000|30,000|35,000|40,000|45,000|50,000|55,000|60,000|65,000|70,000|75,000|80,000|85,000|90,000|95,000|100,000|110,000|120,000|135,000|150,000|175,000|200,000|250,000"
+    INCOME_HIGH_str <- "Under [$]2,000|4,999|6,999|9,999|11,999|14,999|16,999|19,999|24,999|29,999|34,999|39,999|44,999|49,999|54,999|59,999|64,999|69,999|74,999|79,999|84,999|89,999|94,999|99,999|109,999|119,999|134,999|149,999|174,999|199,999|249,999"
+    INCOME_HH_LOW_str <- "Under|2,000|5,000|7,000|10,000|12,000|15,000|17,000|20,000|25,000|30,000|35,000|40,000|45,000|50,000|55,000|60,000|65,000|70,000|75,000|80,000|85,000|90,000|95,000|100,000|110,000|120,000|135,000|150,000|175,000|200,000|250,000"
+    INCOME_HH_HIGH_str <- "Under|4,999|6,999|9,999|11,999|14,999|16,999|19,999|24,999|29,999|34,999|39,999|44,999|49,999|54,999|59,999|64,999|69,999|74,999|79,999|84,999|89,999|94,999|99,999|109,999|119,999|134,999|149,999|174,999|199,999|249,999"
+    
+    data_fram <- data_fram %>% 
+      mutate(INCOME_LOW  = as.numeric(gsub(",", "", 
+                                           gsub("Under", "0", 
+                                                str_extract(data_fram$INCOME, INCOME_LOW_str)))),
+             INCOME_HIGH = as.numeric(gsub(",", "", 
+                                           gsub("Under [$]2,000", "2,000", 
+                                                str_extract(data_fram$INCOME, INCOME_HIGH_str)))),
+             INCOME_HH_LOW  = as.numeric(gsub(",", "", 
+                                              gsub("Under", "0", 
+                                                   str_extract(data_fram$HH_INCOME, INCOME_HH_LOW_str)))),
+             INCOME_HH_HIGH = as.numeric(gsub(",", "", 
+                                              gsub("Under", "2,000", 
+                                                   str_extract(data_fram$HH_INCOME, INCOME_HH_HIGH_str)))),
+             INCOME_PPP = 1.206376)
+    
+    data_fram <- data_fram %>% 
+      mutate(INCOME_MEAN = sum((INCOME_HIGH - INCOME_LOW)/2 + INCOME_LOW, na.rm = T)/nrow(data_fram),
+             INCOME_HH_MEAN = sum((INCOME_HH_HIGH - INCOME_HH_LOW)/2 + INCOME_HH_LOW, na.rm = T)/nrow(data_fram))
+    
+    freq.table <- data_fram %>%
+      group_by(INCOME_LOW) %>%
+      summarise(n = n()) %>%
+      ungroup() %>%
+      filter(!is.na(INCOME_LOW)) %>%
+      mutate(cumsum = cumsum(n),
+             rel.freq = cumsum/sum(n))
+    
+    for (j in 1:nrow(freq.table)) {
+      if (freq.table$rel.freq[j]>=0.5) {
+        break
+      }
+    }
+    
+    freq.table <- freq.table[(j-1):nrow(freq.table),][1:3,]
+    
+    data_fram <- data_fram %>% 
+      mutate(INCOME_MED = as.numeric(freq.table[2,1] + (0.5 - freq.table[1,4])/(freq.table[2,4] - freq.table[1,4])*(freq.table[3,1] - freq.table[2,1])))
+    
+  }
+  else if(unique(data_fram$country) == "Chile"){
+    
+    INCOME_LOW_str <- "[$] 0 a [$]35.000|35.001|60.001|100.001|200.001|350.001|500.001|750.001|1.000.001|1.500.001|2.000.001|3.000.001|5.000.001|7.500.001|10.000.001|15.000.001|Más"
+    INCOME_HIGH_str <- "Menos|35.000|60.000|100.000|200.000|350.000|500.000|750.000|1.000.000|1.500.000|2.000.000|3.000.000|5.000.000|7.500.000|10.000.000|15.000.000|[$] 15.000.001 a [$] 20.000.000"
+    
+    data_fram <- data_fram %>% 
+      mutate(INCOME_LOW  = as.numeric(gsub("[.]", "", 
+                                           gsub("[$] 0 a [$]35.000", "0", 
+                                                gsub("Más", "20.000.000", str_extract(data_fram$INCOME, INCOME_LOW_str))))),
+             INCOME_HIGH = as.numeric(gsub("[.]", "", 
+                                           gsub("Menos", "17.500", 
+                                                gsub("[$] 15.000.001 a [$] 20.000.000", "20.000.000",
+                                                     str_extract(data_fram$INCOME, INCOME_HIGH_str))))),
+             INCOME_HH_LOW  = as.numeric(gsub("[.]", "", 
+                                              gsub("[$] 0 a [$]35.000", "0", 
+                                                   gsub("Más", "20.000.000", str_extract(data_fram$HH_INCOME, INCOME_LOW_str))))),
+             INCOME_HH_HIGH = as.numeric(gsub("[.]", "", 
+                                              gsub("Menos", "17.500", 
+                                                   gsub("[$] 15.000.001 a [$] 20.000.000", "20.000.000",
+                                                        str_extract(data_fram$HH_INCOME, INCOME_HIGH_str))))),
+             INCOME_PPP = 418.432299)
+    
+    data_fram <- data_fram %>% 
+      mutate(INCOME_MEAN = sum((INCOME_HIGH - INCOME_LOW)/2 + INCOME_LOW, na.rm = T)/nrow(data_fram),
+             INCOME_HH_MEAN = sum((INCOME_HH_HIGH - INCOME_HH_LOW)/2 + INCOME_HH_LOW, na.rm = T)/nrow(data_fram))
+    
+    freq.table <- data_fram %>%
+      group_by(INCOME_LOW) %>%
+      summarise(n = n()) %>%
+      ungroup() %>%
+      filter(!is.na(INCOME_LOW)) %>%
+      mutate(cumsum = cumsum(n),
+             rel.freq = cumsum/sum(n))
+    
+    for (j in 1:nrow(freq.table)) {
+      if (freq.table$rel.freq[j]>=0.5) {
+        break
+      }
+    }
+    
+    freq.table <- freq.table[(j-1):nrow(freq.table),][1:3,]
+    
+    data_fram <- data_fram %>% 
+      mutate(INCOME_MED = as.numeric(freq.table[2,1] + (0.5 - freq.table[1,4])/(freq.table[2,4] - freq.table[1,4])*(freq.table[3,1] - freq.table[2,1])))
+    
+  }
+  else if(unique(data_fram$country) == "China"){
+    
+    INCOME_LOW_str <- paste("每年收入低于",
+                            "42,500",
+                            "85,000",
+                            "127,500",
+                            "170,000",
+                            "212,500",
+                            "255,000",
+                            "297,500",
+                            "340,000",
+                            "382,500",
+                            "425,000",
+                            "510,000",
+                            "595,000",
+                            "850,000",
+                            "127,5000",
+                            sep = "|")
+    INCOME_HIGH_str <- paste("每年收入低于",
+                             "84,999",
+                             "127,499",
+                             "169,999",
+                             "212,499",
+                             "254,999",
+                             "297,499",
+                             "339,999",
+                             "382,499",
+                             "424,999",
+                             "509,999",
+                             "594,999",
+                             "849,999",
+                             "1274,999", 
+                             sep = "|")
+    
+    data_fram <- data_fram %>% 
+      mutate(INCOME_LOW  = as.numeric(gsub(",", "", 
+                                           gsub("每年收入低于", "0", 
+                                                str_extract(data_fram$INCOME, INCOME_LOW_str)))),
+             INCOME_HIGH  = as.numeric(gsub(",", "", 
+                                            gsub("每年收入低于", "42,500", 
+                                                 str_extract(data_fram$INCOME, INCOME_HIGH_str)))),
+             INCOME_HH_LOW  = as.numeric(gsub(",", "", 
+                                              gsub("每年收入低于", "0", 
+                                                   str_extract(data_fram$HH_INCOME, INCOME_LOW_str)))),
+             INCOME_HH_HIGH  = as.numeric(gsub(",", "", 
+                                               gsub("每年收入低于", "42,500", 
+                                                    str_extract(data_fram$HH_INCOME, INCOME_HIGH_str)))),
+             INCOME_PPP = 4.18560182367734)
+    
+    data_fram <- data_fram %>% 
+      mutate(INCOME_MEAN = sum((INCOME_HIGH - INCOME_LOW)/2 + INCOME_LOW, na.rm = T)/nrow(data_fram),
+             INCOME_HH_MEAN = sum((INCOME_HH_HIGH - INCOME_HH_LOW)/2 + INCOME_HH_LOW, na.rm = T)/nrow(data_fram))
+    
+    freq.table <- data_fram %>%
+      group_by(INCOME_LOW) %>%
+      summarise(n = n()) %>%
+      ungroup() %>%
+      filter(!is.na(INCOME_LOW)) %>%
+      mutate(cumsum = cumsum(n),
+             rel.freq = cumsum/sum(n))
+    
+    for (j in 1:nrow(freq.table)) {
+      if (freq.table$rel.freq[j]>=0.5) {
+        break
+      }
+    }
+    
+    freq.table <- freq.table[(j-1):nrow(freq.table),][1:3,]
+    
+    data_fram <- data_fram %>% 
+      mutate(INCOME_MED = as.numeric(freq.table[2,1] + (0.5 - freq.table[1,4])/(freq.table[2,4] - freq.table[1,4])*(freq.table[3,1] - freq.table[2,1])))
+    
+  }
+  else if(unique(data_fram$country) == "Colombia"){
+    
+    INCOME_LOW_str <- "Menos|Más de [$]260.000|570.000|810.000|1.030.000|1.270.000|1.580.000|1.980.000|2.540.000|Más de [$]3.560.000"
+    INCOME_HIGH_str <- paste("Menos de [$]260.000",
+                             "menos de [$]570.000",
+                             "menos de [$]810.000",
+                             "menos de [$]1.030.000",
+                             "menos de [$]1.270.000",
+                             "menos de [$]1.580.000",
+                             "menos de [$]1.980.000",
+                             "menos de [$]2.540.000",
+                             "menos de [$]3.560.000",
+                             sep = "|")
+    INCOME_HH_LOW_str <- "Menos|Más de [$]260.000|570.000|810.000|1.030.000|1.270.000|1.580.000|1.980.000|2.540.000|3.560.000|Más de [$]6.000.000"
+    INCOME_HH_HIGH_str <- paste("Menos de [$]260.000",
+                                "menos de [$]570.000",
+                                "menos de [$]810.000",
+                                "menos de [$]1.030.000",
+                                "menos de [$]1.270.000",
+                                "menos de [$]1.580.000",
+                                "menos de [$]1.980.000",
+                                "menos de [$]2.540.000",
+                                "menos de [$]3.560.000",
+                                "menos de [$]6.000.000",
+                                sep = "|")
+    
+    data_fram <- data_fram %>% 
+      mutate(INCOME_LOW  = as.numeric(gsub("[.]", "", 
+                                           gsub("Menos", "0", 
+                                                gsub("Más de [$]3.560.000", "3.560.000", 
+                                                     gsub("Más de [$]260.000", "260.000", str_extract(data_fram$INCOME, INCOME_LOW_str)))))),
+             INCOME_HIGH  = str_extract(data_fram$INCOME, INCOME_HIGH_str),
+             INCOME_HH_LOW  = as.numeric(gsub("[.]", "", 
+                                              gsub("Menos", "0", 
+                                                   gsub("Más de [$]6.000.000", "6.000.000", 
+                                                        gsub("Más de [$]260.000", "260.000", str_extract(data_fram$HH_INCOME, INCOME_HH_LOW_str)))))),
+             INCOME_HH_HIGH  = str_extract(data_fram$HH_INCOME, INCOME_HH_HIGH_str),
+             INCOME_PPP = 1352.785587)
+    
+    data_fram$INCOME_HIGH <- data_fram$INCOME_HIGH %>%
+      recode("Menos de $260.000" = 260000, "menos de $570.000" = 570000,
+             "menos de $810.000" = 810000, "menos de $1.030.000" = 1030000,
+             "menos de $1.270.000" = 1270000, "menos de $1.580.000" = 1580000,
+             "menos de $1.980.000" = 1980000, "menos de $2.540.000" = 2540000,
+             "menos de $3.560.000" = 3560000)
+    
+    data_fram$INCOME_HH_HIGH <- data_fram$INCOME_HH_HIGH %>%
+      recode("Menos de $260.000" = 260000, "menos de $570.000" = 570000,
+             "menos de $810.000" = 810000, "menos de $1.030.000" = 1030000,
+             "menos de $1.270.000" = 1270000, "menos de $1.580.000" = 1580000,
+             "menos de $1.980.000" = 1980000, "menos de $2.540.000" = 2540000,
+             "menos de $3.560.000" = 3560000, "menos de $6.000.000" = 6000000)
+    
+    data_fram <- data_fram %>% 
+      mutate(INCOME_MEAN = sum((INCOME_HIGH - INCOME_LOW)/2 + INCOME_LOW, na.rm = T)/nrow(data_fram),
+             INCOME_HH_MEAN = sum((INCOME_HH_HIGH - INCOME_HH_LOW)/2 + INCOME_HH_LOW, na.rm = T)/nrow(data_fram))
+    
+    freq.table <- data_fram %>%
+      group_by(INCOME_LOW) %>%
+      summarise(n = n()) %>%
+      ungroup() %>%
+      filter(!is.na(INCOME_LOW)) %>%
+      mutate(cumsum = cumsum(n),
+             rel.freq = cumsum/sum(n))
+    
+    for (j in 1:nrow(freq.table)) {
+      if (freq.table$rel.freq[j]>=0.5) {
+        break
+      }
+    }
+    
+    freq.table <- freq.table[(j-1):nrow(freq.table),][1:3,]
+    
+    data_fram <- data_fram %>% 
+      mutate(INCOME_MED = as.numeric(freq.table[2,1] + (0.5 - freq.table[1,4])/(freq.table[2,4] - freq.table[1,4])*(freq.table[3,1] - freq.table[2,1])))
+    
+  }
+  else if(unique(data_fram$country) == "France"){
+    
+    INCOME_LOW_str <- "Moins|Plus de 500|1.000|1.500|2.000|2.500|Plus de 3.000 €"
+    INCOME_HIGH_str <- "Moins de 500 €|moins de 1.000|moins de 1.500|moins de 2.000|moins de 2.500|moins de 3.000 €"
+    INCOME_HH_LOW_str <- "Moins|Plus de 500|1.000|1.500|2.000|2.500|3.000|5.000|7.000|9.000 et plus €"
+    INCOME_HH_HIGH_str <- "Moins de 500 €|moins de 1.000|moins de 1.500|moins de 2.000|moins de 2.500|moins de 3.000|moins de 5.000|moins de 7.000|moins de 9.000"
+    
+    data_fram <- data_fram %>% 
+      mutate(INCOME_LOW  = as.numeric(gsub("[.]", "", 
+                                           gsub("Moins", "0", 
+                                                gsub("Plus de 3.000 €", "3.000",
+                                                     gsub("Plus de 500", "500", str_extract(data_fram$INCOME, INCOME_LOW_str)))))),
+             INCOME_HIGH  = str_extract(data_fram$INCOME, INCOME_HIGH_str),
+             INCOME_HH_LOW  = as.numeric(gsub("[.]", "", 
+                                              gsub("Moins", "0", 
+                                                   gsub("9.000 et plus €", "9.000",
+                                                        gsub("Plus de 500", "500", str_extract(data_fram$HH_INCOME, INCOME_HH_LOW_str)))))),
+             INCOME_HH_HIGH  = str_extract(data_fram$HH_INCOME, INCOME_HH_HIGH_str),
+             INCOME_PPP = 0.731532)
+    
+    data_fram$INCOME_HIGH <- data_fram$INCOME_HIGH %>%
+      recode("Moins de 500 €" = 500, "moins de 1.000" = 1000,
+             "moins de 1.500" = 1500, "moins de 2.000" = 2000,
+             "moins de 2.500" = 2500, "moins de 3.000 €" = 3000)
+    
+    data_fram$INCOME_HH_HIGH <- data_fram$INCOME_HH_HIGH %>%
+      recode("Moins de 500 €" = 500, "moins de 1.000" = 1000,
+             "moins de 1.500" = 1500, "moins de 2.000" = 2000,
+             "moins de 2.500" = 2500, "moins de 3.000" = 3000,
+             "moins de 5.000" = 5000, "moins de 7.000" = 7000,
+             "moins de 9.000" = 9000)
+    
+    data_fram <- data_fram %>% 
+      mutate(INCOME_MEAN = sum((INCOME_HIGH - INCOME_LOW)/2 + INCOME_LOW, na.rm = T)/nrow(data_fram),
+             INCOME_HH_MEAN = sum((INCOME_HH_HIGH - INCOME_HH_LOW)/2 + INCOME_HH_LOW, na.rm = T)/nrow(data_fram))
+    
+    freq.table <- data_fram %>%
+      group_by(INCOME_LOW) %>%
+      summarise(n = n()) %>%
+      ungroup() %>%
+      filter(!is.na(INCOME_LOW)) %>%
+      mutate(cumsum = cumsum(n),
+             rel.freq = cumsum/sum(n))
+    
+    for (j in 1:nrow(freq.table)) {
+      if (freq.table$rel.freq[j]>=0.5) {
+        break
+      }
+    }
+    
+    freq.table <- freq.table[(j-1):nrow(freq.table),][1:3,]
+    
+    data_fram <- data_fram %>% 
+      mutate(INCOME_MED = as.numeric(freq.table[2,1] + (0.5 - freq.table[1,4])/(freq.table[2,4] - freq.table[1,4])*(freq.table[3,1] - freq.table[2,1])))
+    
+  }
+  else if(unique(data_fram$country) == "India"){
+    
+    INCOME_LOW_str <- "Less|30,000|60,000|90,000|1,20,000|2,40,000|6,00,000|₹10,00,000 and over"
+    INCOME_HIGH_str <- "Less|₹30,000 - ₹60,000|89,999|1,19,999|2,39,999|5,99,999|₹6,00,000 - ₹10,00,000"
+    INCOME_HH_LOW_str <- "Less|60,000|90,000|1,20,000|2,40,000|₹6,00,000 and over"
+    INCOME_HH_HIGH_str <- "Less|89,999|1,19,999|2,39,999|5,99,999"
+    
+    data_fram <- data_fram %>% 
+      mutate(INCOME_LOW  = as.numeric(gsub(",", "", 
+                                           gsub("Less", "0", 
+                                                gsub("₹10,00,000 and over", "10,00,000", 
+                                                     str_extract(data_fram$INCOME, INCOME_LOW_str))))),
+             INCOME_HIGH  = as.numeric(gsub(",", "", 
+                                            gsub("Less", "30,000", 
+                                                 gsub("₹30,000 - ₹60,000", "60,000",
+                                                      gsub("₹6,00,000 - ₹10,00,000", "10,00,000",
+                                                           str_extract(data_fram$INCOME, INCOME_HIGH_str)))))),
+             INCOME_HH_LOW  = as.numeric(gsub(",", "", 
+                                              gsub("Less", "0", 
+                                                   gsub("₹6,00,000 and over", "6,00,000", 
+                                                        str_extract(data_fram$HH_INCOME, INCOME_HH_LOW_str))))),
+             INCOME_HH_HIGH  = as.numeric(gsub(",", "", 
+                                               gsub("Less", "60,000", 
+                                                    str_extract(data_fram$HH_INCOME, INCOME_HH_HIGH_str)))),
+             INCOME_PPP = 21.9895584423356)
+    
+    data_fram <- data_fram %>% 
+      mutate(INCOME_MEAN = sum((INCOME_HIGH - INCOME_LOW)/2 + INCOME_LOW, na.rm = T)/nrow(data_fram),
+             INCOME_HH_MEAN = sum((INCOME_HH_HIGH - INCOME_HH_LOW)/2 + INCOME_HH_LOW, na.rm = T)/nrow(data_fram))
+    
+    freq.table <- data_fram %>%
+      group_by(INCOME_LOW) %>%
+      summarise(n = n()) %>%
+      ungroup() %>%
+      filter(!is.na(INCOME_LOW)) %>%
+      mutate(cumsum = cumsum(n),
+             rel.freq = cumsum/sum(n))
+    
+    for (j in 1:nrow(freq.table)) {
+      if (freq.table$rel.freq[j]>=0.5) {
+        break
+      }
+    }
+    
+    freq.table <- freq.table[(j-1):nrow(freq.table),][1:3,]
+    
+    data_fram <- data_fram %>% 
+      mutate(INCOME_MED = as.numeric(freq.table[2,1] + (0.5 - freq.table[1,4])/(freq.table[2,4] - freq.table[1,4])*(freq.table[3,1] - freq.table[2,1])))
+    
+  }
+  else if(unique(data_fram$country) == "Italy"){
+    
+    INCOME_LOW_str <- "Meno di €500|500|1.000|1.500|2.000|2.500|€3.000 euro o più"
+    INCOME_HIGH_str <- "Meno di €500|meno di €1.000|meno di €1.500|meno di €2.000|meno di €2.500|meno di €3.000"
+    INCOME_HH_LOW_str <- "Meno di €500|500|1.000|1.500|2.000|2.500|3.000|5.000|7.000|€9.000 o più"
+    INCOME_HH_HIGH_str <- "Meno di €500|meno di €1.000|meno di €1.500|meno di €2.000|meno di €2.500|meno di €3.000|meno di €5.000|meno di €7.000|meno di €9.000"
+    
+    data_fram <- data_fram %>% 
+      mutate(INCOME_LOW  = as.numeric(gsub("[.]", "", 
+                                           gsub("Meno di €500", "0", 
+                                                gsub("€3.000 euro o più", "3.000", str_extract(data_fram$INCOME, INCOME_LOW_str))))),
+             INCOME_HIGH  = str_extract(data_fram$INCOME, INCOME_HIGH_str),
+             INCOME_HH_LOW  = as.numeric(gsub("[.]", "", 
+                                              gsub("Meno di €500", "0", 
+                                                   gsub("€9.000 o più", "9.000", str_extract(data_fram$HH_INCOME, INCOME_HH_LOW_str))))),
+             INCOME_HH_HIGH  = str_extract(data_fram$HH_INCOME, INCOME_HH_HIGH_str),
+             INCOME_PPP = 0.662828)
+    
+    data_fram$INCOME_HIGH <- data_fram$INCOME_HIGH %>%
+      recode("Meno di €500" = 500,
+             "meno di €1.000" = 1000, "meno di €1.500" = 1500,
+             "meno di €2.000" = 2000, "meno di €2.500" = 2500,
+             "meno di €3.000" = 3000)
+    
+    data_fram$INCOME_HH_HIGH <- data_fram$INCOME_HH_HIGH %>%
+      recode("Meno di €500" = 500,
+             "meno di €1.000" = 1000, "meno di €1.500" = 1500,
+             "meno di €2.000" = 2000, "meno di €2.500" = 2500,
+             "meno di €3.000" = 3000, "meno di €5.000" = 5000,
+             "meno di €7.000" = 7000, "meno di €9.000" = 9000)
+    
+    data_fram <- data_fram %>% 
+      mutate(INCOME_MEAN = sum((INCOME_HIGH - INCOME_LOW)/2 + INCOME_LOW, na.rm = T)/nrow(data_fram),
+             INCOME_HH_MEAN = sum((INCOME_HH_HIGH - INCOME_HH_LOW)/2 + INCOME_HH_LOW, na.rm = T)/nrow(data_fram))
+    
+    freq.table <- data_fram %>%
+      group_by(INCOME_LOW) %>%
+      summarise(n = n()) %>%
+      ungroup() %>%
+      filter(!is.na(INCOME_LOW)) %>%
+      mutate(cumsum = cumsum(n),
+             rel.freq = cumsum/sum(n))
+    
+    for (j in 1:nrow(freq.table)) {
+      if (freq.table$rel.freq[j]>=0.5) {
+        break
+      }
+    }
+    
+    freq.table <- freq.table[(j-1):nrow(freq.table),][1:3,]
+    
+    data_fram <- data_fram %>% 
+      mutate(INCOME_MED = as.numeric(freq.table[2,1] + (0.5 - freq.table[1,4])/(freq.table[2,4] - freq.table[1,4])*(freq.table[3,1] - freq.table[2,1])))
+    
+  }
+  else if(unique(data_fram$country) == "Russia"){
+    
+    INCOME_LOW_str <- "Менее 10000 рублей|10000|20000|30000|40000|50000|75000|100000"
+    INCOME_HIGH_str <- "Менее 10000 рублей|19999|29999|39999|49999|74999|99999"
+    INCOME_HH_LOW_str <- "Менее 10000 рублей|10000|20000|35000|50000|75000|100000|125000|150000|200000"
+    INCOME_HH_HIGH_str <- "Менее 10000 рублей|19999|34999|49999|74999|99999|124999|149999|199999"
+    
+    data_fram <- data_fram %>% 
+      mutate(INCOME_LOW  = as.numeric(gsub("Менее 10000 рублей", "0", str_extract(data_fram$INCOME, INCOME_LOW_str))),
+             INCOME_HIGH  = as.numeric(gsub("Менее 10000 рублей", "10000", str_extract(data_fram$INCOME, INCOME_HIGH_str))),
+             INCOME_HH_LOW  = as.numeric(gsub("Менее 10000 рублей", "0", str_extract(data_fram$HH_INCOME, INCOME_HH_LOW_str))),
+             INCOME_HH_HIGH  = as.numeric(gsub("Менее 10000 рублей", "10000", str_extract(data_fram$HH_INCOME, INCOME_HH_HIGH_str))),
+             INCOME_PPP = 0.662828)
+    
+    data_fram <- data_fram %>% 
+      mutate(INCOME_MEAN = sum((INCOME_HIGH - INCOME_LOW)/2 + INCOME_LOW, na.rm = T)/nrow(data_fram),
+             INCOME_HH_MEAN = sum((INCOME_HH_HIGH - INCOME_HH_LOW)/2 + INCOME_HH_LOW, na.rm = T)/nrow(data_fram))
+    
+    freq.table <- data_fram %>%
+      group_by(INCOME_LOW) %>%
+      summarise(n = n()) %>%
+      ungroup() %>%
+      filter(!is.na(INCOME_LOW)) %>%
+      mutate(cumsum = cumsum(n),
+             rel.freq = cumsum/sum(n))
+    
+    for (j in 1:nrow(freq.table)) {
+      if (freq.table$rel.freq[j]>=0.5) {
+        break
+      }
+    }
+    
+    freq.table <- freq.table[(j-1):nrow(freq.table),][1:3,]
+    
+    data_fram <- data_fram %>% 
+      mutate(INCOME_MED = as.numeric(freq.table[2,1] + (0.5 - freq.table[1,4])/(freq.table[2,4] - freq.table[1,4])*(freq.table[3,1] - freq.table[2,1])))
+    
+  }
+  else if(unique(data_fram$country) == "Spain"){
+    
+    INCOME_LOW_str <- "Menos|500|1.000|1.500|2.000|2.500|Más de €3.000"
+    INCOME_HIGH_str <- "Menos de €500|menos de €1.000|menos de €1.500|menos de €2.000|menos de €2.500|menos de €3.000"
+    INCOME_HH_LOW_str <- "Menos|500|1.000|1.500|2.000|2.500|3.000|5.000|7.000|Más de €9.000"
+    INCOME_HH_HIGH_str <- "Menos de €500|menos de €1.000|menos de €1.500|menos de €2.000|menos de €2.500|menos de €3.000|menos de €5.000|menos de €7.000|menos de €9.000"
+    
+    data_fram <- data_fram %>% 
+      mutate(INCOME_LOW  = as.numeric(gsub("[.]", "", 
+                                           gsub("Menos", "0", 
+                                                gsub("Más de €3.000", "3.000", str_extract(data_fram$INCOME, INCOME_LOW_str))))),
+             INCOME_HIGH  = str_extract(data_fram$INCOME, INCOME_HIGH_str),
+             INCOME_HH_LOW  = as.numeric(gsub("[.]", "", 
+                                              gsub("Menos", "0", 
+                                                   gsub("Más de €9.000", "9.000", str_extract(data_fram$HH_INCOME, INCOME_HH_LOW_str))))),
+             INCOME_HH_HIGH  = str_extract(data_fram$HH_INCOME, INCOME_HH_HIGH_str),
+             INCOME_PPP = 0.617946)
+    
+    data_fram$INCOME_HIGH <- data_fram$INCOME_HIGH %>%
+      recode("Menos de €500" = 500,
+             "menos de €1.000" = 1000, "menos de €1.500" = 1500,
+             "menos de €2.000" = 2000, "menos de €2.500" = 2500,
+             "menos de €3.000" = 3000)
+    
+    data_fram$INCOME_HH_HIGH <- data_fram$INCOME_HH_HIGH %>%
+      recode("Menos de €500" = 500,
+             "menos de €1.000" = 1000, "menos de €1.500" = 1500,
+             "menos de €2.000" = 2000, "menos de €2.500" = 2500,
+             "menos de €3.000" = 3000, "menos de €5.000" = 5000,
+             "menos de €7.000" = 7000, "menos de €9.000" = 9000)
+    
+    data_fram <- data_fram %>% 
+      mutate(INCOME_MEAN = sum((INCOME_HIGH - INCOME_LOW)/2 + INCOME_LOW, na.rm = T)/nrow(data_fram),
+             INCOME_HH_MEAN = sum((INCOME_HH_HIGH - INCOME_HH_LOW)/2 + INCOME_HH_LOW, na.rm = T)/nrow(data_fram))
+    
+    freq.table <- data_fram %>%
+      group_by(INCOME_LOW) %>%
+      summarise(n = n()) %>%
+      ungroup() %>%
+      filter(!is.na(INCOME_LOW)) %>%
+      mutate(cumsum = cumsum(n),
+             rel.freq = cumsum/sum(n))
+    
+    for (j in 1:nrow(freq.table)) {
+      if (freq.table$rel.freq[j]>=0.5) {
+        break
+      }
+    }
+    
+    freq.table <- freq.table[(j-1):nrow(freq.table),][1:3,]
+    
+    data_fram <- data_fram %>% 
+      mutate(INCOME_MED = as.numeric(freq.table[2,1] + (0.5 - freq.table[1,4])/(freq.table[2,4] - freq.table[1,4])*(freq.table[3,1] - freq.table[2,1])))
+    
+  }
+  else if(unique(data_fram$country) == "Uganda"){
+    
+    INCOME_LOW_str <- "Under|330,000|660,000|1,500,000|2,000,000|2,500,000|3,000,000|4,000,000|5,000,000|6,000,000|7,000,000|9,000,000|11,000,000|13,5000,000|USh 16,000,000 and over"
+    INCOME_HIGH_str <- "Under|to USh 660,000|to USh 1,500,000|to USh 2,000,000|to USh 2,500,000|to USh 3,000,000|to USh 4,000,000|to USh 5,000,000|to USh 6,000,000|to USh 7,000,000|to USh 9,000,000|to USh 11,000,000|to USh 13,5000,000|to USh 13,500,000|to USh 16,000,000"
+    
+    data_fram <- data_fram %>% 
+      mutate(INCOME_LOW  = as.numeric(gsub(",", "", 
+                                           gsub("Under", "0", 
+                                                gsub("USh 16,000,000 and over", "16,000,000", str_extract(data_fram$INCOME, INCOME_LOW_str))))),
+             INCOME_HIGH  = str_extract(data_fram$INCOME, INCOME_HIGH_str),
+             INCOME_HH_LOW  = as.numeric(gsub(",", "", 
+                                              gsub("Under", "0", 
+                                                   gsub("USh 16,000,000 and over", "16,000,000", str_extract(data_fram$HH_INCOME, INCOME_LOW_str))))),
+             INCOME_HH_HIGH  = str_extract(data_fram$HH_INCOME, INCOME_HIGH_str),
+             INCOME_PPP = 1321.34594445177)
+    
+    data_fram$INCOME_HIGH <- data_fram$INCOME_HIGH %>%
+      recode("Under" = 330000, "to USh 660,000" = 660000,
+             "to USh 1,500,000" = 1500000, "to USh 2,000,000" = 2000000,
+             "to USh 2,500,000" = 2500000, "to USh 3,000,000" = 3000000,
+             "to USh 4,000,000" = 4000000, "to USh 5,000,000" = 5000000,
+             "to USh 6,000,000" = 6000000, "to USh 7,000,000" = 7000000,
+             "to USh 9,000,000" = 9000000, "to USh 11,000,000" = 11000000,
+             "to USh 13,5000,000" = 13500000, "to USh 16,000,000" = 16000000)
+    
+    data_fram$INCOME_HH_HIGH <- data_fram$INCOME_HH_HIGH %>%
+      recode("Under" = 330000, "to USh 660,000" = 660000,
+             "to USh 1,500,000" = 1500000, "to USh 2,000,000" = 2000000,
+             "to USh 2,500,000" = 2500000, "to USh 3,000,000" = 3000000,
+             "to USh 4,000,000" = 4000000, "to USh 5,000,000" = 5000000,
+             "to USh 6,000,000" = 6000000, "to USh 7,000,000" = 7000000,
+             "to USh 9,000,000" = 9000000, "to USh 11,000,000" = 11000000,
+             "to USh 13,500,000" = 13500000, "to USh 16,000,000" = 16000000)
+    
+    data_fram <- data_fram %>% 
+      mutate(INCOME_MEAN = sum((INCOME_HIGH - INCOME_LOW)/2 + INCOME_LOW, na.rm = T)/nrow(data_fram),
+             INCOME_HH_MEAN = sum((INCOME_HH_HIGH - INCOME_HH_LOW)/2 + INCOME_HH_LOW, na.rm = T)/nrow(data_fram))
+    
+    freq.table <- data_fram %>%
+      group_by(INCOME_LOW) %>%
+      summarise(n = n()) %>%
+      ungroup() %>%
+      filter(!is.na(INCOME_LOW)) %>%
+      mutate(cumsum = cumsum(n),
+             rel.freq = cumsum/sum(n))
+    
+    for (j in 1:nrow(freq.table)) {
+      if (freq.table$rel.freq[j]>=0.5) {
+        break
+      }
+    }
+    
+    freq.table <- freq.table[(j-1):nrow(freq.table),][1:3,]
+    
+    data_fram <- data_fram %>% 
+      mutate(INCOME_MED = as.numeric(freq.table[2,1] + (0.5 - freq.table[1,4])/(freq.table[2,4] - freq.table[1,4])*(freq.table[3,1] - freq.table[2,1])))
+    
+  }
+  else if(unique(data_fram$country) == "UK"){
+    
+    INCOME_LOW_str <- "Under|5,000|10,000|15,000|20,000|25,000|30,000|35,000|40,000|45,000|50,000|60,000|70,000|100,000|150,000"
+    INCOME_HIGH_str <- "Under|9,999|14,999|19,999|24,999|29,999|34,999|39,999|44,999|49,999|59,999|69,999|99,999|149,999"
+    
+    data_fram <- data_fram %>% 
+      mutate(INCOME_LOW  = as.numeric(gsub(",", "", 
+                                           gsub("Under", "0", str_extract(data_fram$INCOME, INCOME_LOW_str)))),
+             INCOME_HIGH  = as.numeric(gsub(",", "", 
+                                            gsub("Under", "5,000", str_extract(data_fram$INCOME, INCOME_HIGH_str)))),
+             INCOME_HH_LOW  = as.numeric(gsub(",", "", 
+                                              gsub("Under", "0", str_extract(data_fram$HH_INCOME, INCOME_LOW_str)))),
+             INCOME_HH_HIGH  = as.numeric(gsub(",", "", 
+                                               gsub("Under", "5,000", str_extract(data_fram$HH_INCOME, INCOME_HIGH_str)))),
+             INCOME_PPP = 0.699569)
+    
+    data_fram <- data_fram %>% 
+      mutate(INCOME_MEAN = sum((INCOME_HIGH - INCOME_LOW)/2 + INCOME_LOW, na.rm = T)/nrow(data_fram),
+             INCOME_HH_MEAN = sum((INCOME_HH_HIGH - INCOME_HH_LOW)/2 + INCOME_HH_LOW, na.rm = T)/nrow(data_fram))
+    
+    freq.table <- data_fram %>%
+      group_by(INCOME_LOW) %>%
+      summarise(n = n()) %>%
+      ungroup() %>%
+      filter(!is.na(INCOME_LOW)) %>%
+      mutate(cumsum = cumsum(n),
+             rel.freq = cumsum/sum(n))
+    
+    for (j in 1:nrow(freq.table)) {
+      if (freq.table$rel.freq[j]>=0.5) {
+        break
+      }
+    }
+    
+    freq.table <- freq.table[(j-1):nrow(freq.table),][1:3,]
+    
+    data_fram <- data_fram %>% 
+      mutate(INCOME_MED = as.numeric(freq.table[2,1] + (0.5 - freq.table[1,4])/(freq.table[2,4] - freq.table[1,4])*(freq.table[3,1] - freq.table[2,1])))
+    
+  }
+  else if(unique(data_fram$country) == "US"){
+    
+    INCOME_LOW_str <- "Up|5,000|10,000|20,000|30,000|40,000|50,000|75,000|100,000|250,000"
+    INCOME_HIGH_str <- "Up|[$]5,000 to 10,000|19,999|29,999|39,999|49,999|74,999|99,999|249,999"
+    INCOME_HH_LOW_str <- "Up|10,000|20,000|30,000|40,000|50,000|75,000|100,000|250,000"
+    INCOME_HH_HIGH_str <- "Up|19,999|29,999|39,999|49,999|74,999|99,999|249,999"
+    
+    data_fram <- data_fram %>% 
+      mutate(INCOME_LOW  = as.numeric(gsub(",", "", 
+                                           gsub("Up", "0",
+                                                str_extract(data_fram$INCOME, INCOME_LOW_str)))),
+             INCOME_HIGH  = as.numeric(gsub(",", "", 
+                                            gsub("Up", "5,000", 
+                                                 gsub("[$]5,000 to 10,000", "10,000", 
+                                                      str_extract(data_fram$INCOME, INCOME_HIGH_str))))),
+             INCOME_HH_LOW  = as.numeric(gsub(",", "", 
+                                              gsub("Up", "0",
+                                                   str_extract(data_fram$HH_INCOME, INCOME_HH_LOW_str)))),
+             INCOME_HH_HIGH  = as.numeric(gsub(",", "", 
+                                               gsub("Up", "10,000",
+                                                    str_extract(data_fram$HH_INCOME, INCOME_HH_HIGH_str)))),
+             INCOME_PPP = 1)
+    
+    data_fram <- data_fram %>% 
+      mutate(INCOME_MEAN = sum((INCOME_HIGH - INCOME_LOW)/2 + INCOME_LOW, na.rm = T)/nrow(data_fram),
+             INCOME_HH_MEAN = sum((INCOME_HH_HIGH - INCOME_HH_LOW)/2 + INCOME_HH_LOW, na.rm = T)/nrow(data_fram))
+    
+    freq.table <- data_fram %>%
+      group_by(INCOME_LOW) %>%
+      summarise(n = n()) %>%
+      ungroup() %>%
+      filter(!is.na(INCOME_LOW)) %>%
+      mutate(cumsum = cumsum(n),
+             rel.freq = cumsum/sum(n))
+    
+    for (j in 1:nrow(freq.table)) {
+      if (freq.table$rel.freq[j]>=0.5) {
+        break
+      }
+    }
+    
+    freq.table <- freq.table[(j-1):nrow(freq.table),][1:3,]
+    
+    data_fram <- data_fram %>% 
+      mutate(INCOME_MED = as.numeric(freq.table[2,1] + (0.5 - freq.table[1,4])/(freq.table[2,4] - freq.table[1,4])*(freq.table[3,1] - freq.table[2,1])))
+    
+  }
+  else if(unique(data_fram$country) == "South Africa"){
+    
+    INCOME_LOW_str <- "R1 |R401|R801|R1,601|R3,201|R6,401|R12,801|R25,601|R51,201|R102,401|R204,801"
+    INCOME_HIGH_str <- "R400|R800|R1,600|R3,200|R6,400|R12,800|R25,600|R51,200|R102,400|R204,800"
+    INCOME_HH_LOW_str <- "R0|R19,001|R86,001|R197,001|R400,001|R688,001|R1,481,001|R2,360,001"
+    INCOME_HH_HIGH_str <- "R19,000|R86,000|R197,000|R400,000|R688,000|R1,481,000|R2,360,000"
+    
+    data_fram <- data_fram %>% 
+      mutate(INCOME_LOW  = as.numeric(gsub(",", "", 
+                                           gsub("R", "",
+                                                str_extract(data_fram$INCOME, INCOME_LOW_str)))),
+             INCOME_HIGH  = as.numeric(gsub(",", "", 
+                                            gsub("R", "",
+                                                 str_extract(data_fram$INCOME, INCOME_HIGH_str)))),
+             INCOME_HH_LOW  = as.numeric(gsub(",", "", 
+                                              gsub("R", "",
+                                                   str_extract(data_fram$HH_INCOME, INCOME_HH_LOW_str)))),
+             INCOME_HH_HIGH  = as.numeric(gsub(",", "", 
+                                               gsub("R", "",
+                                                    str_extract(data_fram$HH_INCOME, INCOME_HH_HIGH_str)))),
+             INCOME_PPP = 6.933)
+    
+    data_fram <- data_fram %>% 
+      mutate(INCOME_MEAN = sum((INCOME_HIGH - INCOME_LOW)/2 + INCOME_LOW, na.rm = T)/nrow(data_fram),
+             INCOME_HH_MEAN = sum((INCOME_HH_HIGH - INCOME_HH_LOW)/2 + INCOME_HH_LOW, na.rm = T)/nrow(data_fram))
+    
+    freq.table <- data_fram %>%
+      group_by(INCOME_LOW) %>%
+      summarise(n = n()) %>%
+      ungroup() %>%
+      filter(!is.na(INCOME_LOW)) %>%
+      mutate(cumsum = cumsum(n),
+             rel.freq = cumsum/sum(n))
+    
+    for (j in 1:nrow(freq.table)) {
+      if (freq.table$rel.freq[j]>=0.5) {
+        break
+      }
+    }
+    
+    freq.table <- freq.table[(j-1):nrow(freq.table),][1:3,]
+    
+    data_fram <- data_fram %>% 
+      mutate(INCOME_MED = as.numeric(freq.table[2,1] + (0.5 - freq.table[1,4])/(freq.table[2,4] - freq.table[1,4])*(freq.table[3,1] - freq.table[2,1])))
+    
+  }
+  else{
+    print("There is not a survey for this country, try again")}
   
   return(data_fram)
 }
