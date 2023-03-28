@@ -1580,7 +1580,7 @@ INCOME <- function(data_fram){
              INCOME_HH_LOW  = as.numeric(gsub(",|[$]|[-]", "", str_extract(data_fram$HH_INCOME, INCOME_HH_LOW_str))),
              INCOME_HH_HIGH  = as.numeric(gsub(",", "", str_extract(data_fram$HH_INCOME, INCOME_HH_HIGH_str))),
              INCOME_HH_MEAN = sum((INCOME_HH_HIGH - INCOME_HH_LOW)/2 + INCOME_HH_LOW, na.rm = T)/nrow(data_fram),
-             INCOME_PPP = 1.471741)
+             INCOME_PPP = 1.45394)
     
     freq.table <- data_fram %>%
       group_by(INCOME_LOW) %>%
@@ -1616,7 +1616,7 @@ INCOME <- function(data_fram){
                                               gsub("Menos", "0", 
                                                    str_extract(data_fram$HH_INCOME, INCOME_LOW_str)))),
              INCOME_HH_HIGH  = str_extract(data_fram$HH_INCOME, INCOME_HIGH_str),
-             INCOME_PPP = 2.36170285287039)
+             INCOME_PPP = 2.36830548410386)
     
     data_fram$INCOME_HIGH <- data_fram$INCOME_HIGH %>%
       recode("Menos" = 523, "a R$ 1.045" = 1045,
@@ -1674,7 +1674,7 @@ INCOME <- function(data_fram){
              INCOME_HH_HIGH = as.numeric(gsub(",", "", 
                                               gsub("Under", "2,000", 
                                                    str_extract(data_fram$HH_INCOME, INCOME_HH_HIGH_str)))),
-             INCOME_PPP = 1.206376)
+             INCOME_PPP = 1.230037)
     
     data_fram <- data_fram %>% 
       mutate(INCOME_MEAN = sum((INCOME_HIGH - INCOME_LOW)/2 + INCOME_LOW, na.rm = T)/nrow(data_fram),
@@ -1720,7 +1720,7 @@ INCOME <- function(data_fram){
                                               gsub("Menos", "17.500", 
                                                    gsub("[$] 15.000.001 a [$] 20.000.000", "20.000.000",
                                                         str_extract(data_fram$HH_INCOME, INCOME_HIGH_str))))),
-             INCOME_PPP = 418.432299)
+             INCOME_PPP = 418.420066)
     
     data_fram <- data_fram %>% 
       mutate(INCOME_MEAN = sum((INCOME_HIGH - INCOME_LOW)/2 + INCOME_LOW, na.rm = T)/nrow(data_fram),
@@ -1793,7 +1793,7 @@ INCOME <- function(data_fram){
              INCOME_HH_HIGH  = as.numeric(gsub(",", "", 
                                                gsub("每年收入低于", "42,500", 
                                                     str_extract(data_fram$HH_INCOME, INCOME_HIGH_str)))),
-             INCOME_PPP = 4.18560182367734)
+             INCOME_PPP = 4.17865906864991)
     
     data_fram <- data_fram %>% 
       mutate(INCOME_MEAN = sum((INCOME_HIGH - INCOME_LOW)/2 + INCOME_LOW, na.rm = T)/nrow(data_fram),
@@ -1856,7 +1856,7 @@ INCOME <- function(data_fram){
                                                    gsub("Más de [$]6.000.000", "6.000.000", 
                                                         gsub("Más de [$]260.000", "260.000", str_extract(data_fram$HH_INCOME, INCOME_HH_LOW_str)))))),
              INCOME_HH_HIGH  = str_extract(data_fram$HH_INCOME, INCOME_HH_HIGH_str),
-             INCOME_PPP = 1352.785587)
+             INCOME_PPP = 1295.42937)
     
     data_fram$INCOME_HIGH <- data_fram$INCOME_HIGH %>%
       recode("Menos de $260.000" = 260000, "menos de $570.000" = 570000,
@@ -1914,7 +1914,7 @@ INCOME <- function(data_fram){
                                                    gsub("9.000 et plus €", "9.000",
                                                         gsub("Plus de 500", "500", str_extract(data_fram$HH_INCOME, INCOME_HH_LOW_str)))))),
              INCOME_HH_HIGH  = str_extract(data_fram$HH_INCOME, INCOME_HH_HIGH_str),
-             INCOME_PPP = 0.731532)
+             INCOME_PPP = 0.710429)
     
     data_fram$INCOME_HIGH <- data_fram$INCOME_HIGH %>%
       recode("Moins de 500 €" = 500, "moins de 1.000" = 1000,
@@ -1976,7 +1976,7 @@ INCOME <- function(data_fram){
              INCOME_HH_HIGH  = as.numeric(gsub(",", "", 
                                                gsub("Less", "60,000", 
                                                     str_extract(data_fram$HH_INCOME, INCOME_HH_HIGH_str)))),
-             INCOME_PPP = 21.9895584423356)
+             INCOME_PPP = 21.9885079870888)
     
     data_fram <- data_fram %>% 
       mutate(INCOME_MEAN = sum((INCOME_HIGH - INCOME_LOW)/2 + INCOME_LOW, na.rm = T)/nrow(data_fram),
@@ -2018,7 +2018,7 @@ INCOME <- function(data_fram){
                                               gsub("Meno di €500", "0", 
                                                    gsub("€9.000 o più", "9.000", str_extract(data_fram$HH_INCOME, INCOME_HH_LOW_str))))),
              INCOME_HH_HIGH  = str_extract(data_fram$HH_INCOME, INCOME_HH_HIGH_str),
-             INCOME_PPP = 0.662828)
+             INCOME_PPP = 0.647771)
     
     data_fram$INCOME_HIGH <- data_fram$INCOME_HIGH %>%
       recode("Meno di €500" = 500,
@@ -2069,7 +2069,7 @@ INCOME <- function(data_fram){
              INCOME_HIGH  = as.numeric(gsub("Менее 10000 рублей", "10000", str_extract(data_fram$INCOME, INCOME_HIGH_str))),
              INCOME_HH_LOW  = as.numeric(gsub("Менее 10000 рублей", "0", str_extract(data_fram$HH_INCOME, INCOME_HH_LOW_str))),
              INCOME_HH_HIGH  = as.numeric(gsub("Менее 10000 рублей", "10000", str_extract(data_fram$HH_INCOME, INCOME_HH_HIGH_str))),
-             INCOME_PPP = 0.662828)
+             INCOME_PPP = 24.492859)
     
     data_fram <- data_fram %>% 
       mutate(INCOME_MEAN = sum((INCOME_HIGH - INCOME_LOW)/2 + INCOME_LOW, na.rm = T)/nrow(data_fram),
@@ -2111,7 +2111,7 @@ INCOME <- function(data_fram){
                                               gsub("Menos", "0", 
                                                    gsub("Más de €9.000", "9.000", str_extract(data_fram$HH_INCOME, INCOME_HH_LOW_str))))),
              INCOME_HH_HIGH  = str_extract(data_fram$HH_INCOME, INCOME_HH_HIGH_str),
-             INCOME_PPP = 0.617946)
+             INCOME_PPP = 0.621397)
     
     data_fram$INCOME_HIGH <- data_fram$INCOME_HIGH %>%
       recode("Menos de €500" = 500,
@@ -2164,7 +2164,7 @@ INCOME <- function(data_fram){
                                               gsub("Under", "0", 
                                                    gsub("USh 16,000,000 and over", "16,000,000", str_extract(data_fram$HH_INCOME, INCOME_LOW_str))))),
              INCOME_HH_HIGH  = str_extract(data_fram$HH_INCOME, INCOME_HIGH_str),
-             INCOME_PPP = 1321.34594445177)
+             INCOME_PPP = 1331.17534401366)
     
     data_fram$INCOME_HIGH <- data_fram$INCOME_HIGH %>%
       recode("Under" = 330000, "to USh 660,000" = 660000,
@@ -2222,7 +2222,7 @@ INCOME <- function(data_fram){
                                               gsub("Under", "0", str_extract(data_fram$HH_INCOME, INCOME_LOW_str)))),
              INCOME_HH_HIGH  = as.numeric(gsub(",", "", 
                                                gsub("Under", "5,000", str_extract(data_fram$HH_INCOME, INCOME_HIGH_str)))),
-             INCOME_PPP = 0.699569)
+             INCOME_PPP = 0.685633)
     
     data_fram <- data_fram %>% 
       mutate(INCOME_MEAN = sum((INCOME_HIGH - INCOME_LOW)/2 + INCOME_LOW, na.rm = T)/nrow(data_fram),
@@ -2315,7 +2315,7 @@ INCOME <- function(data_fram){
              INCOME_HH_HIGH  = as.numeric(gsub(",", "", 
                                                gsub("R", "",
                                                     str_extract(data_fram$HH_INCOME, INCOME_HH_HIGH_str)))),
-             INCOME_PPP = 6.933)
+             INCOME_PPP = 6.99096111435348)
     
     data_fram <- data_fram %>% 
       mutate(INCOME_MEAN = sum((INCOME_HIGH - INCOME_LOW)/2 + INCOME_LOW, na.rm = T)/nrow(data_fram),
@@ -2346,4 +2346,3 @@ INCOME <- function(data_fram){
   
   return(data_fram)
 }
-
