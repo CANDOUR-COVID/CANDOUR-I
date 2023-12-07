@@ -28,7 +28,8 @@ for (country in country_codes) {
 country_weights <- list()
 
 for (country in c("AUS", "BR", "CHL", "CHN", "COL", "FR", "IT", "UK", "US")) {
-  country_weights[[country]] <- read_csv(paste0("weights/", country, "_w.csv"))[,-1]
+  country_weights[[country]] <- read_csv(paste0("weights/", country, "_w.csv"))[,-1] |>
+    mutate(id = as.numeric(id))
   country_data[[country]] <- left_join(country_data[[country]], country_weights[[country]], by = "id")
 }
 

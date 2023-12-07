@@ -2,7 +2,8 @@ rm(list = ls())
 library(tidyverse)
 library(xlsx)
 
-setwd("C:/Users/Matias/Dropbox/Predoctoral/CANDOUR/Vaccine Survey Data/psID")
+# setwd("C:/Users/Matias/Dropbox/Predoctoral/CANDOUR/Vaccine Survey Data/psID")
+setwd("C:/Users/USUARIO/Dropbox/Predoctoral/CANDOUR/Vaccine Survey Data/psID")
 
 country_psid <- list()
 
