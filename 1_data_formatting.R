@@ -2,6 +2,8 @@
 
 library(tidyverse)
 library(haven)
+library(here)
+library(magrittr)
 set.seed(89)
 
 rm(list = ls())
@@ -10,18 +12,49 @@ source("functions/conjoint_functions.R")
 eval(parse("functions/wtp_functions.R", encoding="UTF-8"))
 eval(parse("functions/IPUMS_functions.R", encoding="UTF-8"))
 eval(parse("functions/labels_functions.R", encoding="UTF-8"))
+eval(parse("functions/weights_functions.R", encoding="UTF-8"))
 
 
 #### 1. Cleaning and Combining ####
 
+data_country <- list.files(path = here("data", "raw"), full.names = TRUE) %>%
+  str_subset("RUS.csv", negate = T) %>% 
+  map(~ read_csv(.))
+
+
+names(data_country) <- list.files(path = here("data", "raw")) %>%
+  str_remove(".csv$") |>
+  str_subset("data_RUS", negate = T) 
+
+list_vars <- list(~age, ~education, ~gender, ~REGION_0)
+
+# Weights
+for (i in names(data_country) %>% str_remove("data_")) {
+  data_country[[paste0("data_", i)]] <-
+    fn.merge(
+      data_country[[paste0("data_", i)]],
+      list_vars,
+      Quotas_list_df %>%
+        extract(str_subset(names(Quotas_list_df), paste0("^", i)))
+    ) |>
+    mutate(id = as.numeric(id))
+}
+
+
 country_data <- list()
-country_codes <- c("AUS", "BR", "CAN", "CHL", "CHN", "COL", "FR", "IT", "SP", 
-                   "UK", "US", "UGA", "IND", "RUS")
+country_codes <- c("AUS", "BR", "CAN", "CHL", "CHN", "COL", "FR", "IND",
+                   "IT", "RUS", "SP", "UGA", "UK", "US")
 
 for (country in country_codes) {
-  country_data[[country]] <- read_csv(paste0("data/raw/data_", country, ".csv"))
-  country_data[[country]]$id <- as.numeric(country_data[[country]]$id)
+  country_data[[country]] <- read_csv(paste0("data/raw/data_", country, ".csv")) |>
+    mutate(id = as.numeric(id))
 }
+
+for (country in country_codes |> str_subset("RUS", negate = T)) {
+  country_data[[country]] <- country_data[[country]] %>%
+    left_join(data_country[[paste0("data_", country)]], by = c("country", "id"))
+}
+
 
 # Merging weights
 
@@ -31,24 +64,6 @@ for (country in c("AUS", "BR", "CHL", "CHN", "COL", "FR", "IT", "UK", "US")) {
   country_weights[[country]] <- read_csv(paste0("weights/", country, "_w.csv"))[,-1] |>
     mutate(id = as.numeric(id))
   country_data[[country]] <- left_join(country_data[[country]], country_weights[[country]], by = "id")
-}
-
-for (country in c("AUS", "BR", "CHL", "CHN", "COL", "FR", "IT", "UK", "US")) {
-  aux <- country
-  country_data[[country]] <- country_data[[aux]] %>%
-    mutate(weights_n = weights*nrow(country_data[[aux]])/100,
-           weights = weights/100) %>%
-    rename(weights_perc = weights,
-           weights = weights_n)
-}
-
-for (country in c("CAN", "SP", "UGA", "IND")) {
-  aux <- country
-  country_data[[country]] <- country_data[[aux]] %>%
-    mutate(weights_n = 1,
-           weights = 1/nrow(country_data[[aux]])) %>%
-    rename(weights_perc = weights,
-           weights = weights_n)
 }
 
 # Recode for reasons to get or not get the vaccine
